@@ -45,7 +45,7 @@ jobs:
           PUBLIC_CONVEX_URL: ${{ vars.PUBLIC_CONVEX_URL }}
           PUBLIC_CONVEX_SITE_URL: ${{ vars.PUBLIC_CONVEX_SITE_URL }}
           # SITE_URL - required for build (imported from $env/static/private)
-          SITE_URL: ${{ vars.SITE_URL || 'https://modernstack-saas.com' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://example.com' }}
 
       - name: Deploy to Cloudflare Workers
         id: deploy
@@ -59,9 +59,9 @@ jobs:
             BETTER_AUTH_SECRET
             BETTER_AUTH_URL
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://modernstack-saas.com' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://example.com' }}
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-          BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL || vars.SITE_URL || 'https://modernstack-saas.com' }}
+          BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL || vars.SITE_URL || 'https://example.com' }}
 
       - name: Add PR Comment with Worker URL
         if: github.event_name == 'pull_request'
@@ -79,7 +79,7 @@ jobs:
 
             // Get the actual deployment URL from wrangler-action output
             const deploymentUrl = '${{ steps.deploy.outputs.deployment-url }}';
-            const productionUrl = 'https://modernstack-saas.workers.dev';
+            const productionUrl = 'https://example.com';
 
             const commentBody = `${marker}
             🚀 **Cloudflare Workers deployment ready!**

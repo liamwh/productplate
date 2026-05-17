@@ -1,5 +1,5 @@
 {
-	"name": "modernstack-saas",
+	"name": "code-spring-2026",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test:e2e": "playwright test",
-		"test": "npm run test:e2e"
+		"test": "pnpm run test:e2e"
 	},
 	"devDependencies": {
 		"@dnd-kit-svelte/svelte": "^0.1.3",

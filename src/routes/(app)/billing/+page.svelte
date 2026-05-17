@@ -143,7 +143,7 @@
 </script>
 
 <svelte:head>
-	<title>Billing | SaaS Template</title>
+	<title>Billing | CodeSpring 2026</title>
 </svelte:head>
 
 <!-- Header -->

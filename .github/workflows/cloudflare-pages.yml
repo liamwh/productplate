@@ -42,7 +42,7 @@ jobs:
         env:
           PUBLIC_CONVEX_URL: ${{ vars.PUBLIC_CONVEX_URL }}
           PUBLIC_CONVEX_SITE_URL: ${{ vars.PUBLIC_CONVEX_SITE_URL }}
-          SITE_URL: ${{ vars.SITE_URL || 'https://modernstack-saas.com' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://example.com' }}
         run: pnpm run build
 
       - name: Set Cloudflare Node Version

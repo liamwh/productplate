@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>Dashboard | SaaS Template</title>
+	<title>Dashboard | CodeSpring 2026</title>
 </svelte:head>
 
 <!-- Header -->

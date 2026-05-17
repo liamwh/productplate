@@ -150,7 +150,7 @@
 					{#snippet child({ props })}
 						<a href={resolve('/')} {...props}>
 							<Box class="!size-5" />
-							<span class="text-base font-semibold">ModernStack SaaS</span>
+							<span class="text-base font-semibold">CodeSpring 2026</span>
 						</a>
 					{/snippet}
 				</Sidebar.MenuButton>
