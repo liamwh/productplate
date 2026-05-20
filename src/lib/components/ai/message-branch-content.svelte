@@ -1,10 +1,9 @@
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
 	import { useMessageBranch } from './message-branch.svelte';
 	import { cn } from '$lib/utils.js';
 
-	let { children = [] as Snippet<[number]>[] }: HTMLAttributes<HTMLDivElement> = $props();
+	let { children = [] }: { children?: Snippet<[number]>[] } = $props();
 
 	const { currentBranch, setTotalBranches } = useMessageBranch();
 

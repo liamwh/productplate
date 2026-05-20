@@ -11,7 +11,6 @@
 		XCircleIcon
 	} from '@lucide/svelte';
 	import { cn } from '$lib/utils.js';
-	import type { HTMLAttributes } from 'svelte/elements';
 	import { statusLabels } from './tool.svelte';
 
 	let {
@@ -19,21 +18,19 @@
 		title,
 		type,
 		state,
-		toolName,
-		...restProps
-	}: HTMLAttributes<HTMLButtonElement> &
-		(
-			| { type: ToolUIPart['type']; state: ToolUIPart['state']; toolName?: never }
-			| { type: DynamicToolUIPart['type']; state: DynamicToolUIPart['state']; toolName: string }
-		) = $props();
+		toolName
+	}: {
+		class?: string;
+		title?: string;
+	} & (
+		| { type: ToolUIPart['type']; state: ToolUIPart['state']; toolName?: never }
+		| { type: DynamicToolUIPart['type']; state: DynamicToolUIPart['state']; toolName: string }
+	) = $props();
 
 	const derivedName = type === 'dynamic-tool' ? toolName : type.split('-').slice(1).join('-');
 </script>
 
-<Collapsible.Trigger
-	class={cn('flex w-full items-center justify-between gap-4 p-3', className)}
-	{...restProps}
->
+<Collapsible.Trigger class={cn('flex w-full items-center justify-between gap-4 p-3', className)}>
 	<div class="flex items-center gap-2">
 		<WrenchIcon class="size-4 text-muted-foreground" />
 		<span class="text-sm font-medium">{title ?? derivedName}</span>

@@ -24,7 +24,8 @@
 		{
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			validators: zodClient(passwordFormSchema as any),
-			async onSubmit() {
+			async onSubmit({ cancel }) {
+				cancel();
 				isLoading = true;
 				error = '';
 

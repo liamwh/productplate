@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
-
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { XIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils.js';
@@ -9,10 +7,11 @@
 	let {
 		label = 'Remove',
 		class: className,
-		children,
-		...restProps
-	}: HTMLAttributes<HTMLButtonElement> & {
+		children
+	}: {
+		class?: string;
 		label?: string;
+		children?: import('svelte').Snippet;
 	} = $props();
 
 	const { onRemove, variant } = useAttachmentContext();
@@ -45,7 +44,6 @@
 			className
 		)}
 		onclick={handleClick}
-		{...restProps}
 	>
 		{#if children}
 			{@render children()}

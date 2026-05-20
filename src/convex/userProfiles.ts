@@ -1,7 +1,7 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { authComponent } from './auth';
-import { onboardingFormSchema, accountFormSchema } from '../lib/forms/schemas.js';
+import { onboardingFormSchema, accountProfileUpdateSchema } from '../lib/forms/schemas.js';
 
 const profileValidator = v.object({
 	_id: v.id('userProfiles'),
@@ -100,10 +100,11 @@ export const updateCurrent = mutation({
 	handler: async (ctx, args) => {
 		const user = await authComponent.getAuthUser(ctx);
 
-		const validation = accountFormSchema.safeParse(args);
+		const validation = accountProfileUpdateSchema.safeParse(args);
 		if (!validation.success) {
 			throw new Error(validation.error.issues[0]?.message ?? 'Invalid form data.');
 		}
+		const profileUpdate = validation.data;
 
 		const existing = await ctx.db
 			.query('userProfiles')
@@ -114,9 +115,9 @@ export const updateCurrent = mutation({
 		}
 
 		await ctx.db.patch(existing._id, {
-			displayName: args.displayName,
-			bio: args.bio,
-			image: args.image,
+			displayName: profileUpdate.displayName,
+			bio: profileUpdate.bio,
+			image: profileUpdate.image || undefined,
 			updatedAt: Date.now()
 		});
 		const profile = await ctx.db.get(existing._id);

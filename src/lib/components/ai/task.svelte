@@ -1,19 +1,19 @@
 <script lang="ts">
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import { cn } from '$lib/utils.js';
-	import type { HTMLAttributes } from 'svelte/elements';
 
 	let {
 		defaultOpen = true,
 		open,
 		onOpenChange,
 		class: className,
-		children,
-		...restProps
-	}: HTMLAttributes<HTMLDivElement> & {
+		children
+	}: {
 		defaultOpen?: boolean;
 		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
+		class?: string;
+		children?: import('svelte').Snippet;
 	} = $props();
 
 	let isOpen = $state(open ?? defaultOpen);
@@ -30,11 +30,6 @@
 	}
 </script>
 
-<Collapsible.Root
-	class={cn(className)}
-	open={isOpen}
-	onOpenChange={handleOpenChange}
-	{...restProps}
->
+<Collapsible.Root class={cn(className)} open={isOpen} onOpenChange={handleOpenChange}>
 	{@render children?.()}
 </Collapsible.Root>

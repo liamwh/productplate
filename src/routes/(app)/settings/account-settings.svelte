@@ -46,22 +46,25 @@
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			validators: zodClient(accountFormSchema as any),
 			onSubmit: async ({ cancel }) => {
+				cancel();
 				isLoading = true;
 				try {
 					await authClient.updateUser({
 						name: $formData.name,
 						image: $formData.image || null
 					});
-					await convexClient.mutation(api.userProfiles.updateCurrent, {
+					const updatedProfile = await convexClient.mutation(api.userProfiles.updateCurrent, {
 						displayName: $formData.name,
 						bio: $formData.bio,
 						image: $formData.image || undefined
 					});
+					$formData.name = updatedProfile.displayName;
+					$formData.bio = updatedProfile.bio;
+					$formData.image = updatedProfile.image || '';
 					toast.success('Profile updated successfully');
 				} catch (error) {
 					const message = error instanceof Error ? error.message : 'Failed to update profile';
 					toast.error(message);
-					cancel();
 				} finally {
 					isLoading = false;
 				}

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { HTMLAttributes } from 'svelte/elements';
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import { SearchIcon, ChevronDownIcon } from '@lucide/svelte';
 	import { cn } from '$lib/utils.js';
@@ -7,10 +6,11 @@
 	let {
 		class: className,
 		title,
-		children,
-		...restProps
-	}: HTMLAttributes<HTMLButtonElement> & {
+		children
+	}: {
+		class?: string;
 		title: string;
+		children?: import('svelte').Snippet;
 	} = $props();
 </script>
 
@@ -19,7 +19,6 @@
 		'group flex w-full cursor-pointer items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground',
 		className
 	)}
-	{...restProps}
 >
 	{#if children}
 		{@render children()}
