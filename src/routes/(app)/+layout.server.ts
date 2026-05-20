@@ -2,10 +2,9 @@ import { createConvexHttpClient } from '@mmailaender/convex-better-auth-svelte/s
 import { redirect } from '@sveltejs/kit';
 import { api } from '$convex/_generated/api';
 import { resolve } from '$app/paths';
-import { shouldRedirectToOnboarding } from '$lib/server/onboarding';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ locals, url }) => {
+export const load: LayoutServerLoad = async ({ locals }) => {
 	const client = createConvexHttpClient({ token: locals.token });
 	const currentUser = await client.query(api.auth.getCurrentUser, {});
 
@@ -14,10 +13,6 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
 	}
 
 	const profile = await client.query(api.userProfiles.getCurrent, {});
-
-	if (shouldRedirectToOnboarding(url.pathname, resolve('/onboarding'), profile)) {
-		throw redirect(303, resolve('/onboarding'));
-	}
 
 	return {
 		currentUser,
