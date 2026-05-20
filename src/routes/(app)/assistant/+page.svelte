@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { APP_NAME } from '$lib/constants.js';
-	import AgentPanel from '$lib/components/ai/agent-panel.svelte';
+	import LazyAgentPanel from '$lib/components/ai/lazy-agent-panel.svelte';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 </script>
@@ -21,6 +21,6 @@
 
 <div class="flex flex-1 flex-col p-4 lg:p-6">
 	<div class="mx-auto flex w-full max-w-4xl flex-1 flex-col">
-		<AgentPanel />
+		<LazyAgentPanel />
 	</div>
 </div>

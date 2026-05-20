@@ -1,12 +1,7 @@
 {
 	"$schema": "https://developers.cloudflare.com/schemas/wrangler.json",
 	"name": "code-spring-2026",
-	"main": ".svelte-kit/cloudflare/_worker.js",
+	"pages_build_output_dir": ".svelte-kit/cloudflare",
 	"compatibility_date": "2025-01-01",
-	"compatibility_flags": ["nodejs_compat"],
-
-	"assets": {
-		"binding": "ASSETS",
-		"directory": ".svelte-kit/cloudflare"
-	}
+	"compatibility_flags": ["nodejs_compat"]
 }

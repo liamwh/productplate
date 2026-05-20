@@ -7,7 +7,7 @@
 	import SectionCards from '$lib/components/section-cards.svelte';
 	import ChartAreaInteractive from '$lib/components/chart-area-interactive.svelte';
 	import DataTable from '$lib/components/data-table.svelte';
-	import AgentPanel from '$lib/components/ai/agent-panel.svelte';
+	import LazyAgentPanel from '$lib/components/ai/lazy-agent-panel.svelte';
 	import data from './data.js';
 
 	// Get current user from Convex
@@ -42,7 +42,7 @@
 				<ChartAreaInteractive />
 			</div>
 			<div class="px-4 lg:px-6">
-				<AgentPanel />
+				<LazyAgentPanel />
 			</div>
 			<DataTable {data} />
 		</div>
