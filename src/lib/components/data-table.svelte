@@ -66,6 +66,7 @@
 		},
 		{
 			id: 'actions',
+			// @ts-expect-error snippet hoisted from template
 			cell: () => renderSnippet(DataTableActions)
 		}
 	];
@@ -287,10 +288,7 @@
 	<Tabs.Content value="outline" class="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
 		<div class="overflow-hidden rounded-lg border">
 			<DragDropProvider
-				modifiers={[
-					// @ts-expect-error @dnd-kit/abstract types are botched atm
-					RestrictToVerticalAxis
-				]}
+				modifiers={[RestrictToVerticalAxis]}
 				onDragEnd={(e) => (data = move(data, e))}
 			>
 				<Table.Root>

@@ -18,8 +18,8 @@
 	},
 	"devDependencies": {
 		"@dnd-kit-svelte/svelte": "^0.1.6",
-		"@dnd-kit/abstract": "^0.1.21",
-		"@dnd-kit/helpers": "^0.1.21",
+		"@dnd-kit/abstract": "^0.2.3",
+		"@dnd-kit/helpers": "^0.2.3",
 		"@eslint/compat": "^1.4.1",
 		"@eslint/js": "^9.39.4",
 		"@internationalized/date": "^3.12.1",
