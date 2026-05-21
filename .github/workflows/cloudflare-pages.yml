@@ -34,7 +34,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -47,7 +47,7 @@ jobs:
         run: bun run build
 
       - name: Set Cloudflare Node Version
-        run: echo "20" > ./.svelte-kit/cloudflare/.node-version
+        run: echo "22" > ./.svelte-kit/cloudflare/.node-version
 
       - name: Extract Repository Name
         id: extract_repo
@@ -64,7 +64,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "4.93.1"
+          wranglerVersion: '4.93.1'
           command: pages deploy ./.svelte-kit/cloudflare --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME || steps.extract_repo.outputs.repo_name }} --branch=${{ github.head_ref || github.ref_name }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
