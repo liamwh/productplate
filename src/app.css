@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@source "../node_modules/svelte-streamdown/**/*";
+@source '../node_modules/svelte-streamdown/**/*';
 
 @import 'tw-animate-css';
 
