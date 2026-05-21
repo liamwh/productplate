@@ -33,7 +33,7 @@
 		{
 			validators: zodClient(
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(mode === 'signup' ? authSignUpFormSchema : authSignInFormSchema) as any
+				(() => (mode === 'signup' ? authSignUpFormSchema : authSignInFormSchema))() as any
 			)
 		}
 	);

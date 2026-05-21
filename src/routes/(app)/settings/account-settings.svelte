@@ -37,11 +37,11 @@
 
 	const convexClient = useConvexClient();
 	const form = superForm<AccountForm>(
-		{
+		(() => ({
 			name: profile?.displayName || user?.name || '',
 			image: user?.image || '',
 			bio: profile?.bio || ''
-		},
+		}))(),
 		{
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			validators: zodClient(accountFormSchema as any),

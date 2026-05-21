@@ -27,7 +27,9 @@
 		| { type: DynamicToolUIPart['type']; state: DynamicToolUIPart['state']; toolName: string }
 	) = $props();
 
-	const derivedName = type === 'dynamic-tool' ? toolName : type.split('-').slice(1).join('-');
+	const derivedName = $derived(
+		type === 'dynamic-tool' ? toolName : type.split('-').slice(1).join('-')
+	);
 </script>
 
 <Collapsible.Trigger class={cn('flex w-full items-center justify-between gap-4 p-3', className)}>
