@@ -92,7 +92,7 @@
 		"@xyflow/svelte": "^1.5.2",
 		"ai": "^6.0.188",
 		"autumn-js": "^0.1.85",
-		"better-auth": "1.3.27",
+		"better-auth": "1.3.34",
 		"convex": "^1.39.1",
 		"convex-svelte": "^0.0.11",
 		"embla-carousel-svelte": "^8.6.0",
