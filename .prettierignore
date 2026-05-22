@@ -17,3 +17,4 @@ src/convex/*/_generated/
 
 # Miscellaneous
 /static/
+.agents/skills/
