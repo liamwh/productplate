@@ -35,7 +35,11 @@
 		onBranchChange?: (branchIndex: number) => void;
 	} = $props();
 
-	let currentBranch = $state(defaultBranch);
+	function getInitialBranch() {
+		return defaultBranch;
+	}
+
+	let currentBranch = $state(getInitialBranch());
 	let totalBranches = $state(0);
 
 	function handleBranchChange(newBranch: number) {

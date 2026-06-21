@@ -10,7 +10,11 @@
 	let { teams }: { teams: { name: string; logo: any; plan: string }[] } = $props();
 	const sidebar = useSidebar();
 
-	let activeTeam = $state(teams[0]);
+	function getInitialTeam() {
+		return teams[0];
+	}
+
+	let activeTeam = $state(getInitialTeam());
 </script>
 
 <Sidebar.Menu>

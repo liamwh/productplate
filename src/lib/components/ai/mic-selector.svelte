@@ -21,8 +21,16 @@
 		onOpenChange?: (open: boolean) => void;
 	} = $props();
 
-	let open = $state(controlledOpen ?? defaultOpen);
-	let value = $state<string | undefined>(controlledValue ?? defaultValue);
+	function getInitialOpen() {
+		return controlledOpen ?? defaultOpen;
+	}
+
+	function getInitialValue() {
+		return controlledValue ?? defaultValue;
+	}
+
+	let open = $state(getInitialOpen());
+	let value = $state<string | undefined>(getInitialValue());
 	let width = $state(200);
 	let devices = $state<MediaDeviceInfo[]>([]);
 	let loading = $state(true);
@@ -65,6 +73,18 @@
 	$effect(() => {
 		if (open && !hasPermission && !loading) {
 			loadDevicesWithPermission();
+		}
+	});
+
+	$effect(() => {
+		if (controlledOpen !== undefined) {
+			open = controlledOpen;
+		}
+	});
+
+	$effect(() => {
+		if (controlledValue !== undefined) {
+			value = controlledValue;
 		}
 	});
 

@@ -39,12 +39,23 @@
 		duration?: number;
 	} = $props();
 
-	const resolvedDefaultOpen = defaultOpen ?? isStreaming;
-	const isExplicitlyClosed = defaultOpen === false;
+	const isExplicitlyClosed = $derived(defaultOpen === false);
 
-	let isOpen = $state(resolvedDefaultOpen);
-	let duration = $state<number | undefined>(durationProp);
-	let hasEverStreamed = $state(isStreaming);
+	function getInitialOpen() {
+		return defaultOpen ?? isStreaming;
+	}
+
+	function getInitialDuration() {
+		return durationProp;
+	}
+
+	function getInitialHasEverStreamed() {
+		return isStreaming;
+	}
+
+	let isOpen = $state(getInitialOpen());
+	let duration = $state<number | undefined>(getInitialDuration());
+	let hasEverStreamed = $state(getInitialHasEverStreamed());
 	let hasAutoClosed = $state(false);
 	let startTime: number | null = $state(null);
 
@@ -57,6 +68,12 @@
 		} else if (startTime !== null) {
 			duration = Math.ceil((Date.now() - startTime) / 1000);
 			startTime = null;
+		}
+	});
+
+	$effect(() => {
+		if (durationProp !== undefined) {
+			duration = durationProp;
 		}
 	});
 

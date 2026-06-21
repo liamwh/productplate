@@ -1,11 +1,12 @@
 import type { Handle } from '@sveltejs/kit';
 import { createAuth } from '$convex/auth.js';
 import { getToken } from '@mmailaender/convex-better-auth-svelte/sveltekit';
-import { SITE_URL } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 try {
-	if (SITE_URL && typeof process !== 'undefined' && !process.env.SITE_URL) {
-		process.env.SITE_URL = SITE_URL;
+	const siteUrl = env.SITE_URL;
+	if (siteUrl && typeof process !== 'undefined' && !process.env.SITE_URL) {
+		process.env.SITE_URL = siteUrl;
 	}
 } catch {
 	// process.env not available (e.g. Cloudflare Workers)

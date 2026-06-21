@@ -16,10 +16,24 @@
 		onRemove?: () => void;
 	} = $props();
 
-	const { variant } = useAttachmentsContext();
-	const mediaCategory = getMediaCategory(data);
+	const attachments = useAttachmentsContext();
+	const variant = $derived(attachments.variant);
+	const mediaCategory = $derived(getMediaCategory(data));
 
-	setContext(attachmentKey, { data, mediaCategory, onRemove, variant });
+	setContext(attachmentKey, {
+		get data() {
+			return data;
+		},
+		get mediaCategory() {
+			return mediaCategory;
+		},
+		get onRemove() {
+			return onRemove;
+		},
+		get variant() {
+			return variant;
+		}
+	});
 </script>
 
 <div

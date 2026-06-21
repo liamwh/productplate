@@ -23,7 +23,11 @@
 		isUploading: boolean;
 	} = $props();
 
-	const editor = useImageEditor({ file });
+	function getInitialFile() {
+		return file;
+	}
+
+	const editor = useImageEditor({ file: getInitialFile() });
 
 	const imageProps = $derived(editor.getImageProps());
 	const rotateSliderProps = $derived(editor.getRotationSliderProps());

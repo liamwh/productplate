@@ -11,7 +11,7 @@
 		device: MediaDeviceInfo;
 	} = $props();
 
-	const matches = device.label.match(deviceIdRegex);
+	const matches = $derived(device.label.match(deviceIdRegex));
 	const deviceId = $derived(matches ? matches[1] : '');
 	const name = $derived(matches ? device.label.replace(deviceIdRegex, '') : device.label);
 </script>

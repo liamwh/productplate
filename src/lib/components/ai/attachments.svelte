@@ -14,7 +14,11 @@
 		variant?: AttachmentVariant;
 	} = $props();
 
-	setContext(attachmentsKey, { variant });
+	setContext(attachmentsKey, {
+		get variant() {
+			return variant;
+		}
+	});
 </script>
 
 <div

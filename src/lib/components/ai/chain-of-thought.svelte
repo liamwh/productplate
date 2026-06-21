@@ -34,7 +34,11 @@
 		onOpenChange?: (open: boolean) => void;
 	} = $props();
 
-	let isOpen = $state(open ?? defaultOpen);
+	function getInitialOpen() {
+		return open ?? defaultOpen;
+	}
+
+	let isOpen = $state(getInitialOpen());
 
 	$effect(() => {
 		if (open !== undefined) {
