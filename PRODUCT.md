@@ -1,0 +1,36 @@
+# Product Plate
+
+## Register
+
+brand
+
+## Users
+
+Indie hackers and early-stage founders who want to start a production-minded SaaS product without rebuilding authentication, billing, data, AI, and interface foundations.
+
+## Product Purpose
+
+Product Plate is a public, batteries-included SvelteKit starter. It shortens the path from product idea to a credible working SaaS by providing a coherent frontend, Convex backend, authentication, billing, AI patterns, and reusable product UI.
+
+## Brand Personality
+
+Practical, composed, and quietly confident. The product should feel like a well-organized workbench: capable enough for serious work, approachable enough to start using immediately, and restrained enough to adapt to a new brand.
+
+## Anti-references
+
+- Generic AI-tool marketing with purple gradients, glowing orbs, and glassmorphism.
+- Over-animated component galleries that obscure the actual product foundation.
+- Empty template claims that are not demonstrated by real routes or working code.
+- Editorial or luxury styling that makes a developer starter feel precious.
+
+## Design Principles
+
+- Show the working product, not abstract promises.
+- Keep the default system neutral and adaptable while giving Product Plate a recognizable voice.
+- Prefer useful composition over decorative component volume.
+- Make the path from evaluation to local development obvious.
+- Treat accessibility, responsive behavior, and reduced motion as defaults.
+
+## Accessibility & Inclusion
+
+Target WCAG 2.2 AA. Maintain visible keyboard focus, semantic landmarks, sufficient contrast, reduced-motion support, descriptive labels, and usable layouts from small phones through wide desktop screens.

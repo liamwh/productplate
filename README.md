@@ -1,126 +1,140 @@
-# CodeSpring 2026
+# Product Plate
 
-This repo is the starting point for a CodeSpring 2026 hackathon project. The stack and reusable building blocks are intact; the template branding and template-marketing copy have been removed.
+A production-minded SvelteKit SaaS starter for indie hackers and founders.
 
-## Stack
+Product Plate provides the infrastructure and product surfaces most SaaS applications need before the differentiating work starts. It is open source, built with ordinary application code, and designed to be changed.
 
-- SvelteKit 2 + Svelte 5
-- Convex
-- Better Auth
-- Autumn billing
-- Tailwind CSS v4
-- shadcn-svelte
-- Bun
+## Included
 
-## What stays
+- SvelteKit 2 and Svelte 5
+- Convex functions, realtime data, storage, and typed APIs
+- Better Auth with email/password, OAuth hooks, recovery, and protected routes
+- Autumn subscription and billing scaffolding
+- Vercel AI SDK streaming chat and tool patterns
+- Tailwind CSS v4 and shadcn-svelte
+- 60+ product, form, data, overlay, navigation, and AI components
+- Dashboard, assistant, billing, settings, onboarding, editor, graph, and 3D demo routes
+- PWA support and Cloudflare Pages deployment workflow
+- Bun-only package management
+- Reproducible Devenv shell and process setup
 
-- Auth flows
-- Protected app shell
-- Billing integration scaffolding
-- Reusable UI components
-- Project docs in `docs/`
-- Cloudflare adapter and deploy workflow
+## Quick start
 
-## Local development
+### Devenv
 
-1. Install dependencies:
+```sh
+devenv shell
+setup
+devenv up
+```
+
+`devenv up` runs SvelteKit and Convex together. You can also run them independently with `dev` and `convex-dev`.
+
+### Local tools
 
 ```sh
 bun install
+cp .env.example .env.local
 ```
 
-2. Run Convex in one terminal:
+Run Convex and SvelteKit in separate terminals:
 
 ```sh
-bun x convex dev
+bun convex dev
 ```
-
-3. Run SvelteKit in another:
 
 ```sh
 bun dev
 ```
 
+Open [http://localhost:5173](http://localhost:5173).
+
 ## Environment
 
-You need build-time env vars for SvelteKit and runtime env vars for Convex.
-
-### SvelteKit / Cloudflare Pages build vars
+SvelteKit build variables:
 
 - `PUBLIC_CONVEX_URL`
 - `PUBLIC_CONVEX_SITE_URL`
 - `SITE_URL`
 
-### Convex env vars
-
-Required:
+Required Convex variables:
 
 - `SITE_URL`
 - `BETTER_AUTH_SECRET`
 
-Optional, depending on what you use:
+Optional integration variables:
 
 - `RESEND_API_KEY`
 - `RESET_EMAIL_FROM`
 - `RESET_EMAIL_REPLY_TO`
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
+- `OPENROUTER_API_KEY`
 - `AUTUMN_SECRET_KEY`
 
-## Deploying to Cloudflare Pages
+See [.env.example](.env.example) and [.env.server.example](.env.server.example) for the complete local setup.
 
-This project is already using `@sveltejs/adapter-cloudflare`, so Pages is the path of least resistance.
+## Commands
 
-1. Deploy Convex first:
+| Command             | Purpose                                |
+| ------------------- | -------------------------------------- |
+| `bun dev`           | Start SvelteKit                        |
+| `bun convex dev`    | Start Convex development               |
+| `bun run check`     | Run Svelte and TypeScript diagnostics  |
+| `bun run lint`      | Check formatting and ESLint            |
+| `bun run test:unit` | Run Vitest                             |
+| `bun run test:e2e`  | Run Playwright                         |
+| `bun run build`     | Create a production build              |
+| `bun run verify`    | Run lint, check, unit tests, and build |
 
-```sh
-bun convex deploy
+## Project map
+
+```text
+src/routes/                 SvelteKit routes and API handlers
+src/routes/(app)/           Authenticated product routes
+src/lib/components/ui/      shadcn-svelte primitives
+src/lib/components/ai/      AI chat and tool components
+src/lib/components/mist/    Adapted Svelte marketing blocks
+src/convex/                 Convex schema, auth, billing, and functions
+docs/                       Project-specific integration guidance
 ```
 
-2. Set production env vars in Convex:
+## Deployment
 
-```sh
-bun convex env set --prod SITE_URL https://your-domain.pages.dev
-bun convex env set --prod BETTER_AUTH_SECRET your-secret
-```
+The default production path is Convex plus Cloudflare Pages. The project is configured to deploy at **https://productplate.pages.dev**.
 
-Add the optional email, OAuth, and billing vars if your app uses them.
+1. Deploy Convex:
 
-3. In Cloudflare Pages, create a new project and connect the repo.
+   ```sh
+   bun convex deploy
+   ```
 
-4. Use these build settings:
+2. Configure production variables in Convex and Cloudflare.
 
+3. Connect the repository to Cloudflare Pages or use the included workflow in `.github/workflows/cloudflare-pages.yml`.
+
+Cloudflare build settings:
+
+- Project name: `productplate`
 - Build command: `bun run build`
-- Build output directory: `.svelte-kit/cloudflare`
-- Node version: `20`
+- Build output: `.svelte-kit/cloudflare`
+- Node.js: 22
 
-5. In Cloudflare Pages, add build-time environment variables:
+## Component sources
 
-- `PUBLIC_CONVEX_URL`
-- `PUBLIC_CONVEX_SITE_URL`
-- `SITE_URL=https://your-domain.pages.dev`
+- Core primitives: [shadcn-svelte](https://www.shadcn-svelte.com/)
+- Marketing block foundations: [Svelte Shadcn Blocks](https://sv-blocks.vercel.app/), adapted for Product Plate
+- AI interface patterns: [AI Elements](https://ai-sdk.dev/elements)
 
-6. If auth is enabled, make sure `SITE_URL` matches the final Pages domain exactly.
+The imported marketing blocks are MIT licensed. Their structure and styling were adapted to the Product Plate design system and Svelte 5 conventions.
 
-### GitHub Actions option
+## Contributing
 
-The repo includes a Cloudflare Pages workflow in `.github/workflows/cloudflare-pages.yml`.
+- Use Bun for every package operation.
+- Read the project guidance in `AGENTS.md` before editing Svelte or Convex code.
+- Add focused tests for behavior changes.
+- Run `bun run verify` before opening a pull request.
 
-The workflow selects the `production` environment on `main` and `development` otherwise.
-Set these GitHub environment variables in both environments:
+## License
 
-- `PUBLIC_CONVEX_URL`
-- `PUBLIC_CONVEX_SITE_URL`
-- `SITE_URL`
-- `CLOUDFLARE_PROJECT_NAME` (optional if the repo name matches the Pages project)
-
-Set these GitHub secrets:
-
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-
-## Notes
-
-- Use `bun` only.
-- The docs in `docs/` are the repo’s reference material for Svelte, Convex, Tailwind, Better Auth, and Autumn.
-- There is still app scaffolding in place. Remove or reshape routes once the hackathon direction is clear.
+[MIT](LICENSE)
