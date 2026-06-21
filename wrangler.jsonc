@@ -1,10 +1,10 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "code-spring-2026",
+	"name": "productplate",
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
 	"compatibility_date": "2025-01-01",
 	"compatibility_flags": ["nodejs_compat"],
 	"vars": {
-		"SITE_URL": "https://code-spring-2026.pages.dev"
+		"SITE_URL": "https://productplate.pages.dev"
 	}
 }
