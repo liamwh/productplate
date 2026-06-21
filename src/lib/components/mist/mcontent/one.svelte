@@ -57,18 +57,41 @@
 			</p>
 		</div>
 
-		<Tabs.Root value="dashboard" class="mt-12 grid gap-6 lg:grid-cols-[0.55fr_1.45fr]">
-			<Tabs.List class="grid h-auto grid-cols-2 gap-2 bg-transparent p-0 lg:grid-cols-1">
-				{#each routes as route (route.value)}
-					<Tabs.Trigger
-						value={route.value}
-						class="h-auto justify-start gap-3 border px-4 py-3 data-[state=active]:bg-muted"
-					>
-						<route.icon class="size-4" />
-						<span>{route.label}</span>
-					</Tabs.Trigger>
-				{/each}
-			</Tabs.List>
+		<Tabs.Root value="dashboard" class="mt-12 grid gap-6 lg:grid-cols-[0.42fr_1.58fr] lg:items-start">
+			<div class="space-y-3">
+				<Tabs.List class="grid h-auto w-full grid-cols-2 content-start gap-2 bg-transparent p-0 lg:grid-cols-1">
+					{#each routes as route (route.value)}
+						<Tabs.Trigger
+							value={route.value}
+							class="h-auto w-full justify-start gap-3 border px-4 py-3 data-[state=active]:bg-muted"
+						>
+							<route.icon class="size-4" />
+							<span>{route.label}</span>
+						</Tabs.Trigger>
+					{/each}
+				</Tabs.List>
+
+				<div class="hidden rounded-xl border bg-card/60 p-4 shadow-sm lg:block">
+					<p class="text-xs font-semibold">Route coverage</p>
+					<p class="mt-2 text-sm leading-6 text-muted-foreground">
+						Real pages with shared shell, auth boundaries, and product-ready UI patterns.
+					</p>
+					<div class="mt-4 grid gap-2 text-xs text-muted-foreground">
+						<div class="flex items-center gap-2">
+							<CheckIcon class="size-3.5" />
+							<span>4 working routes</span>
+						</div>
+						<div class="flex items-center gap-2">
+							<CheckIcon class="size-3.5" />
+							<span>No screenshot-only demos</span>
+						</div>
+						<div class="flex items-center gap-2">
+							<CheckIcon class="size-3.5" />
+							<span>Delete or replace cleanly</span>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			{#each routes as route (route.value)}
 				<Tabs.Content value={route.value} class="mt-0">
