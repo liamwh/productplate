@@ -28,6 +28,7 @@ export const createAuth = (
 			disabled: optionsOnly
 		},
 		baseURL: siteUrl,
+		trustedOrigins: ['http://localhost:5173', siteUrl].filter(Boolean) as string[],
 		database: authComponent.adapter(ctx),
 		// User configuration
 		user: {
