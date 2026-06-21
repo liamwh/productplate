@@ -20,7 +20,7 @@
 </script>
 
 <section id="features" class="border-y bg-muted/35 py-24 sm:py-32">
-	<div class="mx-auto max-w-6xl px-6">
+	<div class="mx-auto max-w-7xl px-6">
 		<div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
 			<div>
 				<Badge variant="outline">A complete starting surface</Badge>
@@ -34,9 +34,9 @@
 			</p>
 		</div>
 
-		<div class="mt-14 grid gap-5 lg:grid-cols-[1.3fr_0.7fr]">
+		<div class="mt-14 grid gap-5 lg:grid-cols-[1.55fr_0.75fr]">
 			<div class="min-w-0"><FeatureTable /></div>
-			<Card.Root class="justify-between">
+			<Card.Root class="min-h-full justify-between">
 				<Card.Header>
 					<Card.Title>Production foundations</Card.Title>
 					<Card.Description
