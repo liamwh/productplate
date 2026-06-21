@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://productplate.pages.dev">Live demo</a>
   ·
-  <a href="https://github.com/rodrgds/product-plate">GitHub</a>
+  <a href="https://github.com/rodrgds/productplate">GitHub</a>
   ·
   <a href="./LICENSE">MIT License</a>
 </p>
@@ -134,7 +134,7 @@ Try the hosted demo at **[productplate.pages.dev](https://productplate.pages.dev
 ### Option 1: local tools
 
 ```sh
-git clone https://github.com/rodrgds/product-plate.git my-saas
+git clone https://github.com/rodrgds/productplate.git my-saas
 cd my-saas
 bun install
 cp .env.example .env.local
@@ -161,7 +161,7 @@ bun convex env set SITE_URL http://localhost:5173
 ### Option 2: Devenv
 
 ```sh
-git clone https://github.com/rodrgds/product-plate.git my-saas
+git clone https://github.com/rodrgds/productplate.git my-saas
 cd my-saas
 devenv shell
 setup
