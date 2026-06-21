@@ -21,7 +21,7 @@
 
 {#if visible}
 	<div class="fixed right-4 bottom-4 z-50 max-w-sm animate-in fade-in slide-in-from-bottom-2">
-		<Card.Root class="shadow-lg">
+		<Card.Root class="gap-0 py-0 shadow-lg">
 			<Card.Content class="p-4">
 				<div class="flex items-start gap-3">
 					<div class="flex-1">
