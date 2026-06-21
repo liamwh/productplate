@@ -7,12 +7,14 @@
 		{ initials: 'AR', name: 'Avery Reed', plan: 'Pro', status: 'Active', value: '$1,240' },
 		{ initials: 'MK', name: 'Mina Kim', plan: 'Starter', status: 'Trial', value: '$480' },
 		{ initials: 'JL', name: 'Jon Lane', plan: 'Pro', status: 'Active', value: '$920' },
-		{ initials: 'SK', name: 'Sam Kaur', plan: 'Team', status: 'Active', value: '$2,100' }
+		{ initials: 'SK', name: 'Sam Kaur', plan: 'Team', status: 'Active', value: '$2,100' },
+		{ initials: 'CN', name: 'Chris Noel', plan: 'Starter', status: 'Trial', value: '$360' },
+		{ initials: 'IP', name: 'Iris Park', plan: 'Pro', status: 'Active', value: '$1,680' }
 	] as const;
 </script>
 
 <div class="overflow-hidden rounded-xl border bg-background shadow-sm">
-	<div class="flex items-center justify-between border-b px-5 py-4">
+	<div class="flex items-center justify-between border-b px-6 py-5">
 		<div>
 			<p class="font-medium">Recent customers</p>
 			<p class="text-sm text-muted-foreground">Live product data, ready for your schema.</p>
