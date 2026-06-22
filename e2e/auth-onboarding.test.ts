@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('email signup reaches onboarding and protected dashboard', async ({ page }) => {
+test('email signup and later sign-in reach the protected dashboard', async ({ page, context }) => {
 	const stamp = Date.now();
 	const email = `productplate-e2e-${stamp}@example.com`;
 
@@ -26,4 +26,17 @@ test('email signup reaches onboarding and protected dashboard', async ({ page })
 	await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 	await expect(page.getByText(/Welcome back, Product Plate E2E!/)).toBeVisible();
 	await expect(page.getByText(/AI workbench/i)).toBeVisible();
+
+	await context.clearCookies();
+	await page.goto('/auth/sign-in');
+	await page.getByLabel('Email').fill(email);
+	await page.getByLabel('Password').fill('ProductPlate123!');
+	await page.getByRole('button', { name: /^sign in$/i }).click();
+
+	await page.waitForURL('**/dashboard');
+	await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+
+	await page.goto('/onboarding');
+	await page.waitForURL('**/dashboard');
+	await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 });
