@@ -8,9 +8,6 @@ import { betterAuth } from 'better-auth';
 import { admin } from 'better-auth/plugins';
 import authSchema from './betterAuth/schema';
 
-const siteUrl = process.env.SITE_URL ?? 'http://localhost:5173';
-const useSecureCookies = siteUrl.startsWith('https://');
-
 const authUserValidator = v.object({
 	_id: v.string(),
 	_creationTime: v.number(),
@@ -39,6 +36,12 @@ export const createAuth = (
 	ctx: GenericCtx<DataModel>,
 	{ optionsOnly } = { optionsOnly: false }
 ) => {
+	// Read runtime environment variables lazily. Cloudflare installs its env
+	// bindings after module imports, so reading SITE_URL at module scope makes
+	// the server expect localhost's insecure cookie in production.
+	const siteUrl = process.env.SITE_URL ?? 'http://localhost:5173';
+	const useSecureCookies = siteUrl.startsWith('https://');
+
 	return betterAuth({
 		// disable logging when createAuth is called just to generate options.
 		// this is not required, but there's a lot of noise in logs without it.
@@ -55,6 +58,12 @@ export const createAuth = (
 		].filter(Boolean) as string[],
 		advanced: {
 			useSecureCookies
+		},
+		account: {
+			accountLinking: {
+				enabled: true,
+				trustedProviders: ['google']
+			}
 		},
 		database: authComponent.adapter(ctx),
 		// User configuration

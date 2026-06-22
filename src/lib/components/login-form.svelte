@@ -4,7 +4,6 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { browser } from '$app/environment';
 	import { authClient } from '$lib/auth-client.js';
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getContext } from 'svelte';
 	import * as Form from '$lib/components/ui/form/index.js';
@@ -12,6 +11,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { authSignInFormSchema, authSignUpFormSchema, type AuthForm } from '$lib/forms/schemas.js';
 	import { Loader2 } from '@lucide/svelte';
+	import { page } from '$app/state';
+	import { getOAuthErrorMessage } from '$lib/auth-errors.js';
 
 	interface Props {
 		mode?: 'signin' | 'signup';
@@ -24,6 +25,7 @@
 	let isSignUp = $derived(mode === 'signup');
 	let isLoading = $state(false);
 	let error = $state<string | null>(null);
+	let oauthError = $derived(getOAuthErrorMessage(page.url.searchParams.get('error')));
 	const form = superForm<AuthForm>(
 		{
 			name: '',
@@ -104,7 +106,9 @@
 					{ email: formValues.email, password: formValues.password },
 					{
 						onSuccess: () => {
-							goto(resolve('/dashboard'));
+							if (browser) {
+								window.location.assign(resolve('/dashboard'));
+							}
 						},
 						onError: (ctx) => {
 							error = getAuthErrorMessage(ctx.error.message, 'Unable to sign in.');
@@ -121,10 +125,12 @@
 	}
 
 	async function handleGoogleLogin() {
+		error = null;
 		try {
 			await authClient.signIn.social({
 				provider: 'google',
-				callbackURL: '/onboarding'
+				callbackURL: resolve('/onboarding'),
+				errorCallbackURL: resolve('/auth/sign-in')
 			});
 		} catch (err) {
 			error = 'Failed to sign in with Google';
@@ -146,11 +152,11 @@
 	</Card.Header>
 	<Card.Content>
 		<form onsubmit={handleSubmit} class="space-y-4">
-			{#if error}
+			{#if error || oauthError}
 				<div
 					class="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive"
 				>
-					{error}
+					{error ?? oauthError}
 				</div>
 			{/if}
 
