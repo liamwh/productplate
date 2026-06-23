@@ -58,10 +58,11 @@ function redirectWithAuthCookies(response: Response) {
 }
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
+	const dashboardUrl = new URL(resolve('/dashboard'), url).toString();
 	const signInBody = {
 		email: DEMO_ACCOUNT_EMAIL,
 		password: DEMO_ACCOUNT_PASSWORD,
-		callbackURL: resolve('/dashboard'),
+		callbackURL: dashboardUrl,
 		rememberMe: true
 	};
 
@@ -72,7 +73,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 			name: DEMO_ACCOUNT_NAME,
 			email: DEMO_ACCOUNT_EMAIL,
 			password: DEMO_ACCOUNT_PASSWORD,
-			callbackURL: resolve('/dashboard')
+			callbackURL: dashboardUrl
 		});
 
 		if (!isSuccessfulAuthResponse(signUp)) {
