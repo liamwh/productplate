@@ -1,0 +1,15 @@
+[mcp_servers.convex]
+command = "npx"
+args = [
+    "-y",
+    "convex@latest",
+    "mcp",
+    "start",
+]
+
+[mcp_servers.svelte]
+command = "npx"
+args = [
+    "-y",
+    "@sveltejs/mcp",
+]

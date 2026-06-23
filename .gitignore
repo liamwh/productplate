@@ -9,6 +9,7 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
+.pre-commit-config.yaml
 
 # OS
 .DS_Store
