@@ -8,7 +8,8 @@
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { api } from '$convex/_generated/api.js';
-	import { useQuery } from 'convex-svelte';
+	import { isDemoAccountEmail } from '$lib/demo-account.js';
+	import { useConvexClient, useQuery } from 'convex-svelte';
 
 	interface Props {
 		data: LayoutData;
@@ -17,6 +18,8 @@
 
 	const { data, children }: Props = $props();
 
+	const convexClient = useConvexClient();
+	let demoProfileRequest: Promise<unknown> | null = null;
 	let hasClientSession = $state<boolean | null>(null);
 	let isLoading = $derived(hasClientSession === null && !data.currentUser);
 	let isAuthenticated = $derived(hasClientSession ?? Boolean(data.currentUser));
@@ -24,10 +27,23 @@
 	let profile = $derived(profileResponse.data === undefined ? data.profile : profileResponse.data);
 	let isProfileLoading = $derived(profileResponse.isLoading && profileResponse.data === undefined);
 	let isOnboardingRoute = $derived(page.url.pathname === resolve('/onboarding'));
+	let shouldEnsureDemoProfile = $derived(
+		isAuthenticated && !profile && !isProfileLoading && isDemoAccountEmail(data.currentUser?.email)
+	);
 
 	onMount(async () => {
 		const { data: session } = await authClient.getSession();
 		hasClientSession = session !== null;
+	});
+
+	$effect(() => {
+		if (!shouldEnsureDemoProfile) return;
+
+		demoProfileRequest ??= convexClient
+			.mutation(api.userProfiles.ensureDemoProfile, {})
+			.catch((error) => {
+				console.error('Failed to prepare demo profile:', error);
+			});
 	});
 </script>
 

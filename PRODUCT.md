@@ -12,6 +12,13 @@ Indie hackers and early-stage founders who want to start a production-minded Saa
 
 Product Plate is a public, batteries-included SvelteKit starter. It shortens the path from product idea to a credible working SaaS by providing a coherent frontend, Convex backend, authentication, billing, AI patterns, and reusable product UI.
 
+## Template Kickstart
+
+- `START_HERE.md` is the default handoff prompt for turning the starter into a specific product.
+- The hosted `/auth/demo` entrypoint signs into a disposable demo account and should be deleted or replaced during kickstart.
+- `_template_options` stores inactive scaffolds for alternate billing and data choices. The final app should keep one active stack and remove unused options.
+- Default stack: SvelteKit, Svelte 5, Convex, Better Auth, Autumn, Tailwind CSS v4, shadcn-svelte, Bun.
+
 ## Brand Personality
 
 Practical, composed, and quietly confident. The product should feel like a well-organized workbench: capable enough for serious work, approachable enough to start using immediately, and restrained enough to adapt to a new brand.

@@ -2,6 +2,7 @@ import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { authComponent } from './auth';
 import { onboardingFormSchema, accountProfileUpdateSchema } from '../lib/forms/schemas.js';
+import { DEMO_PROFILE, isDemoAccountEmail } from '../lib/demo-account.js';
 
 const profileValidator = v.object({
 	_id: v.id('userProfiles'),
@@ -84,6 +85,36 @@ export const completeOnboarding = mutation({
 			onboardingCompletedAt: now,
 			updatedAt: now
 		});
+		const profile = await ctx.db.get(profileId);
+		if (!profile) throw new Error('Profile was not found after creation.');
+		return profile;
+	}
+});
+
+export const ensureDemoProfile = mutation({
+	args: {},
+	returns: profileValidator,
+	handler: async (ctx) => {
+		const user = await authComponent.getAuthUser(ctx);
+		if (!isDemoAccountEmail(user.email)) {
+			throw new Error('The demo profile can only be created for the demo account.');
+		}
+
+		const existing = await ctx.db
+			.query('userProfiles')
+			.withIndex('by_userId', (q) => q.eq('userId', user._id))
+			.unique();
+
+		if (existing) return existing;
+
+		const now = Date.now();
+		const profileId = await ctx.db.insert('userProfiles', {
+			userId: user._id,
+			...DEMO_PROFILE,
+			onboardingCompletedAt: now,
+			updatedAt: now
+		});
+
 		const profile = await ctx.db.get(profileId);
 		if (!profile) throw new Error('Profile was not found after creation.');
 		return profile;

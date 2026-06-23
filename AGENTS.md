@@ -10,7 +10,7 @@
 ## Key Conventions
 
 - Package Management: IMPORTANT: Always use `bun` for all package management operations (`bun install`, `bun add`, etc.). YOU MUST NOT use `npm` or `yarn`.
-- Backend Development: All backend logic is in the `convex/` directory.
+- Backend Development: Convex backend logic lives in the `src/convex/` directory.
 - File-based Routing: Use SvelteKit's file-based routing system in `src/routes/`.
 - Shared Code: Place reusable code in `src/lib/`.
 - Use `git mv` instead of creating a new file and deleting the old one or just `mv` if moving existing files that have been committed already.
@@ -18,6 +18,9 @@
 - Before making edits in files involving Svelte 5 or Convex, make sure you read the svelte/overview.md and convex.md documentation or you have it in your context.
 - Most of the time, `bun dev` and `bun convex dev` will be running in another terminal already. No need to run those commands yourself.
 - Use TDD by default whenever the task has a testable behavior surface: write or update a focused failing test first, implement the smallest useful change, then run the relevant test command before finishing. Skip TDD only for wiring/docs-only changes, throwaway prototypes, or when the user explicitly asks not to.
+- For new product forks, start with `START_HERE.md`. The agent should ask product basics first, recommend what to keep/remove, activate one stack, then update docs.
+- The public `/auth/demo` route signs into a disposable demo account for hosted previews. Kickstart agents should delete `src/routes/auth/demo`, `src/lib/demo-account.ts`, and demo-account CTAs once the real product path exists.
+- `_template_options/` contains inactive scaffolds for alternate billing and data choices. Do not import from it in active app code. Copy the selected scaffold into the app, then delete unused options.
 
 ## Svelte Best Practices
 

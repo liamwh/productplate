@@ -1,0 +1,69 @@
+export interface BillingCustomer {
+	id: string;
+	email: string;
+	name?: string;
+}
+
+export interface CheckoutInput {
+	customer: BillingCustomer;
+	productIds: string[];
+	successUrl: string;
+	returnUrl: string;
+	metadata?: Record<string, string | number | boolean>;
+}
+
+export interface CheckoutResult {
+	provider: 'polar';
+	id: string;
+	checkoutUrl: string;
+}
+
+export interface PolarBillingEnv {
+	POLAR_ACCESS_TOKEN: string;
+	POLAR_SERVER?: 'sandbox' | 'production';
+}
+
+interface PolarCheckoutResponse {
+	id?: string;
+	url?: string;
+	detail?: string;
+}
+
+function getPolarBaseUrl(server: PolarBillingEnv['POLAR_SERVER']): string {
+	return server === 'production' ? 'https://api.polar.sh/v1' : 'https://sandbox-api.polar.sh/v1';
+}
+
+export async function createCheckoutSession(
+	input: CheckoutInput,
+	env: PolarBillingEnv
+): Promise<CheckoutResult> {
+	const response = await fetch(`${getPolarBaseUrl(env.POLAR_SERVER)}/checkouts/`, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${env.POLAR_ACCESS_TOKEN}`,
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify({
+			products: input.productIds,
+			external_customer_id: input.customer.id,
+			customer_email: input.customer.email,
+			customer_name: input.customer.name,
+			success_url: input.successUrl,
+			return_url: input.returnUrl,
+			metadata: input.metadata
+		})
+	});
+
+	const checkout = (await response.json()) as PolarCheckoutResponse;
+
+	if (!response.ok || !checkout.id || !checkout.url) {
+		throw new Error(checkout.detail ?? 'Polar checkout session failed');
+	}
+
+	return {
+		provider: 'polar',
+		id: checkout.id,
+		checkoutUrl: checkout.url
+	};
+}

@@ -8,6 +8,37 @@ import { betterAuth } from 'better-auth';
 import { admin } from 'better-auth/plugins';
 import authSchema from './betterAuth/schema';
 
+function getRuntimeEnv(key: string) {
+	return typeof process === 'undefined' ? undefined : process.env[key];
+}
+
+function trimTrailingSlash(value: string) {
+	return value.endsWith('/') ? value.slice(0, -1) : value;
+}
+
+function getSiteUrl() {
+	return trimTrailingSlash(
+		getRuntimeEnv('SITE_URL') ?? getRuntimeEnv('BETTER_AUTH_URL') ?? 'http://localhost:5173'
+	);
+}
+
+function getTrustedOrigins(siteUrl: string) {
+	return Array.from(
+		new Set(
+			[
+				'http://localhost:5173',
+				'http://localhost:4173',
+				'http://127.0.0.1:5173',
+				'http://127.0.0.1:4173',
+				getRuntimeEnv('BETTER_AUTH_URL'),
+				siteUrl
+			]
+				.filter(Boolean)
+				.map((origin) => trimTrailingSlash(origin as string))
+		)
+	);
+}
+
 const authUserValidator = v.object({
 	_id: v.string(),
 	_creationTime: v.number(),
@@ -39,8 +70,7 @@ export const createAuth = (
 	// Read runtime environment variables lazily. Cloudflare installs its env
 	// bindings after module imports, so reading SITE_URL at module scope makes
 	// the server expect localhost's insecure cookie in production.
-	const siteUrl = process.env.SITE_URL ?? 'http://localhost:5173';
-	const useSecureCookies = siteUrl.startsWith('https://');
+	const siteUrl = getSiteUrl();
 
 	return betterAuth({
 		// disable logging when createAuth is called just to generate options.
@@ -49,15 +79,9 @@ export const createAuth = (
 			disabled: optionsOnly
 		},
 		baseURL: siteUrl,
-		trustedOrigins: [
-			'http://localhost:5173',
-			'http://localhost:4173',
-			'http://127.0.0.1:5173',
-			'http://127.0.0.1:4173',
-			siteUrl
-		].filter(Boolean) as string[],
+		trustedOrigins: getTrustedOrigins(siteUrl),
 		advanced: {
-			useSecureCookies
+			useSecureCookies: siteUrl.startsWith('https://')
 		},
 		account: {
 			accountLinking: {

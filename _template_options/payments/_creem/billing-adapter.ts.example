@@ -1,0 +1,73 @@
+export interface BillingCustomer {
+	id: string;
+	email: string;
+	name?: string;
+}
+
+export interface CheckoutInput {
+	customer: BillingCustomer;
+	productId: string;
+	successUrl: string;
+	requestId: string;
+	units?: number;
+	metadata?: Record<string, string | number | boolean>;
+}
+
+export interface CheckoutResult {
+	provider: 'creem';
+	id: string;
+	checkoutUrl: string;
+}
+
+export interface CreemBillingEnv {
+	CREEM_API_KEY: string;
+	CREEM_TEST_MODE?: 'true' | 'false';
+}
+
+interface CreemCheckoutResponse {
+	id?: string;
+	checkout_url?: string;
+	url?: string;
+	message?: string;
+}
+
+function getCreemBaseUrl(testMode: CreemBillingEnv['CREEM_TEST_MODE']): string {
+	return testMode === 'false' ? 'https://api.creem.io/v1' : 'https://test-api.creem.io/v1';
+}
+
+export async function createCheckoutSession(
+	input: CheckoutInput,
+	env: CreemBillingEnv
+): Promise<CheckoutResult> {
+	const response = await fetch(`${getCreemBaseUrl(env.CREEM_TEST_MODE)}/checkouts`, {
+		method: 'POST',
+		headers: {
+			'x-api-key': env.CREEM_API_KEY,
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			product_id: input.productId,
+			request_id: input.requestId,
+			units: input.units ?? 1,
+			success_url: input.successUrl,
+			customer: {
+				id: input.customer.id,
+				email: input.customer.email
+			},
+			metadata: input.metadata
+		})
+	});
+
+	const checkout = (await response.json()) as CreemCheckoutResponse;
+	const checkoutUrl = checkout.checkout_url ?? checkout.url;
+
+	if (!response.ok || !checkout.id || !checkoutUrl) {
+		throw new Error(checkout.message ?? 'Creem checkout session failed');
+	}
+
+	return {
+		provider: 'creem',
+		id: checkout.id,
+		checkoutUrl
+	};
+}
