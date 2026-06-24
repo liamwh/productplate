@@ -29,6 +29,7 @@
         "embla-carousel-svelte": "^8.6.0",
         "mode-watcher": "^1.1.0",
         "prosekit": "^0.21.2",
+        "simple-icons": "^16.24.0",
         "streamdown": "^2.5.0",
         "streamdown-svelte": "^3.0.6",
         "svelte-streamdown": "^3.0.1",
@@ -2195,6 +2196,8 @@
     "siginfo": ["siginfo@2.0.0", "", {}, "sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g=="],
 
     "signal-exit": ["signal-exit@4.1.0", "", {}, "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw=="],
+
+    "simple-icons": ["simple-icons@16.24.0", "", {}, "sha512-lAPW1rqgwPQ4tdIY15TtcKSgSelvJexz8q/B+a7Igg1dJoXR0LPjScLkLMI8UbLSkS41/fLVZWIhsH7HPUwAgQ=="],
 
     "sirv": ["sirv@3.0.2", "", { "dependencies": { "@polka/url": "1.0.0-next.29", "mrmime": "2.0.1", "totalist": "3.0.1" } }, "sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g=="],
 

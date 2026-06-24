@@ -14,8 +14,8 @@
 
 	let {
 		kicker = 'Hero video dialog',
-		title = 'A polished video opener for product tours and launch clips.',
-		description = 'Converted from Magic UI’s Hero Video Dialog: thumbnail first, focused overlay second, with restrained scale motion and a proper close target.',
+		title = 'A video opener for product tours.',
+		description = 'Thumbnail first, focused overlay second.',
 		videoSrc = 'https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb',
 		thumbnailSrc = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80',
 		thumbnailAlt = 'Product dashboard video thumbnail'
@@ -47,7 +47,7 @@
 		<div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
 			<div>
 				<Badge variant="outline">{kicker}</Badge>
-				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+				<h2 class="mt-5 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
 					{title}
 				</h2>
 				<p class="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">{description}</p>

@@ -293,10 +293,10 @@
 			<div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[0.7fr_1.3fr]">
 				<div>
 					<Badge variant="outline">FAQ</Badge>
-					<h2 class="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+					<h2 class="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
 						Questions, answered.
 					</h2>
-					<p class="mt-5 max-w-md text-lg leading-8 text-muted-foreground">
+					<p class="mt-5 max-w-md text-base leading-7 text-muted-foreground">
 						The short version: Product Plate is ordinary open source code, intentionally organized
 						to become your code.
 					</p>

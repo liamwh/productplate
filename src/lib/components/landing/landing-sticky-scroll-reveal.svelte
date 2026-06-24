@@ -1,44 +1,29 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge';
-
 	interface StickyItem {
 		title: string;
 		description: string;
-		meta: string;
 		preview: readonly string[];
 	}
 
 	interface Props {
-		kicker?: string;
-		title?: string;
-		description?: string;
 		items?: readonly StickyItem[];
 	}
 
 	let {
-		kicker = 'Sticky scroll reveal',
-		title = 'A common long-form feature pattern without page-level scroll hacks.',
-		description = 'Converted from Aceternity’s Sticky Scroll Reveal shape: text steps scroll inside a contained panel while the product preview updates beside them.',
 		items = [
 			{
 				title: 'Start with the promise',
-				description:
-					'Open with the outcome, then use the sticky preview to show the exact product surface that supports it.',
-				meta: 'Hero',
+				description: 'Open with the outcome, then show the surface that supports it.',
 				preview: ['Primary action', 'Founder quote', 'Live signup count']
 			},
 			{
 				title: 'Show the product path',
-				description:
-					'Move from landing page to app shell to billing without forcing visitors through separate screenshots.',
-				meta: 'Flow',
+				description: 'Landing to app shell to billing without separate screenshots.',
 				preview: ['Dashboard route', 'Settings panel', 'Checkout copy']
 			},
 			{
 				title: 'Close with proof',
-				description:
-					'Use the final step for testimonials, comparison points, and the objection your pricing card answers.',
-				meta: 'Proof',
+				description: 'Testimonials, comparison points, and a priced objection.',
 				preview: ['Mosaic wall', 'Pricing matrix', 'FAQ answers']
 			}
 		]
@@ -50,74 +35,52 @@
 
 	function handleScroll() {
 		if (!scrollerRef || items.length === 0) return;
-
 		const maxScroll = scrollerRef.scrollHeight - scrollerRef.clientHeight;
 		if (maxScroll <= 0) return;
-
 		const progress = scrollerRef.scrollTop / maxScroll;
 		activeIndex = Math.min(items.length - 1, Math.round(progress * (items.length - 1)));
 	}
 </script>
 
-<section class="py-20 sm:py-24">
+<section class="py-16 sm:py-20">
 	<div class="mx-auto max-w-7xl px-6">
-		<div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-			<div>
-				<Badge variant="outline">{kicker}</Badge>
-				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-					{title}
-				</h2>
-				<p class="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">{description}</p>
-			</div>
-
-			<div class="sticky-panel">
-				<div bind:this={scrollerRef} class="sticky-copy" onscroll={handleScroll}>
-					{#each items as item, index (item.title)}
-						<button
-							type="button"
-							class={['sticky-step', activeIndex === index ? 'sticky-step-active' : '']
-								.filter(Boolean)
-								.join(' ')}
-							onclick={() => (activeIndex = index)}
-						>
-							<span>{item.meta}</span>
+		<div class="grid gap-6 lg:grid-cols-[1fr_0.72fr] lg:items-start">
+			<div bind:this={scrollerRef} class="sticky-copy" onscroll={handleScroll}>
+				{#each items as item, index (item.title)}
+					<button
+						type="button"
+						class={['sticky-step', activeIndex === index ? 'sticky-step-active' : '']
+							.filter(Boolean)
+							.join(' ')}
+						onclick={() => (activeIndex = index)}
+					>
+						<span class="sticky-index">0{index + 1}</span>
+						<div>
 							<strong>{item.title}</strong>
 							<small>{item.description}</small>
-						</button>
-					{/each}
-					<div class="sticky-spacer" aria-hidden="true"></div>
-				</div>
+						</div>
+					</button>
+				{/each}
+				<div class="sticky-spacer" aria-hidden="true"></div>
+			</div>
 
-				<div class="sticky-preview" aria-live="polite">
-					<Badge variant="secondary">{activeItem.meta}</Badge>
-					<h3>{activeItem.title}</h3>
-					<div class="preview-window">
-						{#each activeItem.preview as row, index (row)}
-							<div>
-								<span>0{index + 1}</span>
-								<p>{row}</p>
-							</div>
-						{/each}
+			<div class="sticky-preview" aria-live="polite">
+				{#each activeItem.preview as row, index (row)}
+					<div class="preview-row">
+						<span>0{index + 1}</span>
+						<p>{row}</p>
 					</div>
-				</div>
+				{/each}
 			</div>
 		</div>
 	</div>
 </section>
 
 <style>
-	.sticky-panel {
-		display: grid;
-		gap: 1rem;
-		border: 1px solid var(--border);
-		border-radius: 1.25rem;
-		background: color-mix(in oklch, var(--foreground) 7%, var(--background));
-		padding: 1rem;
-	}
-
 	.sticky-copy {
 		display: grid;
-		max-height: 34rem;
+		max-height: 30rem;
+		gap: 0.25rem;
 		overflow-y: auto;
 		padding-right: 0.25rem;
 		scrollbar-width: thin;
@@ -125,112 +88,86 @@
 
 	.sticky-step {
 		display: grid;
-		gap: 0.8rem;
+		grid-template-columns: 2.5rem 1fr;
+		gap: 1rem;
 		border: 0;
 		border-radius: 1rem;
 		background: transparent;
-		padding: 4rem 1rem;
+		padding: 3rem 1rem;
 		text-align: left;
-		opacity: 0.42;
+		opacity: 0.4;
 		transition:
 			background-color 140ms ease,
 			opacity 140ms ease;
 	}
 
 	.sticky-step-active {
-		background: color-mix(in oklch, var(--background) 86%, transparent);
+		background: color-mix(in oklch, var(--background) 88%, transparent);
 		opacity: 1;
 	}
 
-	.sticky-step span {
-		width: fit-content;
-		border-radius: 999px;
-		background: var(--muted);
-		padding: 0.28rem 0.6rem;
-		font-size: 0.72rem;
-		font-weight: 800;
-		letter-spacing: 0;
-		text-transform: uppercase;
+	.sticky-index {
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--muted-foreground);
 	}
 
 	.sticky-step strong {
-		font-size: clamp(1.4rem, 3vw, 2rem);
-		font-weight: 700;
-		line-height: 1.08;
-		letter-spacing: 0;
+		display: block;
+		font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+		font-weight: 650;
+		line-height: 1.1;
+		letter-spacing: -0.01em;
 		text-wrap: balance;
 	}
 
 	.sticky-step small {
-		max-width: 30rem;
+		display: block;
+		margin-top: 0.4rem;
+		max-width: 28rem;
 		color: var(--muted-foreground);
-		font-size: 1rem;
-		line-height: 1.75;
+		font-size: 0.95rem;
+		line-height: 1.6;
 	}
 
 	.sticky-spacer {
-		height: 8rem;
+		height: 6rem;
 	}
 
 	.sticky-preview {
 		position: sticky;
-		top: 5.25rem;
+		top: 5.5rem;
 		display: grid;
 		align-self: start;
-		gap: 1rem;
+		gap: 0.75rem;
 		overflow: hidden;
 		border: 1px solid var(--border);
 		border-radius: 1rem;
-		background: var(--background);
+		background: var(--card);
 		padding: 1.25rem;
 		box-shadow: 0 18px 42px color-mix(in oklch, var(--foreground) 10%, transparent);
 	}
 
-	.sticky-preview h3 {
-		max-width: 24rem;
-		font-size: clamp(1.6rem, 3.4vw, 2.5rem);
-		font-weight: 720;
-		line-height: 1;
-		letter-spacing: 0;
-		text-wrap: balance;
-	}
-
-	.preview-window {
-		display: grid;
-		gap: 0.75rem;
-		border: 1px solid var(--border);
-		border-radius: 0.9rem;
-		background: color-mix(in oklch, var(--muted) 50%, transparent);
-		padding: 0.85rem;
-	}
-
-	.preview-window div {
+	.preview-row {
 		display: grid;
 		grid-template-columns: 2.25rem 1fr;
 		align-items: center;
 		gap: 0.75rem;
 		border: 1px solid var(--border);
-		border-radius: 0.75rem;
-		background: var(--background);
+		border-radius: 0.7rem;
+		background: color-mix(in oklch, var(--muted) 40%, transparent);
 		padding: 0.75rem;
 	}
 
-	.preview-window span {
+	.preview-row span {
 		color: var(--muted-foreground);
 		font-size: 0.75rem;
 		font-weight: 800;
 	}
 
-	.preview-window p {
+	.preview-row p {
 		font-size: 0.95rem;
-		font-weight: 650;
-	}
-
-	@media (min-width: 900px) {
-		.sticky-panel {
-			grid-template-columns: 1fr 0.85fr;
-			align-items: start;
-		}
+		font-weight: 600;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

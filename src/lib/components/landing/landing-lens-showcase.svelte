@@ -14,8 +14,8 @@
 
 	let {
 		kicker = 'Lens',
-		title = 'A magnified preview for screenshots, maps, and dense product UI.',
-		description = 'Adapted from the Magic UI and Aceternity lens pattern: duplicate the media layer, mask it with a radial lens, and scale from the pointer origin.',
+		title = 'A magnified preview for dense UI.',
+		description = 'Hover to zoom into the detail layer.',
 		image = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80',
 		imageAlt = 'Analytics dashboard on a laptop screen',
 		zoomFactor = 1.65,
@@ -39,7 +39,7 @@
 		<div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
 			<div>
 				<Badge variant="outline">{kicker}</Badge>
-				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+				<h2 class="mt-5 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
 					{title}
 				</h2>
 				<p class="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">{description}</p>

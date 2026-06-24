@@ -38,7 +38,7 @@
 	<div class="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
 		<div>
 			<Badge variant="outline">{kicker}</Badge>
-			<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+			<h2 class="mt-5 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
 				{title}
 			</h2>
 			<p class="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">{description}</p>

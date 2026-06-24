@@ -67,7 +67,7 @@
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="mx-auto max-w-3xl text-center">
 			<Badge variant="outline">{kicker}</Badge>
-			<h2 class="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{title}</h2>
+			<h2 class="mt-5 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{title}</h2>
 			<p class="mt-5 text-lg leading-8 text-muted-foreground">{description}</p>
 		</div>
 

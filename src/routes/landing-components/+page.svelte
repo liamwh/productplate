@@ -13,6 +13,7 @@
 		LandingLensShowcase,
 		LandingLogoMarquee,
 		LandingNav,
+		LandingOrbitingCircles,
 		LandingPricingCards,
 		LandingPricingComparison,
 		LandingProcessTimeline,
@@ -22,66 +23,14 @@
 		LandingTestimonialWall,
 		LandingThreeDMarquee
 	} from '$lib/components/landing';
-	import { Badge } from '$lib/components/ui/badge';
-	import * as Card from '$lib/components/ui/card';
 	import { APP_NAME } from '$lib/constants';
-
-	const componentGroups = [
-		{
-			title: 'Hero patterns',
-			description: 'Navigation, product hero, video dialog, logo marquee, and stats proof.',
-			items: [
-				'LandingNav',
-				'LandingHero',
-				'LandingHeroVideoDialog',
-				'LandingLogoMarquee',
-				'LandingStatsStrip'
-			]
-		},
-		{
-			title: 'Feature systems',
-			description: 'Bento cells, tabs, comparison rows, integration clouds, and setup timelines.',
-			items: [
-				'LandingBentoFeatures',
-				'LandingFeatureTabs',
-				'LandingComparisonTable',
-				'LandingIntegrationCloud',
-				'LandingProcessTimeline'
-			]
-		},
-		{
-			title: 'Conversion sections',
-			description:
-				'Mosaic proof, marquee proof, pricing cards, pricing matrix, FAQ accordion, final CTA, and footer.',
-			items: [
-				'LandingTestimonialWall',
-				'LandingTestimonialMarquee',
-				'LandingPricingCards',
-				'LandingPricingComparison',
-				'LandingFaqSection',
-				'LandingFinalCta',
-				'LandingFooter'
-			]
-		},
-		{
-			title: 'Extras',
-			description:
-				'Carousel, lens, sticky reveal, and 3D marquee patterns for richer product pages.',
-			items: [
-				'LandingAppleCardsCarousel',
-				'LandingLensShowcase',
-				'LandingStickyScrollReveal',
-				'LandingThreeDMarquee'
-			]
-		}
-	] as const;
 </script>
 
 <svelte:head>
 	<title>Landing Components | {APP_NAME}</title>
 	<meta
 		name="description"
-		content="A Product Plate gallery of reusable Svelte landing page components with dummy data, shadcn-svelte primitives, and source-owned reference patterns."
+		content="A gallery of reusable Svelte landing page components from src/lib/components/landing."
 	/>
 </svelte:head>
 
@@ -98,94 +47,72 @@
 	<main id="main-content">
 		<LandingHero />
 		<LandingLogoMarquee />
-
-		<section id="patterns" class="scroll-mt-24 py-20 sm:py-24">
-			<div class="mx-auto max-w-7xl px-6">
-				<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
-					<div>
-						<Badge variant="outline">Component map</Badge>
-						<h2
-							class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
-						>
-							Hero patterns
-						</h2>
-					</div>
-					<p class="max-w-2xl text-lg leading-8 text-muted-foreground lg:justify-self-end">
-						Each section below is a source component in
-						<code class="rounded-md bg-muted px-1.5 py-0.5 text-sm">src/lib/components/landing</code
-						>
-						with local dummy data and typed props.
-					</p>
-				</div>
-
-				<div class="mt-12 grid gap-4 lg:grid-cols-4">
-					{#each componentGroups as group (group.title)}
-						<Card.Root>
-							<Card.Header>
-								<Card.Title>{group.title}</Card.Title>
-								<Card.Description>{group.description}</Card.Description>
-							</Card.Header>
-							<Card.Content>
-								<ul class="grid gap-2">
-									{#each group.items as item (item)}
-										<li class="rounded-lg border bg-muted/35 px-3 py-2 font-mono text-xs">
-											{item}
-										</li>
-									{/each}
-								</ul>
-							</Card.Content>
-						</Card.Root>
-					{/each}
-				</div>
-			</div>
-		</section>
-
 		<LandingStatsStrip />
-		<LandingHeroVideoDialog />
-		<LandingBentoFeatures />
-		<LandingFeatureTabs />
-		<LandingComparisonTable />
-		<LandingProcessTimeline />
-		<LandingIntegrationCloud />
-		<LandingTestimonialWall />
-		<LandingTestimonialMarquee />
 
-		<section class="py-16 sm:py-20">
-			<div class="mx-auto max-w-7xl px-6">
-				<div class="rounded-2xl border bg-card p-8 shadow-sm sm:p-10">
-					<Badge variant="outline">Conversion close</Badge>
-					<h2 class="mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-						Pricing and FAQ
-					</h2>
-					<p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-						The last scroll stretch gives users pricing, objections, and a final decision point
-						without changing visual systems.
-					</p>
-				</div>
-			</div>
+		<section class="group" aria-label="Feature systems">
+			<div class="group-label"><span>Features</span></div>
+			<LandingBentoFeatures />
+			<LandingFeatureTabs />
+			<LandingComparisonTable />
+			<LandingProcessTimeline />
+			<LandingOrbitingCircles />
 		</section>
 
-		<LandingPricingCards />
-		<LandingPricingComparison />
-		<section id="extras" class="scroll-mt-24 py-16 sm:py-20">
-			<div class="mx-auto max-w-7xl px-6">
-				<Badge variant="outline">Extras</Badge>
-				<h2 class="mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-					Reusable product-page patterns beyond a standard landing page.
-				</h2>
-				<p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-					These are useful for case studies, launch pages, product tours, docs home pages, and
-					interactive feature explainers.
-				</p>
-			</div>
+		<section class="group" aria-label="Proof and social signals">
+			<div class="group-label"><span>Proof</span></div>
+			<LandingTestimonialWall />
+			<LandingTestimonialMarquee />
+			<LandingHeroVideoDialog />
+			<LandingAppleCardsCarousel />
 		</section>
-		<LandingAppleCardsCarousel />
-		<LandingStickyScrollReveal />
-		<LandingLensShowcase />
-		<LandingThreeDMarquee />
-		<LandingFaqSection />
+
+		<section class="group" aria-label="Pricing and FAQ">
+			<div class="group-label"><span>Pricing &amp; FAQ</span></div>
+			<LandingPricingCards />
+			<LandingPricingComparison />
+			<LandingFaqSection />
+		</section>
+
+		<section class="group" aria-label="Showcase patterns">
+			<div class="group-label"><span>Showcase</span></div>
+			<LandingStickyScrollReveal />
+			<LandingLensShowcase />
+			<LandingIntegrationCloud />
+			<LandingThreeDMarquee />
+		</section>
+
 		<LandingFinalCta />
 	</main>
 
 	<LandingFooter />
 </div>
+
+<style>
+	.group {
+		display: block;
+	}
+
+	.group-label {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 0 max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem));
+		margin-top: 2.5rem;
+	}
+
+	.group-label span {
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted-foreground);
+		white-space: nowrap;
+	}
+
+	.group-label::after {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background: var(--border);
+	}
+</style>

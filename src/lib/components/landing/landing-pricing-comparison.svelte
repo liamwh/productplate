@@ -78,7 +78,7 @@
 		<div class="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-end">
 			<div>
 				<Badge variant="outline">{kicker}</Badge>
-				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+				<h2 class="mt-5 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
 					{title}
 				</h2>
 			</div>

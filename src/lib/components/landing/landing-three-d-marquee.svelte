@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge';
+	import { motion } from '@humanspeak/svelte-motion';
+	import { prefersReducedMotion } from 'svelte/motion';
 
 	interface MarqueeImage {
 		src: string;
@@ -7,16 +8,10 @@
 	}
 
 	interface Props {
-		kicker?: string;
-		title?: string;
-		description?: string;
 		images?: readonly MarqueeImage[];
 	}
 
 	let {
-		kicker = '3D marquee',
-		title = 'A dimensional image wall for screenshots, launches, and customer proof.',
-		description = 'Inspired by Aceternity’s 3D Marquee and Magic UI’s vertical marquee: four moving columns in a tilted plane, masked at the edges and paused on hover.',
 		images = [
 			{
 				src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80',
@@ -24,7 +19,7 @@
 			},
 			{
 				src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=900&q=80',
-				alt: 'Team planning software'
+				alt: 'Team planning'
 			},
 			{
 				src: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
@@ -56,7 +51,7 @@
 			},
 			{
 				src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80',
-				alt: 'Office planning boards'
+				alt: 'Office boards'
 			},
 			{
 				src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
@@ -69,42 +64,50 @@
 		]
 	}: Props = $props();
 
+	const reduceMotion = $derived(prefersReducedMotion.current);
+	const chunkSize = $derived(Math.ceil(images.length / 4));
 	const columns = $derived(
-		Array.from({ length: 4 }, (_, columnIndex) =>
-			images.filter((_, imageIndex) => imageIndex % 4 === columnIndex)
+		Array.from({ length: 4 }, (_, colIndex) =>
+			images.slice(colIndex * chunkSize, colIndex * chunkSize + chunkSize)
 		)
 	);
 </script>
 
-<section class="border-y bg-muted/30 py-20 sm:py-24">
+<section class="py-16 sm:py-20">
 	<div class="mx-auto max-w-7xl px-6">
-		<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
-			<div>
-				<Badge variant="outline">{kicker}</Badge>
-				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-					{title}
-				</h2>
-			</div>
-			<p class="max-w-2xl text-lg leading-8 text-muted-foreground lg:justify-self-end">
-				{description}
-			</p>
-		</div>
-
-		<div class="marquee-scene mt-12">
-			<div class="marquee-plane">
-				{#each columns as column, columnIndex (columnIndex)}
-					<div
-						class={['marquee-column', columnIndex % 2 === 0 ? '' : 'marquee-column-reverse']
-							.filter(Boolean)
-							.join(' ')}
-					>
-						{#each [...column, ...column] as image, imageIndex (`${image.src}-${imageIndex}`)}
-							<figure aria-hidden={imageIndex >= column.length}>
-								<img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-							</figure>
+		<div class="marquee-scene">
+			<div class="marquee-center">
+				<div class="marquee-scale">
+					<div class="marquee-plane">
+						{#each columns as column, colIndex (colIndex)}
+							<motion.div
+								animate={{ y: reduceMotion ? 0 : colIndex % 2 === 0 ? 100 : -100 }}
+								transition={{
+									duration: colIndex % 2 === 0 ? 10 : 15,
+									repeat: reduceMotion ? 0 : Infinity,
+									repeatType: 'reverse',
+									ease: 'easeInOut'
+								}}
+								class="marquee-column"
+							>
+								<div class="grid-line-v" aria-hidden="true"></div>
+								{#each column as image, imageIndex (`${image.src}-${imageIndex}`)}
+									<div class="marquee-item">
+										<div class="grid-line-h" aria-hidden="true"></div>
+										<motion.img
+											src={image.src}
+											alt={image.alt}
+											loading="lazy"
+											decoding="async"
+											whileHover={{ y: reduceMotion ? 0 : -10 }}
+											transition={{ duration: 0.3, ease: 'easeInOut' }}
+										/>
+									</div>
+								{/each}
+							</motion.div>
 						{/each}
 					</div>
-				{/each}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -113,126 +116,97 @@
 <style>
 	.marquee-scene {
 		position: relative;
-		isolation: isolate;
-		display: grid;
-		height: min(38rem, 78vw);
-		min-height: 26rem;
+		block-size: 600px;
 		overflow: hidden;
-		place-items: center;
 		border: 1px solid var(--border);
-		border-radius: 1.25rem;
+		border-radius: 1rem;
 		background: var(--background);
-		perspective: 600px;
+		perspective: 1000px;
 	}
 
-	.marquee-scene::before,
-	.marquee-scene::after {
-		content: '';
-		position: absolute;
-		z-index: 2;
-		pointer-events: none;
+	.marquee-center {
+		display: flex;
+		block-size: 100%;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.marquee-scene::before {
-		inset: 0;
-		background:
-			linear-gradient(
-				to bottom,
-				var(--background),
-				transparent 18%,
-				transparent 82%,
-				var(--background)
-			),
-			linear-gradient(
-				to right,
-				var(--background),
-				transparent 18%,
-				transparent 82%,
-				var(--background)
-			);
-	}
-
-	.marquee-scene::after {
-		inset: 0;
-		background-image:
-			linear-gradient(
-				to right,
-				color-mix(in oklch, var(--foreground) 8%, transparent) 1px,
-				transparent 1px
-			),
-			linear-gradient(
-				to bottom,
-				color-mix(in oklch, var(--foreground) 8%, transparent) 1px,
-				transparent 1px
-			);
-		background-size: 72px 72px;
-		mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
-		-webkit-mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
+	.marquee-scale {
+		inline-size: 1720px;
+		block-size: 1720px;
+		flex: 0 0 auto;
+		scale: 0.5;
 	}
 
 	.marquee-plane {
+		position: relative;
 		display: grid;
-		width: 88rem;
+		inline-size: 100%;
+		block-size: 100%;
 		grid-template-columns: repeat(4, 1fr);
-		gap: 1.4rem;
-		transform: rotateX(54deg) rotateZ(-42deg) translateY(5rem);
+		gap: 2rem;
+		transform: rotateX(55deg) rotateY(0deg) rotateZ(-45deg);
 		transform-style: preserve-3d;
+		transform-origin: top left;
+		translate: 24rem 0;
 	}
 
-	.marquee-column {
-		display: grid;
-		gap: 1.4rem;
-		animation: marquee-column 18s linear infinite;
+	:global(.marquee-column) {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2rem;
 	}
 
-	.marquee-column-reverse {
-		animation-direction: reverse;
-		animation-duration: 23s;
+	.marquee-item {
+		position: relative;
 	}
 
-	.marquee-scene:hover .marquee-column {
-		animation-play-state: paused;
+	.grid-line-v {
+		position: absolute;
+		left: -1rem;
+		block-size: 100%;
+		inline-size: 1px;
+		background: color-mix(in oklch, var(--foreground) 10%, transparent);
 	}
 
-	.marquee-column figure {
-		overflow: hidden;
-		border: 1px solid color-mix(in oklch, var(--foreground) 12%, transparent);
-		border-radius: 0.8rem;
-		background: var(--muted);
-		box-shadow: 0 18px 38px color-mix(in oklch, var(--foreground) 12%, transparent);
+	.grid-line-h {
+		position: absolute;
+		top: -1rem;
+		inline-size: 100%;
+		block-size: 1px;
+		background: color-mix(in oklch, var(--foreground) 10%, transparent);
 	}
 
-	.marquee-column img {
-		display: block;
-		width: 100%;
-		aspect-ratio: 16 / 11;
+	.marquee-scene :global(img) {
+		inline-size: 100%;
+		aspect-ratio: 970 / 700;
+		border-radius: 0.6rem;
 		object-fit: cover;
-		transition: transform 180ms ease;
+		box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 6%, transparent);
 	}
 
-	.marquee-column figure:hover img {
-		transform: translateY(-0.35rem);
-	}
-
-	@keyframes marquee-column {
-		from {
-			transform: translateY(0);
-		}
-		to {
-			transform: translateY(calc(-50% - 0.7rem));
+	@media (min-width: 640px) {
+		.marquee-scale {
+			scale: 0.75;
 		}
 	}
 
-	@media (max-width: 700px) {
-		.marquee-plane {
-			width: 58rem;
-			transform: rotateX(54deg) rotateZ(-42deg) translateY(3rem) scale(0.78);
+	@media (min-width: 1024px) {
+		.marquee-scale {
+			scale: 1;
+		}
+	}
+
+	@media (max-width: 639px) {
+		.marquee-scene {
+			block-size: 400px;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.marquee-column {
-			animation: none;
+		.marquee-scale {
+			scale: 0.6;
 		}
 	}
 </style>

@@ -28,8 +28,8 @@
 
 	let {
 		kicker = 'Feature bento',
-		title = 'A denser section for the capabilities that sell the product.',
-		description = 'Adapted from Magic UI and Aceternity bento patterns: varied cells, real UI backgrounds, and a quiet hover reveal instead of scroll choreography.',
+		title = 'The capabilities that sell the product.',
+		description = 'Varied cells with real UI backgrounds.',
 		items = [
 			{
 				title: 'Realtime product signals',
@@ -94,7 +94,7 @@
 		<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
 			<div>
 				<Badge variant="outline">{kicker}</Badge>
-				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+				<h2 class="mt-5 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
 					{title}
 				</h2>
 			</div>

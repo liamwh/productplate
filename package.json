@@ -100,6 +100,7 @@
 		"embla-carousel-svelte": "^8.6.0",
 		"mode-watcher": "^1.1.0",
 		"prosekit": "^0.21.2",
+		"simple-icons": "^16.24.0",
 		"streamdown": "^2.5.0",
 		"streamdown-svelte": "^3.0.6",
 		"svelte-streamdown": "^3.0.1",

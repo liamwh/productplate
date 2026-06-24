@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge';
+	import BrandLogo from './brand-logo.svelte';
 
 	interface MarqueeTestimonial {
 		name: string;
@@ -11,16 +11,10 @@
 	}
 
 	interface Props {
-		kicker?: string;
-		title?: string;
-		description?: string;
 		testimonials?: readonly MarqueeTestimonial[];
 	}
 
 	let {
-		kicker = 'Proof variation',
-		title = 'A quieter testimonial marquee for high-volume social proof.',
-		description = 'Adapted from Magic UI and beUI marquee patterns: two masked rows, pause on hover, and simple testimonial cards that can become logos, tweets, or customer quotes.',
 		testimonials = [
 			{
 				name: 'Elena Torres',
@@ -111,15 +105,9 @@
 	}
 </script>
 
-<section class="border-y bg-muted/30 py-20 sm:py-24">
+<section class="border-y bg-muted/30 py-16 sm:py-20">
 	<div class="mx-auto max-w-7xl px-6">
-		<div class="mx-auto max-w-3xl text-center">
-			<Badge variant="outline">{kicker}</Badge>
-			<h2 class="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{title}</h2>
-			<p class="mt-5 text-lg leading-8 text-muted-foreground">{description}</p>
-		</div>
-
-		<div class="marquee-stack mt-12">
+		<div class="marquee-stack mt-8">
 			{#each rows as row, rowIndex (rowIndex)}
 				<div class="marquee-row">
 					<div
@@ -135,7 +123,13 @@
 										<strong>{testimonial.name}</strong>
 										<span>{testimonial.role}</span>
 									</div>
-									<small>{testimonial.source}</small>
+									<span
+										class="marquee-source"
+										aria-label={`Posted on ${testimonial.source}`}
+										title={testimonial.source}
+									>
+										<BrandLogo source={testimonial.source} class="size-4" />
+									</span>
 								</div>
 								<p>{testimonial.quote}</p>
 							</article>
@@ -190,7 +184,7 @@
 
 	.marquee-card-head {
 		display: grid;
-		grid-template-columns: 2.5rem 1fr auto;
+		grid-template-columns: 2.5rem 1fr 1.5rem;
 		align-items: center;
 		gap: 0.75rem;
 	}
@@ -203,8 +197,7 @@
 	}
 
 	.marquee-card strong,
-	.marquee-card span,
-	.marquee-card small {
+	.marquee-card span {
 		display: block;
 	}
 
@@ -212,24 +205,17 @@
 		font-size: 0.95rem;
 	}
 
-	.marquee-card span {
+	.marquee-card-head > div span {
 		margin-top: 0.15rem;
 		color: var(--muted-foreground);
 		font-size: 0.78rem;
 	}
 
-	.marquee-card small {
-		align-self: start;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		background: var(--muted);
-		padding: 0.2rem 0.5rem;
-		color: var(--foreground);
-		font-size: 0.68rem;
-		font-weight: 800;
-		line-height: 1;
-		letter-spacing: 0;
-		text-transform: uppercase;
+	.marquee-source {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--muted-foreground);
 	}
 
 	.marquee-card p {
