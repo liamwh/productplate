@@ -1,6 +1,7 @@
 <script lang="ts">
 	import QuoteIcon from '@lucide/svelte/icons/quote';
 	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
 
 	interface Testimonial {
 		name: string;
@@ -18,6 +19,9 @@
 		title?: string;
 		description?: string;
 		testimonials?: readonly Testimonial[];
+		collapseByDefault?: boolean;
+		collapsedHeight?: string;
+		showMoreLabel?: string;
 	}
 
 	let {
@@ -129,9 +133,80 @@
 					'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80',
 				imageAlt: 'People reviewing a product launch on laptops',
 				size: 'media'
+			},
+			{
+				name: 'Camila Stone',
+				role: 'Agency founder',
+				quote:
+					'We used the wide proof slots for before-and-after screenshots and the compact ones for short client notes.',
+				image:
+					'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80',
+				imageAlt: 'Portrait of an agency founder',
+				metric: '4 launches reused it',
+				size: 'wide'
+			},
+			{
+				name: 'Dylan Moore',
+				role: 'Developer advocate',
+				quote:
+					'The page gives teams more than one testimonial pattern, which matters when proof comes from tweets, calls, and product screenshots.',
+				image:
+					'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=700&q=80',
+				imageAlt: 'Portrait of a developer advocate',
+				size: 'normal'
+			},
+			{
+				name: 'Feedback room',
+				role: 'Customer call highlight',
+				quote:
+					'Use a tall card for a video transcript, a support win, or a quote that needs more breathing room.',
+				image:
+					'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+				imageAlt: 'A product team in a customer feedback room',
+				size: 'tall'
+			},
+			{
+				name: 'Maya Lin',
+				role: 'Launch strategist',
+				quote: 'The collapse makes a huge proof wall feel intentional instead of endless.',
+				image:
+					'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=700&q=80',
+				imageAlt: 'Portrait of a launch strategist',
+				size: 'compact'
+			},
+			{
+				name: 'Ops board',
+				role: 'Screenshot slot',
+				quote:
+					'Turn this into a customer dashboard screenshot, changelog capture, or wall of real launch comments.',
+				image:
+					'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80',
+				imageAlt: 'A dashboard shown during a product operations meeting',
+				metric: 'Proof asset slot',
+				size: 'media'
+			},
+			{
+				name: 'Rafael Costa',
+				role: 'Technical founder',
+				quote:
+					'I kept the card composition and swapped in actual onboarding wins. It took longer to pick quotes than wire the section.',
+				image:
+					'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&q=80',
+				imageAlt: 'Portrait of a technical founder',
+				size: 'normal'
 			}
-		]
+		],
+		collapseByDefault = true,
+		collapsedHeight = '46rem',
+		showMoreLabel = 'Show more proof'
 	}: Props = $props();
+
+	let expanded = $state(isInitiallyExpanded());
+	const shouldCollapse = $derived(collapseByDefault && testimonials.length > 8);
+
+	function isInitiallyExpanded() {
+		return !collapseByDefault;
+	}
 </script>
 
 <section id="proof" class="scroll-mt-24 py-20 sm:py-24">
@@ -142,58 +217,80 @@
 			<p class="mt-5 text-lg leading-8 text-muted-foreground">{description}</p>
 		</div>
 
-		<div class="proof-mosaic mt-12">
-			{#each testimonials as testimonial (testimonial.name)}
-				<figure
-					class={[
-						'proof-card',
-						testimonial.size ? `proof-card-${testimonial.size}` : '',
-						testimonial.tone === 'featured' ? 'proof-card-featured-tone' : ''
-					]
-						.filter(Boolean)
-						.join(' ')}
-				>
-					<div class="proof-media">
-						<img
-							src={testimonial.image}
-							alt={testimonial.imageAlt}
-							loading="eager"
-							decoding="async"
-						/>
-					</div>
-					<div class="proof-body">
-						<QuoteIcon class="size-5 opacity-70" />
-						{#if testimonial.metric}
-							<p class="proof-metric">{testimonial.metric}</p>
-						{/if}
-						<blockquote>"{testimonial.quote}"</blockquote>
-					</div>
-					<figcaption class="proof-caption">
-						<span>{testimonial.name}</span>
-						<small>{testimonial.role}</small>
-					</figcaption>
-				</figure>
-			{/each}
+		<div
+			class={['proof-shell mt-12', shouldCollapse && !expanded ? 'proof-shell-collapsed' : '']
+				.filter(Boolean)
+				.join(' ')}
+			style={`--proof-collapsed-height: ${collapsedHeight};`}
+		>
+			<div class="proof-mosaic">
+				{#each testimonials as testimonial, index (testimonial.name)}
+					<figure
+						class={[
+							'proof-card',
+							testimonial.size ? `proof-card-${testimonial.size}` : '',
+							testimonial.tone === 'featured' ? 'proof-card-featured-tone' : ''
+						]
+							.filter(Boolean)
+							.join(' ')}
+					>
+						<div class="proof-media">
+							<img
+								src={testimonial.image}
+								alt={testimonial.imageAlt}
+								loading={index < 4 ? 'eager' : 'lazy'}
+								decoding="async"
+							/>
+						</div>
+						<div class="proof-body">
+							<QuoteIcon class="size-5 opacity-70" />
+							{#if testimonial.metric}
+								<p class="proof-metric">{testimonial.metric}</p>
+							{/if}
+							<blockquote>"{testimonial.quote}"</blockquote>
+						</div>
+						<figcaption class="proof-caption">
+							<span>{testimonial.name}</span>
+							<small>{testimonial.role}</small>
+						</figcaption>
+					</figure>
+				{/each}
+			</div>
+
+			{#if shouldCollapse && !expanded}
+				<div class="proof-expand" aria-hidden="false">
+					<Button variant="secondary" onclick={() => (expanded = true)}>{showMoreLabel}</Button>
+				</div>
+			{/if}
 		</div>
 	</div>
 </section>
 
 <style>
+	.proof-shell {
+		position: relative;
+		isolation: isolate;
+	}
+
+	.proof-shell-collapsed {
+		max-height: var(--proof-collapsed-height);
+		overflow: hidden;
+	}
+
 	.proof-mosaic {
-		columns: 1;
-		column-gap: 1rem;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
 	}
 
 	.proof-card {
-		display: inline-flex;
+		display: flex;
 		width: 100%;
 		flex-direction: column;
 		overflow: hidden;
-		margin-bottom: 1rem;
 		border: 1px solid var(--border);
 		border-radius: 1rem;
 		background: var(--card);
-		break-inside: avoid;
 		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 5%, transparent);
 	}
 
@@ -284,15 +381,75 @@
 		background: color-mix(in oklch, var(--primary-foreground) 14%, transparent);
 	}
 
-	@media (min-width: 768px) {
+	.proof-expand {
+		position: absolute;
+		z-index: 2;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		min-height: 13rem;
+		align-items: end;
+		justify-content: center;
+		padding-bottom: 1.5rem;
+		background: linear-gradient(
+			to bottom,
+			transparent,
+			color-mix(in oklch, var(--background) 72%, transparent) 28%,
+			var(--background) 76%
+		);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+	}
+
+	@media (min-width: 760px) {
 		.proof-mosaic {
-			columns: 2;
+			grid-template-columns: repeat(8, minmax(0, 1fr));
+			grid-auto-flow: dense;
+			grid-auto-rows: minmax(7rem, auto);
+		}
+
+		.proof-card {
+			grid-column: span 4;
+		}
+
+		.proof-card-feature,
+		.proof-card-wide,
+		.proof-card-media {
+			grid-column: span 8;
+		}
+
+		.proof-card-tall {
+			grid-row: span 2;
 		}
 	}
 
 	@media (min-width: 1120px) {
 		.proof-mosaic {
-			columns: 4;
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+		}
+
+		.proof-card {
+			grid-column: span 3;
+		}
+
+		.proof-card-feature {
+			grid-column: span 6;
+			grid-row: span 2;
+		}
+
+		.proof-card-wide,
+		.proof-card-media {
+			grid-column: span 6;
+		}
+
+		.proof-card-tall {
+			grid-column: span 3;
+			grid-row: span 2;
+		}
+
+		.proof-card-compact {
+			grid-column: span 3;
 		}
 	}
 </style>

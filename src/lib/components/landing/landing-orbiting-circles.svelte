@@ -12,12 +12,23 @@
 	}
 
 	interface Props {
-		items: readonly OrbitingItem[];
+		items?: readonly OrbitingItem[];
 		coreLabel?: string;
 		radius?: number;
 	}
 
-	let { items, coreLabel = 'Product', radius = 155 }: Props = $props();
+	let {
+		items = [
+			{ name: 'Auth', status: 'ready' },
+			{ name: 'Billing', status: 'wired' },
+			{ name: 'Convex', status: 'live' },
+			{ name: 'AI', status: 'optional' },
+			{ name: 'Docs', status: 'editable' },
+			{ name: 'Landing', status: 'local' }
+		],
+		coreLabel = 'Product',
+		radius = 155
+	}: Props = $props();
 
 	const positionedItems: PositionedOrbitingItem[] = $derived(
 		items.map((item, index) => {

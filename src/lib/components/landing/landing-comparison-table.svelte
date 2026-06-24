@@ -1,9 +1,12 @@
 <script lang="ts">
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
 	import MinusIcon from '@lucide/svelte/icons/minus';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
+
+	type SlideMode = 'hover' | 'drag';
 
 	interface Option {
 		name: string;
@@ -18,13 +21,27 @@
 		kicker?: string;
 		title?: string;
 		description?: string;
+		firstImage?: string;
+		secondImage?: string;
+		firstImageAlt?: string;
+		secondImageAlt?: string;
+		initialSliderPercentage?: number;
+		slideMode?: SlideMode;
+		showHandlebar?: boolean;
 		options?: readonly Option[];
 	}
 
 	let {
 		kicker = 'Comparison',
-		title = 'Show the tradeoff without dropping visitors into a spreadsheet.',
-		description = 'Adapted from Aceternity’s compare pattern: a quick before/after product frame first, then compact option lanes for the real buying decision.',
+		title = 'Let visitors scrub the before and after instead of reading a spreadsheet.',
+		description = 'Ported from Aceternity’s Compare component: a clipped image layer, pointer-driven slider, drag or hover modes, and compact option lanes for the actual buying decision.',
+		firstImage = 'https://assets.aceternity.com/code-problem.png',
+		secondImage = 'https://assets.aceternity.com/code-solution.png',
+		firstImageAlt = 'Before screenshot with messy implementation details',
+		secondImageAlt = 'After screenshot with cleaner implementation details',
+		initialSliderPercentage = 54,
+		slideMode = 'drag',
+		showHandlebar = true,
 		options = [
 			{
 				name: 'Static template',
@@ -67,11 +84,75 @@
 			}
 		]
 	}: Props = $props();
+
+	let sliderRef: HTMLDivElement | undefined = $state();
+	let sliderXPercent = $state(getInitialSliderPercentage());
+	let isDragging = $state(false);
+
+	const scrubLabel = $derived(
+		slideMode === 'drag' ? 'Drag the handle to compare' : 'Move across the image to compare'
+	);
+
+	function clampPercentage(value: number) {
+		return Math.max(0, Math.min(100, value));
+	}
+
+	function getInitialSliderPercentage() {
+		return initialSliderPercentage;
+	}
+
+	function updateSlider(clientX: number) {
+		if (!sliderRef) return;
+
+		const rect = sliderRef.getBoundingClientRect();
+		const nextPercent = ((clientX - rect.left) / rect.width) * 100;
+		sliderXPercent = clampPercentage(nextPercent);
+	}
+
+	function handlePointerDown(event: PointerEvent) {
+		if (slideMode === 'drag') {
+			isDragging = true;
+			(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+		}
+
+		updateSlider(event.clientX);
+	}
+
+	function handlePointerMove(event: PointerEvent) {
+		if (slideMode === 'hover' || isDragging) {
+			updateSlider(event.clientX);
+		}
+	}
+
+	function handlePointerUp(event: PointerEvent) {
+		isDragging = false;
+		(event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId);
+	}
+
+	function handlePointerLeave() {
+		isDragging = false;
+
+		if (slideMode === 'hover') {
+			sliderXPercent = getInitialSliderPercentage();
+		}
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'ArrowLeft') {
+			event.preventDefault();
+			sliderXPercent = clampPercentage(sliderXPercent - 4);
+		}
+
+		if (event.key === 'ArrowRight') {
+			event.preventDefault();
+			sliderXPercent = clampPercentage(sliderXPercent + 4);
+		}
+	}
 </script>
 
 <section class="py-20 sm:py-24">
 	<div class="mx-auto max-w-7xl px-6">
-		<div class="grid gap-10 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
+		<div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
 			<div>
 				<Badge variant="outline">{kicker}</Badge>
 				<h2 class="mt-5 max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
@@ -84,50 +165,61 @@
 				</Button>
 			</div>
 
-			<div class="grid gap-4">
-				<div class="compare-frame" aria-label="Before and after product comparison">
-					<div class="compare-panel compare-before">
-						<div class="compare-label">Before</div>
-						<div class="messy-shell">
-							<div class="messy-hero"></div>
-							<div class="messy-grid">
-								<span></span>
-								<span></span>
-								<span></span>
-								<span></span>
-								<span></span>
-								<span></span>
-							</div>
-							<div class="messy-footer"></div>
-						</div>
+			<div class="grid gap-5">
+				<div class="compare-shell">
+					<div class="compare-heading">
+						<span>Before</span>
+						<span>{scrubLabel}</span>
+						<span>After</span>
 					</div>
 
-					<div class="compare-panel compare-after">
-						<div class="compare-label">After</div>
-						<div class="clean-shell">
-							<div class="clean-sidebar">
-								<span></span>
-								<span></span>
-								<span></span>
-							</div>
-							<div class="clean-main">
-								<div class="clean-header"></div>
-								<div class="clean-metrics">
-									<span></span>
-									<span></span>
-									<span></span>
-								</div>
-								<div class="clean-list">
-									<span></span>
-									<span></span>
-									<span></span>
-								</div>
-							</div>
+					<div
+						bind:this={sliderRef}
+						class={['compare-frame', isDragging ? 'is-dragging' : ''].filter(Boolean).join(' ')}
+						role="slider"
+						tabindex="0"
+						aria-label="Before and after product comparison"
+						aria-valuemin="0"
+						aria-valuemax="100"
+						aria-valuenow={Math.round(sliderXPercent)}
+						onpointerdown={handlePointerDown}
+						onpointermove={handlePointerMove}
+						onpointerup={handlePointerUp}
+						onpointercancel={handlePointerUp}
+						onpointerleave={handlePointerLeave}
+						onkeydown={handleKeydown}
+					>
+						<img
+							class="compare-image compare-image-after"
+							src={secondImage}
+							alt={secondImageAlt}
+							draggable="false"
+							loading="lazy"
+							decoding="async"
+						/>
+						<div
+							class="compare-image-before"
+							style={`clip-path: inset(0 ${100 - sliderXPercent}% 0 0);`}
+						>
+							<img
+								class="compare-image"
+								src={firstImage}
+								alt={firstImageAlt}
+								draggable="false"
+								loading="lazy"
+								decoding="async"
+							/>
 						</div>
-					</div>
 
-					<div class="compare-divider" aria-hidden="true">
-						<span></span>
+						<div class="compare-divider" style={`left: ${sliderXPercent}%;`} aria-hidden="true">
+							<span class="compare-glow compare-glow-wide"></span>
+							<span class="compare-glow compare-glow-tight"></span>
+							{#if showHandlebar}
+								<span class="compare-handle">
+									<GripVerticalIcon class="size-4" />
+								</span>
+							{/if}
+						</div>
 					</div>
 				</div>
 
@@ -167,55 +259,83 @@
 </section>
 
 <style>
+	.compare-shell {
+		overflow: hidden;
+		border: 1px solid var(--border);
+		border-radius: 1.25rem;
+		background: color-mix(in oklch, var(--muted) 48%, var(--background));
+		padding: 0.75rem;
+		box-shadow:
+			0 1px 2px color-mix(in oklch, var(--foreground) 5%, transparent),
+			0 24px 60px color-mix(in oklch, var(--foreground) 8%, transparent);
+	}
+
+	.compare-heading {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 0.75rem;
+		padding: 0.2rem 0.25rem 0.75rem;
+		color: var(--muted-foreground);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: uppercase;
+	}
+
+	.compare-heading span:nth-child(2) {
+		text-align: center;
+		text-transform: none;
+	}
+
+	.compare-heading span:last-child {
+		text-align: right;
+	}
+
 	.compare-frame {
 		position: relative;
 		isolation: isolate;
 		overflow: hidden;
-		min-height: 24rem;
+		height: clamp(20rem, 52vw, 35rem);
 		border: 1px solid var(--border);
 		border-radius: 1rem;
-		background: var(--muted);
+		background: var(--background);
+		cursor: grab;
+		touch-action: none;
+		outline: none;
+		user-select: none;
 	}
 
-	.compare-panel {
+	.compare-frame:focus-visible {
+		box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 28%, transparent);
+	}
+
+	.compare-frame.is-dragging {
+		cursor: grabbing;
+	}
+
+	.compare-image,
+	.compare-image-before {
 		position: absolute;
 		inset: 0;
-		padding: 1rem;
+		width: 100%;
+		height: 100%;
 	}
 
-	.compare-before {
-		background:
-			linear-gradient(135deg, color-mix(in oklch, var(--muted) 70%, transparent), transparent),
-			var(--card);
+	.compare-image {
+		object-fit: cover;
+		object-position: left top;
+		pointer-events: none;
 	}
 
-	.compare-after {
-		clip-path: inset(0 0 0 52%);
-		background: var(--background);
-		transition: clip-path 260ms ease;
+	.compare-image-after {
+		z-index: 1;
 	}
 
-	.compare-frame:hover .compare-after {
-		clip-path: inset(0 0 0 18%);
-	}
-
-	.compare-label {
-		position: absolute;
+	.compare-image-before {
 		z-index: 2;
-		top: 1rem;
-		left: 1rem;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		background: color-mix(in oklch, var(--background) 92%, transparent);
-		padding: 0.25rem 0.6rem;
-		font-size: 0.72rem;
-		font-weight: 700;
-		text-transform: uppercase;
-	}
-
-	.compare-after .compare-label {
-		left: auto;
-		right: 1rem;
+		overflow: hidden;
+		border-radius: inherit;
+		will-change: clip-path;
 	}
 
 	.compare-divider {
@@ -223,173 +343,94 @@
 		z-index: 4;
 		top: 0;
 		bottom: 0;
-		left: 52%;
 		width: 1px;
-		background: linear-gradient(to bottom, transparent, var(--primary), transparent);
-		transition: left 260ms ease;
+		background: linear-gradient(to bottom, transparent 4%, var(--primary) 50%, transparent 96%);
+		transform: translateX(-0.5px);
 	}
 
-	.compare-frame:hover .compare-divider {
-		left: 18%;
-	}
-
-	.compare-divider span {
+	.compare-glow {
 		position: absolute;
 		top: 50%;
-		left: 50%;
-		width: 2.25rem;
-		height: 2.25rem;
-		border: 1px solid var(--border);
-		border-radius: 0.75rem;
-		background: var(--background);
-		box-shadow: 0 10px 24px color-mix(in oklch, var(--foreground) 12%, transparent);
-		transform: translate(-50%, -50%);
+		left: 0;
+		pointer-events: none;
+		transform: translateY(-50%);
 	}
 
-	.messy-shell,
-	.clean-shell {
+	.compare-glow-wide {
+		width: 9rem;
+		height: 100%;
+		background: linear-gradient(
+			to right,
+			color-mix(in oklch, var(--primary) 28%, transparent),
+			transparent
+		);
+		mask-image: radial-gradient(110px at left, black, transparent);
+		-webkit-mask-image: radial-gradient(110px at left, black, transparent);
+		opacity: 0.55;
+	}
+
+	.compare-glow-tight {
+		width: 2.5rem;
+		height: 64%;
+		background: linear-gradient(
+			to right,
+			color-mix(in oklch, var(--foreground) 22%, transparent),
+			transparent
+		);
+		mask-image: radial-gradient(60px at left, black, transparent);
+		-webkit-mask-image: radial-gradient(60px at left, black, transparent);
+	}
+
+	.compare-handle {
 		position: absolute;
-		right: 1rem;
-		bottom: 1rem;
-		left: 1rem;
-		overflow: hidden;
-		border: 1px solid var(--border);
-		border-radius: 0.9rem;
-		background: var(--background);
-	}
-
-	.messy-shell {
-		top: 3.5rem;
-		padding: 0.85rem;
-	}
-
-	.messy-hero,
-	.messy-footer,
-	.messy-grid span,
-	.clean-header,
-	.clean-metrics span,
-	.clean-list span,
-	.clean-sidebar span {
+		top: 50%;
+		right: -1rem;
+		display: inline-flex;
+		width: 2rem;
+		height: 2rem;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid color-mix(in oklch, var(--border) 74%, var(--background));
 		border-radius: 0.65rem;
-		background: color-mix(in oklch, var(--foreground) 10%, transparent);
-	}
-
-	.messy-hero {
-		height: 5rem;
-	}
-
-	.messy-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 0.55rem;
-		margin-top: 0.7rem;
-	}
-
-	.messy-grid span {
-		height: 4.2rem;
-	}
-
-	.messy-grid span:nth-child(2),
-	.messy-grid span:nth-child(5) {
-		transform: translateY(1rem);
-	}
-
-	.messy-footer {
-		height: 3.75rem;
-		margin-top: 1.6rem;
-	}
-
-	.clean-shell {
-		top: 3.5rem;
-		display: grid;
-		grid-template-columns: 9rem 1fr;
-	}
-
-	.clean-sidebar {
-		display: grid;
-		align-content: start;
-		gap: 0.6rem;
-		border-right: 1px solid var(--border);
-		background: color-mix(in oklch, var(--muted) 48%, transparent);
-		padding: 0.85rem;
-	}
-
-	.clean-sidebar span {
-		height: 2.35rem;
-	}
-
-	.clean-sidebar span:first-child {
-		background: var(--background);
-		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 5%, transparent);
-	}
-
-	.clean-main {
-		padding: 0.85rem;
-	}
-
-	.clean-header {
-		height: 4.25rem;
-		background: color-mix(in oklch, var(--primary) 9%, var(--background));
-	}
-
-	.clean-metrics {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 0.6rem;
-		margin-top: 0.7rem;
-	}
-
-	.clean-metrics span {
-		height: 3.4rem;
-		background: var(--card);
-		border: 1px solid var(--border);
-	}
-
-	.clean-list {
-		display: grid;
-		gap: 0.55rem;
-		margin-top: 0.7rem;
-	}
-
-	.clean-list span {
-		height: 2.8rem;
-		background: var(--card);
-		border: 1px solid var(--border);
+		background: color-mix(in oklch, var(--background) 96%, transparent);
+		color: var(--foreground);
+		box-shadow:
+			0 0 0 1px color-mix(in oklch, var(--foreground) 5%, transparent),
+			0 12px 24px color-mix(in oklch, var(--foreground) 18%, transparent);
+		transform: translateY(-50%);
 	}
 
 	.option-lanes {
 		display: grid;
-		gap: 1rem;
+		gap: 0.75rem;
 	}
 
 	.option-lane {
 		display: grid;
-		gap: 1.1rem;
+		gap: 1rem;
 		border: 1px solid var(--border);
 		border-radius: 1rem;
 		background: var(--card);
-		padding: 1.1rem;
-		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 5%, transparent);
+		padding: 1rem;
+		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 4%, transparent);
 	}
 
 	.option-lane-highlight {
-		border-color: color-mix(in oklch, var(--primary) 30%, var(--border));
-		box-shadow:
-			0 0 0 1px color-mix(in oklch, var(--primary) 8%, transparent),
-			0 18px 40px color-mix(in oklch, var(--foreground) 8%, transparent);
+		border-color: color-mix(in oklch, var(--primary) 38%, var(--border));
+		background: color-mix(in oklch, var(--primary) 6%, var(--card));
 	}
 
 	.option-head h3 {
-		margin-top: 0.8rem;
-		font-size: 1.25rem;
+		margin-top: 0.75rem;
+		font-size: 1.15rem;
 		font-weight: 650;
+		letter-spacing: 0;
 	}
 
-	.option-head p,
-	.option-outcome {
+	.option-head p {
 		margin-top: 0.45rem;
 		color: var(--muted-foreground);
-		line-height: 1.6;
+		line-height: 1.65;
 	}
 
 	.option-lane ul {
@@ -399,47 +440,60 @@
 
 	.option-lane li {
 		display: flex;
-		align-items: center;
-		gap: 0.65rem;
-		font-size: 0.92rem;
+		align-items: flex-start;
+		gap: 0.55rem;
+		color: var(--muted-foreground);
+		font-size: 0.9rem;
 	}
 
-	.option-lane li span {
-		display: flex;
-		width: 1.75rem;
-		height: 1.75rem;
-		flex-shrink: 0;
+	.included,
+	.missing {
+		display: inline-flex;
+		width: 1.35rem;
+		height: 1.35rem;
+		flex: 0 0 auto;
 		align-items: center;
 		justify-content: center;
 		border-radius: 999px;
-		background: var(--muted);
 	}
 
-	.option-lane li .included {
+	.included {
+		background: color-mix(in oklch, var(--primary) 12%, transparent);
 		color: var(--foreground);
 	}
 
-	.option-lane li .missing {
+	.missing {
+		background: color-mix(in oklch, var(--foreground) 7%, transparent);
 		color: var(--muted-foreground);
 	}
 
 	.option-outcome {
-		border-top: 1px solid var(--border);
-		padding-top: 1rem;
-		font-weight: 650;
-		color: var(--foreground);
+		width: fit-content;
+		border-radius: 999px;
+		background: var(--muted);
+		padding: 0.32rem 0.65rem;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: uppercase;
 	}
 
-	@media (min-width: 840px) {
-		.option-lanes {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+	@media (min-width: 760px) {
+		.option-lane {
+			grid-template-columns: 0.95fr 1.05fr auto;
+			align-items: center;
+		}
+
+		.option-outcome {
+			justify-self: end;
+			white-space: nowrap;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.compare-after,
-		.compare-divider {
-			transition: none;
+		.compare-frame,
+		.compare-image-before {
+			scroll-behavior: auto;
 		}
 	}
 </style>

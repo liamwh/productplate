@@ -63,7 +63,7 @@ It is not a locked-down framework. It is ordinary SvelteKit and Convex applicati
 </p>
 
 <p align="center">
-  <img src="./docs/images/readme/landing-components.png" alt="Landing component gallery with hero, bento, tabs, orbit, mosaic proof, pricing, FAQ, and CTA sections" width="100%" />
+  <img src="./docs/images/readme/landing-components.png" alt="Landing component gallery with hero video, bento, compare, proof, pricing, and extras sections" width="100%" />
 </p>
 
 | Billing                                                                                               | Settings                                                                                                      |

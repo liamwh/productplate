@@ -1,5 +1,4 @@
 <script lang="ts">
-	import QuoteIcon from '@lucide/svelte/icons/quote';
 	import { Badge } from '$lib/components/ui/badge';
 
 	interface MarqueeTestimonial {
@@ -8,6 +7,7 @@
 		quote: string;
 		image: string;
 		imageAlt: string;
+		source: string;
 	}
 
 	interface Props {
@@ -29,7 +29,8 @@
 					'The components gave us enough range to build a real launch page without inventing every section.',
 				image:
 					'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Elena Torres'
+				imageAlt: 'Portrait of Elena Torres',
+				source: 'X'
 			},
 			{
 				name: 'Marcus Chen',
@@ -38,7 +39,8 @@
 					'The page feels like a catalog of patterns we can copy, not a demo we have to reverse engineer.',
 				image:
 					'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Marcus Chen'
+				imageAlt: 'Portrait of Marcus Chen',
+				source: 'Reddit'
 			},
 			{
 				name: 'Priya Shah',
@@ -46,7 +48,8 @@
 				quote: 'The marquee works as a compact second proof pass after the big mosaic.',
 				image:
 					'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Priya Shah'
+				imageAlt: 'Portrait of Priya Shah',
+				source: 'PH'
 			},
 			{
 				name: 'Rowan Moss',
@@ -55,7 +58,8 @@
 					'I replaced the dummy quotes with launch-day notes and kept the exact section structure.',
 				image:
 					'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Rowan Moss'
+				imageAlt: 'Portrait of Rowan Moss',
+				source: 'X'
 			},
 			{
 				name: 'Ada Simon',
@@ -63,7 +67,8 @@
 				quote: 'The proof sections gave us density without making every card the same size.',
 				image:
 					'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Ada Simon'
+				imageAlt: 'Portrait of Ada Simon',
+				source: 'LinkedIn'
 			},
 			{
 				name: 'Leo Grant',
@@ -71,7 +76,8 @@
 				quote: 'Useful animations, no ornamental page gymnastics. That balance is hard to find.',
 				image:
 					'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Leo Grant'
+				imageAlt: 'Portrait of Leo Grant',
+				source: 'Reddit'
 			},
 			{
 				name: 'Nia Brooks',
@@ -80,7 +86,8 @@
 					'The side-by-side comparison section finally explains the starter in business language.',
 				image:
 					'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Nia Brooks'
+				imageAlt: 'Portrait of Nia Brooks',
+				source: 'X'
 			},
 			{
 				name: 'Mateo Ruiz',
@@ -88,7 +95,8 @@
 				quote: 'Everything is still just source code, which makes the components easy to own.',
 				image:
 					'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=300&q=80',
-				imageAlt: 'Portrait of Mateo Ruiz'
+				imageAlt: 'Portrait of Mateo Ruiz',
+				source: 'PH'
 			}
 		]
 	}: Props = $props();
@@ -127,8 +135,8 @@
 										<strong>{testimonial.name}</strong>
 										<span>{testimonial.role}</span>
 									</div>
+									<small>{testimonial.source}</small>
 								</div>
-								<QuoteIcon class="size-4 text-muted-foreground" />
 								<p>{testimonial.quote}</p>
 							</article>
 						{/each}
@@ -182,7 +190,7 @@
 
 	.marquee-card-head {
 		display: grid;
-		grid-template-columns: 2.5rem 1fr;
+		grid-template-columns: 2.5rem 1fr auto;
 		align-items: center;
 		gap: 0.75rem;
 	}
@@ -195,7 +203,8 @@
 	}
 
 	.marquee-card strong,
-	.marquee-card span {
+	.marquee-card span,
+	.marquee-card small {
 		display: block;
 	}
 
@@ -207,6 +216,20 @@
 		margin-top: 0.15rem;
 		color: var(--muted-foreground);
 		font-size: 0.78rem;
+	}
+
+	.marquee-card small {
+		align-self: start;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--muted);
+		padding: 0.2rem 0.5rem;
+		color: var(--foreground);
+		font-size: 0.68rem;
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: 0;
+		text-transform: uppercase;
 	}
 
 	.marquee-card p {

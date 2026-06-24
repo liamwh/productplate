@@ -16,6 +16,7 @@
 		{ label: 'Patterns', href: '/landing-components#patterns' },
 		{ label: 'Proof', href: '/landing-components#proof' },
 		{ label: 'Pricing', href: '/landing-components#pricing' },
+		{ label: 'Extras', href: '/landing-components#extras' },
 		{ label: 'FAQ', href: '/landing-components#faq' }
 	] as const;
 
@@ -29,7 +30,7 @@
 </script>
 
 <header
-	class="sticky top-0 border-b bg-background/92 backdrop-blur supports-[backdrop-filter]:bg-background/78"
+	class="sticky top-0 z-[120] border-b bg-background/92 backdrop-blur supports-[backdrop-filter]:bg-background/78"
 >
 	<nav aria-label="Landing components navigation" class="mx-auto max-w-7xl px-6">
 		<div class="flex h-16 items-center justify-between gap-4">

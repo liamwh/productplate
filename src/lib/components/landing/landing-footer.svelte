@@ -21,7 +21,8 @@
 			links: [
 				{ label: 'Hero patterns', href: '/landing-components#patterns' },
 				{ label: 'Proof sections', href: '/landing-components#proof' },
-				{ label: 'Pricing', href: '/landing-components#pricing' }
+				{ label: 'Pricing', href: '/landing-components#pricing' },
+				{ label: 'Extras', href: '/landing-components#extras' }
 			]
 		},
 		{

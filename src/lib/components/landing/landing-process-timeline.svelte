@@ -165,7 +165,6 @@
 
 	.timeline-node {
 		position: relative;
-		z-index: 1;
 		display: flex;
 		width: 2.4rem;
 		height: 2.4rem;

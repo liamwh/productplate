@@ -259,14 +259,28 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		height: 68%;
+		height: 84%;
 		pointer-events: none;
 		background: linear-gradient(
 			to top,
 			var(--card) 0%,
-			color-mix(in oklch, var(--card) 95%, transparent) 34%,
-			color-mix(in oklch, var(--card) 68%, transparent) 58%,
+			color-mix(in oklch, var(--card) 98%, transparent) 26%,
+			color-mix(in oklch, var(--card) 82%, transparent) 48%,
+			color-mix(in oklch, var(--card) 46%, transparent) 70%,
 			transparent 100%
+		);
+	}
+
+	.bento-scrim::before {
+		content: '';
+		position: absolute;
+		inset: auto 0 0;
+		height: 58%;
+		background: linear-gradient(
+			to top,
+			var(--card),
+			color-mix(in oklch, var(--card) 82%, transparent),
+			transparent
 		);
 	}
 
@@ -278,60 +292,60 @@
 	.bento-scrim span:nth-child(1) {
 		backdrop-filter: blur(0.5px);
 		-webkit-backdrop-filter: blur(0.5px);
-		mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 32%, transparent 46%);
+		mask-image: linear-gradient(to bottom, transparent 2%, black 14%, black 26%, transparent 38%);
 		-webkit-mask-image: linear-gradient(
 			to bottom,
-			transparent 0%,
-			black 18%,
-			black 32%,
-			transparent 46%
+			transparent 2%,
+			black 14%,
+			black 26%,
+			transparent 38%
 		);
 	}
 
 	.bento-scrim span:nth-child(2) {
 		backdrop-filter: blur(1.5px);
 		-webkit-backdrop-filter: blur(1.5px);
-		mask-image: linear-gradient(to bottom, transparent 18%, black 34%, black 50%, transparent 64%);
+		mask-image: linear-gradient(to bottom, transparent 20%, black 34%, black 48%, transparent 62%);
 		-webkit-mask-image: linear-gradient(
 			to bottom,
-			transparent 18%,
+			transparent 20%,
 			black 34%,
-			black 50%,
-			transparent 64%
+			black 48%,
+			transparent 62%
 		);
 	}
 
 	.bento-scrim span:nth-child(3) {
-		backdrop-filter: blur(4px);
-		-webkit-backdrop-filter: blur(4px);
-		mask-image: linear-gradient(to bottom, transparent 36%, black 52%, black 68%, transparent 80%);
+		backdrop-filter: blur(5px);
+		-webkit-backdrop-filter: blur(5px);
+		mask-image: linear-gradient(to bottom, transparent 38%, black 52%, black 68%, transparent 82%);
 		-webkit-mask-image: linear-gradient(
 			to bottom,
-			transparent 36%,
+			transparent 38%,
 			black 52%,
 			black 68%,
-			transparent 80%
+			transparent 82%
 		);
 	}
 
 	.bento-scrim span:nth-child(4) {
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		mask-image: linear-gradient(to bottom, transparent 56%, black 72%, black 88%, transparent 100%);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		mask-image: linear-gradient(to bottom, transparent 58%, black 74%, black 90%, transparent 100%);
 		-webkit-mask-image: linear-gradient(
 			to bottom,
-			transparent 56%,
-			black 72%,
-			black 88%,
+			transparent 58%,
+			black 74%,
+			black 90%,
 			transparent 100%
 		);
 	}
 
 	.bento-scrim span:nth-child(5) {
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		mask-image: linear-gradient(to bottom, transparent 82%, black 100%);
-		-webkit-mask-image: linear-gradient(to bottom, transparent 82%, black 100%);
+		backdrop-filter: blur(32px);
+		-webkit-backdrop-filter: blur(32px);
+		mask-image: linear-gradient(to bottom, transparent 76%, black 100%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 76%, black 100%);
 	}
 
 	.bento-copy {
@@ -343,7 +357,7 @@
 	}
 
 	.bento-card:hover .bento-copy {
-		transform: translateY(-2.25rem);
+		transform: translateY(-1.75rem);
 	}
 
 	.bento-cta {
@@ -426,8 +440,29 @@
 		font-size: 0.8rem;
 		font-weight: 650;
 		box-shadow: 0 12px 20px color-mix(in oklch, var(--foreground) 5%, transparent);
-		transform: translate(-50%, -50%) rotate(calc((var(--stack-index) - 2) * 7deg))
-			translateY(calc((var(--stack-index) - 2) * 1.2rem));
+	}
+
+	.stack-panel span:nth-child(1) {
+		transform: translate(-95%, -122%) rotate(-8deg);
+	}
+
+	.stack-panel span:nth-child(2) {
+		transform: translate(-6%, -102%) rotate(7deg);
+	}
+
+	.stack-panel span:nth-child(3) {
+		z-index: 1;
+		border-color: color-mix(in oklch, var(--primary) 32%, var(--border));
+		background: color-mix(in oklch, var(--primary) 8%, var(--background));
+		transform: translate(-50%, -50%) scale(1.04);
+	}
+
+	.stack-panel span:nth-child(4) {
+		transform: translate(-100%, 20%) rotate(6deg);
+	}
+
+	.stack-panel span:nth-child(5) {
+		transform: translate(-8%, 34%) rotate(-7deg);
 	}
 
 	@media (max-width: 1023px) {

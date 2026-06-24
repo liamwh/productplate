@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+		LandingAppleCardsCarousel,
 		LandingBentoFeatures,
 		LandingComparisonTable,
 		LandingFaqSection,
@@ -7,14 +8,20 @@
 		LandingFinalCta,
 		LandingFooter,
 		LandingHero,
+		LandingHeroVideoDialog,
 		LandingIntegrationCloud,
+		LandingLensShowcase,
 		LandingLogoMarquee,
 		LandingNav,
+		LandingOrbitingCircles,
 		LandingPricingCards,
+		LandingPricingComparison,
 		LandingProcessTimeline,
 		LandingStatsStrip,
+		LandingStickyScrollReveal,
 		LandingTestimonialMarquee,
-		LandingTestimonialWall
+		LandingTestimonialWall,
+		LandingThreeDMarquee
 	} from '$lib/components/landing';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
@@ -23,8 +30,14 @@
 	const componentGroups = [
 		{
 			title: 'Hero patterns',
-			description: 'Navigation, product hero, logo marquee, and stats proof.',
-			items: ['LandingNav', 'LandingHero', 'LandingLogoMarquee', 'LandingStatsStrip']
+			description: 'Navigation, product hero, video dialog, logo marquee, and stats proof.',
+			items: [
+				'LandingNav',
+				'LandingHero',
+				'LandingHeroVideoDialog',
+				'LandingLogoMarquee',
+				'LandingStatsStrip'
+			]
 		},
 		{
 			title: 'Feature systems',
@@ -41,14 +54,26 @@
 		{
 			title: 'Conversion sections',
 			description:
-				'Mosaic proof, marquee proof, pricing cards, FAQ accordion, final CTA, and footer.',
+				'Mosaic proof, marquee proof, pricing cards, pricing matrix, FAQ accordion, final CTA, and footer.',
 			items: [
 				'LandingTestimonialWall',
 				'LandingTestimonialMarquee',
 				'LandingPricingCards',
+				'LandingPricingComparison',
 				'LandingFaqSection',
 				'LandingFinalCta',
 				'LandingFooter'
+			]
+		},
+		{
+			title: 'Extras',
+			description:
+				'Carousel, lens, sticky reveal, and 3D marquee patterns for richer product pages.',
+			items: [
+				'LandingAppleCardsCarousel',
+				'LandingLensShowcase',
+				'LandingStickyScrollReveal',
+				'LandingThreeDMarquee'
 			]
 		}
 	] as const;
@@ -95,7 +120,7 @@
 					</p>
 				</div>
 
-				<div class="mt-12 grid gap-4 lg:grid-cols-3">
+				<div class="mt-12 grid gap-4 lg:grid-cols-4">
 					{#each componentGroups as group (group.title)}
 						<Card.Root>
 							<Card.Header>
@@ -118,11 +143,13 @@
 		</section>
 
 		<LandingStatsStrip />
+		<LandingHeroVideoDialog />
 		<LandingBentoFeatures />
 		<LandingFeatureTabs />
 		<LandingComparisonTable />
 		<LandingProcessTimeline />
 		<LandingIntegrationCloud />
+		<LandingOrbitingCircles />
 		<LandingTestimonialWall />
 		<LandingTestimonialMarquee />
 
@@ -142,6 +169,23 @@
 		</section>
 
 		<LandingPricingCards />
+		<LandingPricingComparison />
+		<section id="extras" class="scroll-mt-24 py-16 sm:py-20">
+			<div class="mx-auto max-w-7xl px-6">
+				<Badge variant="outline">Extras</Badge>
+				<h2 class="mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+					Reusable product-page patterns beyond a standard landing page.
+				</h2>
+				<p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+					These are useful for case studies, launch pages, product tours, docs home pages, and
+					interactive feature explainers.
+				</p>
+			</div>
+		</section>
+		<LandingAppleCardsCarousel />
+		<LandingStickyScrollReveal />
+		<LandingLensShowcase />
+		<LandingThreeDMarquee />
 		<LandingFaqSection />
 		<LandingFinalCta />
 	</main>

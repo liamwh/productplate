@@ -102,7 +102,7 @@
 	const tabTransition = $derived(
 		reduceMotion
 			? { duration: 0 }
-			: { type: 'spring' as const, stiffness: 360, damping: 34, mass: 0.65 }
+			: { type: 'spring' as const, stiffness: 560, damping: 42, mass: 0.42 }
 	);
 </script>
 
