@@ -78,7 +78,7 @@ It is not a locked-down framework. It is ordinary SvelteKit and Convex applicati
 | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | <img src="./docs/images/readme/onboarding.png" alt="Onboarding form for workspace setup" /> | <img src="./docs/images/readme/flow.png" alt="Svelte Flow workflow demo" /> |
 
-Try the hosted no-login demo account at **[productplate.pages.dev/auth/demo](https://productplate.pages.dev/auth/demo)**. It signs into the real app shell and opens the dashboard.
+Try the hosted no-login demo at **[productplate.pages.dev/auth/demo](https://productplate.pages.dev/auth/demo)**. It creates a fresh disposable demo account, signs into the real app shell, and opens the dashboard.
 
 ## Included
 
@@ -103,7 +103,7 @@ Try the hosted no-login demo account at **[productplate.pages.dev/auth/demo](htt
 ### Product features
 
 - Landing page with responsive nav, feature blocks, route previews, pricing CTA, FAQ, and footer
-- Hosted demo-account entrypoint at `/auth/demo`, meant to be deleted by the kickstart agent
+- Hosted disposable demo-account entrypoint at `/auth/demo`, meant to be deleted by the kickstart agent
 - Better Auth email/password sign-up and sign-in
 - Google OAuth provider wiring
 - Forgot-password and reset-password screens

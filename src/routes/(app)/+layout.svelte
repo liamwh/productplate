@@ -27,9 +27,11 @@
 	let profile = $derived(profileResponse.data === undefined ? data.profile : profileResponse.data);
 	let isProfileLoading = $derived(profileResponse.isLoading && profileResponse.data === undefined);
 	let isOnboardingRoute = $derived(page.url.pathname === resolve('/onboarding'));
+	let isDemoAccount = $derived(isDemoAccountEmail(data.currentUser?.email));
 	let shouldEnsureDemoProfile = $derived(
-		isAuthenticated && !profile && !isProfileLoading && isDemoAccountEmail(data.currentUser?.email)
+		isAuthenticated && !profile && !isProfileLoading && isDemoAccount
 	);
+	let shouldShowSidebar = $derived(!isOnboardingRoute && (Boolean(profile) || isDemoAccount));
 
 	onMount(async () => {
 		const { data: session } = await authClient.getSession();
@@ -58,10 +60,10 @@
 	</div>
 {:else if isAuthenticated}
 	<Sidebar.Provider>
-		{#if profile && !isOnboardingRoute}
+		{#if shouldShowSidebar}
 			<AppSidebar />
 		{/if}
-		<Sidebar.Inset class={!profile || isOnboardingRoute ? 'w-full' : undefined}>
+		<Sidebar.Inset class={!shouldShowSidebar ? 'w-full' : undefined}>
 			{@render children()}
 		</Sidebar.Inset>
 	</Sidebar.Provider>

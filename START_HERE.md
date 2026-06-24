@@ -81,7 +81,7 @@ Identity and copy:
 Demo account:
 - Delete `src/routes/auth/demo` and `src/lib/demo-account.ts` after replacing the template preview with the real product path.
 - Remove `/auth/demo` from README, landing CTAs, tests, and navigation.
-- If I explicitly keep a demo account, make it product-specific, seed only safe demo data, and keep credentials out of paid/private workflows.
+- If I explicitly keep a demo account, prefer a fresh disposable visitor account, make it product-specific, seed only safe demo data, and keep it out of paid/private workflows.
 - Do not create a public `/demo` page unless I explicitly ask for a separate unauthenticated preview.
 
 Provider activation:
@@ -124,5 +124,5 @@ Final response:
 - Auth: Better Auth.
 - Billing: Autumn backed by Stripe.
 - Package manager: bun.
-- Public preview: `/auth/demo` signs into a disposable demo account and should usually be deleted during kickstart.
+- Public preview: `/auth/demo` creates a fresh disposable demo account and should usually be deleted during kickstart.
 - Inactive options: `_template_options` contains scaffold material for alternate billing and database choices.

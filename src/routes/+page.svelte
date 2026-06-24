@@ -119,8 +119,11 @@
 				<Button href={to.signIn} variant="ghost" size="sm" class="hidden sm:inline-flex"
 					>Sign in</Button
 				>
+				<Button href={to.signUp} variant="outline" size="sm" class="hidden sm:inline-flex"
+					>Create account</Button
+				>
 				<Button href={to.demo} size="sm" class="hidden sm:inline-flex">
-					Open demo
+					Use demo
 					<ArrowRightIcon data-icon="inline-end" />
 				</Button>
 				<Sheet.Root bind:open={mobileNavOpen}>
@@ -158,12 +161,18 @@
 						<div class="flex flex-col gap-2 px-4">
 							<Button
 								href={to.signIn}
-								variant="outline"
+								variant="ghost"
 								class="w-full"
 								onclick={() => (mobileNavOpen = false)}>Sign in</Button
 							>
+							<Button
+								href={to.signUp}
+								variant="outline"
+								class="w-full"
+								onclick={() => (mobileNavOpen = false)}>Create account</Button
+							>
 							<Button href={to.demo} class="w-full" onclick={() => (mobileNavOpen = false)}>
-								Open demo
+								Use demo
 								<ArrowRightIcon data-icon="inline-end" />
 							</Button>
 						</div>
@@ -195,9 +204,10 @@
 					</p>
 					<div class="mt-9 flex flex-wrap gap-3">
 						<Button href={to.demo} size="lg">
-							Open demo
+							Use demo account
 							<ArrowRightIcon data-icon="inline-end" />
 						</Button>
+						<Button href={to.signUp} variant="outline" size="lg">Create account</Button>
 						<Button href="https://github.com/rodrgds/productplate" variant="outline" size="lg">
 							<Code2Icon data-icon="inline-start" />
 							View on GitHub

@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { resolve } from '$app/paths';
-import { DEMO_ACCOUNT_EMAIL, DEMO_ACCOUNT_NAME, DEMO_ACCOUNT_PASSWORD } from '$lib/demo-account.js';
+import { createDemoAccountCredentials } from '$lib/demo-account.js';
 import type { RequestHandler } from './$types';
 
 const authJsonHeaders = {
@@ -58,34 +58,24 @@ function redirectWithAuthCookies(response: Response) {
 }
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
-	const dashboardUrl = new URL(resolve('/dashboard'), url).toString();
+	const demoAccount = createDemoAccountCredentials();
 	const signInBody = {
-		email: DEMO_ACCOUNT_EMAIL,
-		password: DEMO_ACCOUNT_PASSWORD,
-		callbackURL: dashboardUrl,
+		email: demoAccount.email,
+		password: demoAccount.password,
 		rememberMe: true
 	};
 
-	let signIn = await postAuth(fetch, url, 'sign-in/email', signInBody);
+	const signUp = await postAuth(fetch, url, 'sign-up/email', {
+		name: demoAccount.name,
+		email: demoAccount.email,
+		password: demoAccount.password
+	});
 
-	if (!isSuccessfulAuthResponse(signIn)) {
-		const signUp = await postAuth(fetch, url, 'sign-up/email', {
-			name: DEMO_ACCOUNT_NAME,
-			email: DEMO_ACCOUNT_EMAIL,
-			password: DEMO_ACCOUNT_PASSWORD,
-			callbackURL: dashboardUrl
-		});
-
-		if (!isSuccessfulAuthResponse(signUp)) {
-			const signUpFailure = await readAuthFailure(signUp);
-			const normalized = signUpFailure.toLowerCase();
-			if (!normalized.includes('already') && !normalized.includes('exist')) {
-				error(502, `Demo account setup failed: ${signUpFailure}`);
-			}
-		}
-
-		signIn = await postAuth(fetch, url, 'sign-in/email', signInBody);
+	if (!isSuccessfulAuthResponse(signUp)) {
+		error(502, `Demo account setup failed: ${await readAuthFailure(signUp)}`);
 	}
+
+	const signIn = await postAuth(fetch, url, 'sign-in/email', signInBody);
 
 	if (!isSuccessfulAuthResponse(signIn)) {
 		error(502, `Demo account sign-in failed: ${await readAuthFailure(signIn)}`);

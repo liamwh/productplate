@@ -23,7 +23,7 @@ Build runtime provider abstraction only when the product truly sells through mul
 | Auth    | Better Auth                   | OAuth-only, email/password-only, or no-auth prototype              |
 | Billing | Autumn                        | Stripe direct, Polar, Creem, none                                  |
 | AI      | AI SDK route and assistant UI | Keep backend only or remove                                        |
-| Demo    | `/auth/demo` demo account     | Delete during kickstart or replace with a product-specific demo    |
+| Demo    | `/auth/demo` disposable demo  | Delete during kickstart or replace with a product-specific demo    |
 
 ## Kickstart Flow
 

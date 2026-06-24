@@ -1,4 +1,4 @@
-import { mutation, query } from './_generated/server';
+import { mutation, query, type DatabaseReader } from './_generated/server';
 import { v } from 'convex/values';
 import { authComponent } from './auth';
 import { onboardingFormSchema, accountProfileUpdateSchema } from '../lib/forms/schemas.js';
@@ -17,6 +17,15 @@ const profileValidator = v.object({
 	updatedAt: v.number()
 });
 
+async function getFirstProfileByUserId(db: DatabaseReader, userId: string) {
+	const [profile] = await db
+		.query('userProfiles')
+		.withIndex('by_userId', (q) => q.eq('userId', userId))
+		.take(1);
+
+	return profile ?? null;
+}
+
 export const getCurrent = query({
 	args: {},
 	returns: v.union(profileValidator, v.null()),
@@ -24,10 +33,7 @@ export const getCurrent = query({
 		const user = await authComponent.safeGetAuthUser(ctx);
 		if (!user) return null;
 
-		return await ctx.db
-			.query('userProfiles')
-			.withIndex('by_userId', (q) => q.eq('userId', user._id))
-			.unique();
+		return await getFirstProfileByUserId(ctx.db, user._id);
 	}
 });
 
@@ -39,10 +45,7 @@ export const getByUserId = query({
 	handler: async (ctx, args) => {
 		const user = await authComponent.safeGetAuthUser(ctx);
 		if (!user) return null;
-		return await ctx.db
-			.query('userProfiles')
-			.withIndex('by_userId', (q) => q.eq('userId', args.userId))
-			.unique();
+		return await getFirstProfileByUserId(ctx.db, args.userId);
 	}
 });
 
@@ -64,10 +67,7 @@ export const completeOnboarding = mutation({
 			throw new Error(validation.error.issues[0]?.message ?? 'Invalid form data.');
 		}
 
-		const existing = await ctx.db
-			.query('userProfiles')
-			.withIndex('by_userId', (q) => q.eq('userId', user._id))
-			.unique();
+		const existing = await getFirstProfileByUserId(ctx.db, user._id);
 
 		if (existing) {
 			await ctx.db.patch(existing._id, {
@@ -100,10 +100,7 @@ export const ensureDemoProfile = mutation({
 			throw new Error('The demo profile can only be created for the demo account.');
 		}
 
-		const existing = await ctx.db
-			.query('userProfiles')
-			.withIndex('by_userId', (q) => q.eq('userId', user._id))
-			.unique();
+		const existing = await getFirstProfileByUserId(ctx.db, user._id);
 
 		if (existing) return existing;
 
@@ -137,10 +134,7 @@ export const updateCurrent = mutation({
 		}
 		const profileUpdate = validation.data;
 
-		const existing = await ctx.db
-			.query('userProfiles')
-			.withIndex('by_userId', (q) => q.eq('userId', user._id))
-			.unique();
+		const existing = await getFirstProfileByUserId(ctx.db, user._id);
 		if (!existing) {
 			throw new Error('Complete onboarding before updating your profile.');
 		}
