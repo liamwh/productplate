@@ -12,4 +12,5 @@ export { default as LandingOrbitingCircles } from './landing-orbiting-circles.sv
 export { default as LandingPricingCards } from './landing-pricing-cards.svelte';
 export { default as LandingProcessTimeline } from './landing-process-timeline.svelte';
 export { default as LandingStatsStrip } from './landing-stats-strip.svelte';
+export { default as LandingTestimonialMarquee } from './landing-testimonial-marquee.svelte';
 export { default as LandingTestimonialWall } from './landing-testimonial-wall.svelte';

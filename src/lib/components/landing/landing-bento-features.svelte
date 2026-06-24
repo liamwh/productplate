@@ -189,6 +189,14 @@
 						{/if}
 					</div>
 
+					<div class="bento-scrim" aria-hidden="true">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+
 					<div class="bento-copy">
 						<item.icon
 							class="size-10 text-foreground/75 transition-transform duration-300 group-hover:scale-90"
@@ -213,6 +221,7 @@
 	.bento-card {
 		position: relative;
 		display: flex;
+		isolation: isolate;
 		overflow: hidden;
 		min-height: 22rem;
 		border: 1px solid var(--border);
@@ -238,15 +247,96 @@
 
 	.bento-background {
 		position: absolute;
-		inset: 0 0 8rem;
+		inset: 0;
 		overflow: hidden;
 		padding: 1rem;
 		opacity: 0.96;
 	}
 
+	.bento-scrim {
+		position: absolute;
+		z-index: 1;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		height: 68%;
+		pointer-events: none;
+		background: linear-gradient(
+			to top,
+			var(--card) 0%,
+			color-mix(in oklch, var(--card) 95%, transparent) 34%,
+			color-mix(in oklch, var(--card) 68%, transparent) 58%,
+			transparent 100%
+		);
+	}
+
+	.bento-scrim span {
+		position: absolute;
+		inset: 0;
+	}
+
+	.bento-scrim span:nth-child(1) {
+		backdrop-filter: blur(0.5px);
+		-webkit-backdrop-filter: blur(0.5px);
+		mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 32%, transparent 46%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black 18%,
+			black 32%,
+			transparent 46%
+		);
+	}
+
+	.bento-scrim span:nth-child(2) {
+		backdrop-filter: blur(1.5px);
+		-webkit-backdrop-filter: blur(1.5px);
+		mask-image: linear-gradient(to bottom, transparent 18%, black 34%, black 50%, transparent 64%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 18%,
+			black 34%,
+			black 50%,
+			transparent 64%
+		);
+	}
+
+	.bento-scrim span:nth-child(3) {
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		mask-image: linear-gradient(to bottom, transparent 36%, black 52%, black 68%, transparent 80%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 36%,
+			black 52%,
+			black 68%,
+			transparent 80%
+		);
+	}
+
+	.bento-scrim span:nth-child(4) {
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		mask-image: linear-gradient(to bottom, transparent 56%, black 72%, black 88%, transparent 100%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 56%,
+			black 72%,
+			black 88%,
+			transparent 100%
+		);
+	}
+
+	.bento-scrim span:nth-child(5) {
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		mask-image: linear-gradient(to bottom, transparent 82%, black 100%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 82%, black 100%);
+	}
+
 	.bento-copy {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 		margin-top: auto;
 		padding: 1.25rem;
 		transition: transform 240ms ease;

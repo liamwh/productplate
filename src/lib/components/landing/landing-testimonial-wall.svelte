@@ -8,7 +8,8 @@
 		quote: string;
 		image: string;
 		imageAlt: string;
-		size?: 'feature' | 'wide' | 'tall' | 'normal';
+		size?: 'feature' | 'wide' | 'tall' | 'compact' | 'media' | 'normal';
+		metric?: string;
 		tone?: 'featured' | 'default';
 	}
 
@@ -33,6 +34,7 @@
 					'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80',
 				imageAlt: 'Portrait of a founder using the product',
 				size: 'feature',
+				metric: '14 sections shipped',
 				tone: 'featured'
 			},
 			{
@@ -43,6 +45,7 @@
 				image:
 					'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80',
 				imageAlt: 'Portrait of an indie maker',
+				metric: '2.8x trial starts',
 				size: 'tall'
 			},
 			{
@@ -52,7 +55,8 @@
 					'The tabs and bento sections feel much more like components I would actually copy into a starter.',
 				image:
 					'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of a product engineer'
+				imageAlt: 'Portrait of a product engineer',
+				size: 'compact'
 			},
 			{
 				name: 'Iris Park',
@@ -62,6 +66,7 @@
 				image:
 					'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80',
 				imageAlt: 'Portrait of a design partner',
+				metric: 'Copy passed first review',
 				size: 'wide'
 			},
 			{
@@ -71,7 +76,8 @@
 					'I used the comparison section to explain why our product was not another dashboard template.',
 				image:
 					'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of a builder in residence'
+				imageAlt: 'Portrait of a builder in residence',
+				size: 'compact'
 			},
 			{
 				name: 'Chris Noel',
@@ -84,6 +90,17 @@
 				size: 'tall'
 			},
 			{
+				name: 'Nora Vale',
+				role: 'Growth lead',
+				quote:
+					'The proof blocks gave us room for quotes, founder video stills, and specific outcomes without turning the page into a wall of identical cards.',
+				image:
+					'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80',
+				imageAlt: 'Portrait of a growth lead',
+				metric: '+31% activation',
+				size: 'media'
+			},
+			{
 				name: 'Launch room',
 				role: 'Product screenshot slot',
 				quote:
@@ -91,13 +108,33 @@
 				image:
 					'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
 				imageAlt: 'Workspace with desks and product planning boards',
+				metric: 'Replace with your screenshot',
 				size: 'wide'
+			},
+			{
+				name: 'Theo Bright',
+				role: 'Solo SaaS founder',
+				quote:
+					'The components made the launch page feel assembled, not decorated. I kept the grid and replaced every quote with customer language.',
+				image:
+					'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80',
+				imageAlt: 'Portrait of a solo SaaS founder',
+				size: 'normal'
+			},
+			{
+				name: 'Mosaic slot',
+				role: 'Founder video still',
+				quote: 'Use this compact card for a short video pull quote or clipped customer message.',
+				image:
+					'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80',
+				imageAlt: 'People reviewing a product launch on laptops',
+				size: 'media'
 			}
 		]
 	}: Props = $props();
 </script>
 
-<section id="proof" class="py-20 sm:py-24">
+<section id="proof" class="scroll-mt-24 py-20 sm:py-24">
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="mx-auto max-w-3xl text-center">
 			<Badge variant="outline">{kicker}</Badge>
@@ -117,10 +154,18 @@
 						.join(' ')}
 				>
 					<div class="proof-media">
-						<img src={testimonial.image} alt={testimonial.imageAlt} loading="lazy" />
+						<img
+							src={testimonial.image}
+							alt={testimonial.imageAlt}
+							loading="eager"
+							decoding="async"
+						/>
 					</div>
 					<div class="proof-body">
 						<QuoteIcon class="size-5 opacity-70" />
+						{#if testimonial.metric}
+							<p class="proof-metric">{testimonial.metric}</p>
+						{/if}
 						<blockquote>"{testimonial.quote}"</blockquote>
 					</div>
 					<figcaption class="proof-caption">
@@ -135,18 +180,20 @@
 
 <style>
 	.proof-mosaic {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1rem;
+		columns: 1;
+		column-gap: 1rem;
 	}
 
 	.proof-card {
-		display: grid;
+		display: inline-flex;
+		width: 100%;
+		flex-direction: column;
 		overflow: hidden;
-		min-height: 18rem;
+		margin-bottom: 1rem;
 		border: 1px solid var(--border);
 		border-radius: 1rem;
 		background: var(--card);
+		break-inside: avoid;
 		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 5%, transparent);
 	}
 
@@ -164,11 +211,40 @@
 		display: block;
 	}
 
+	.proof-card-compact .proof-media {
+		min-height: 6rem;
+	}
+
+	.proof-card-wide .proof-media,
+	.proof-card-media .proof-media {
+		min-height: 11rem;
+	}
+
+	.proof-card-tall .proof-media {
+		min-height: 13.5rem;
+	}
+
+	.proof-card-feature .proof-media {
+		min-height: 18rem;
+	}
+
 	.proof-body {
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
 		padding: 1.25rem 1.25rem 0;
+	}
+
+	.proof-metric {
+		margin-top: 0.85rem;
+		width: fit-content;
+		border-radius: 999px;
+		background: color-mix(in oklch, var(--foreground) 8%, transparent);
+		padding: 0.25rem 0.6rem;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: uppercase;
 	}
 
 	.proof-body blockquote {
@@ -204,70 +280,19 @@
 		color: color-mix(in oklch, var(--primary-foreground) 72%, transparent);
 	}
 
+	.proof-card-featured-tone .proof-metric {
+		background: color-mix(in oklch, var(--primary-foreground) 14%, transparent);
+	}
+
 	@media (min-width: 768px) {
 		.proof-mosaic {
-			grid-auto-rows: minmax(8rem, auto);
-			grid-template-columns: repeat(6, minmax(0, 1fr));
-		}
-
-		.proof-card {
-			grid-column: span 3;
-		}
-
-		.proof-card-wide {
-			grid-column: span 6;
-			grid-template-columns: 0.95fr 1.05fr;
-		}
-
-		.proof-card-tall {
-			grid-row: span 2;
-		}
-
-		.proof-card-feature {
-			grid-column: span 6;
-			grid-template-columns: 0.9fr 1.1fr;
-		}
-
-		.proof-card-wide .proof-media,
-		.proof-card-feature .proof-media {
-			grid-row: 1 / span 2;
-			min-height: 100%;
-		}
-
-		.proof-card-wide .proof-body,
-		.proof-card-feature .proof-body,
-		.proof-card-wide .proof-caption,
-		.proof-card-feature .proof-caption {
-			grid-column: 2;
-		}
-
-		.proof-card-wide .proof-media img,
-		.proof-card-feature .proof-media img {
-			min-height: 100%;
+			columns: 2;
 		}
 	}
 
 	@media (min-width: 1120px) {
 		.proof-mosaic {
-			grid-template-columns: repeat(12, minmax(0, 1fr));
-		}
-
-		.proof-card {
-			grid-column: span 3;
-		}
-
-		.proof-card-wide {
-			grid-column: span 6;
-		}
-
-		.proof-card-feature {
-			grid-column: span 6;
-			grid-row: span 2;
-		}
-
-		.proof-card-tall {
-			grid-column: span 3;
-			grid-row: span 2;
+			columns: 4;
 		}
 	}
 </style>

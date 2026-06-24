@@ -13,6 +13,7 @@
 		LandingPricingCards,
 		LandingProcessTimeline,
 		LandingStatsStrip,
+		LandingTestimonialMarquee,
 		LandingTestimonialWall
 	} from '$lib/components/landing';
 	import { Badge } from '$lib/components/ui/badge';
@@ -39,9 +40,11 @@
 		},
 		{
 			title: 'Conversion sections',
-			description: 'Proof wall, pricing cards, FAQ accordion, final CTA, and footer.',
+			description:
+				'Mosaic proof, marquee proof, pricing cards, FAQ accordion, final CTA, and footer.',
 			items: [
 				'LandingTestimonialWall',
+				'LandingTestimonialMarquee',
 				'LandingPricingCards',
 				'LandingFaqSection',
 				'LandingFinalCta',
@@ -73,7 +76,7 @@
 		<LandingHero />
 		<LandingLogoMarquee />
 
-		<section id="patterns" class="py-20 sm:py-24">
+		<section id="patterns" class="scroll-mt-24 py-20 sm:py-24">
 			<div class="mx-auto max-w-7xl px-6">
 				<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
 					<div>
@@ -121,6 +124,7 @@
 		<LandingProcessTimeline />
 		<LandingIntegrationCloud />
 		<LandingTestimonialWall />
+		<LandingTestimonialMarquee />
 
 		<section class="py-16 sm:py-20">
 			<div class="mx-auto max-w-7xl px-6">
