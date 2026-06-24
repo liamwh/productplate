@@ -13,7 +13,6 @@
 		LandingLensShowcase,
 		LandingLogoMarquee,
 		LandingNav,
-		LandingOrbitingCircles,
 		LandingPricingCards,
 		LandingPricingComparison,
 		LandingProcessTimeline,
@@ -47,7 +46,6 @@
 				'LandingFeatureTabs',
 				'LandingComparisonTable',
 				'LandingIntegrationCloud',
-				'LandingOrbitingCircles',
 				'LandingProcessTimeline'
 			]
 		},
@@ -149,7 +147,6 @@
 		<LandingComparisonTable />
 		<LandingProcessTimeline />
 		<LandingIntegrationCloud />
-		<LandingOrbitingCircles />
 		<LandingTestimonialWall />
 		<LandingTestimonialMarquee />
 

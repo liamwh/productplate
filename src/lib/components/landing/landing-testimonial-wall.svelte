@@ -296,40 +296,40 @@
 
 	.proof-media {
 		position: relative;
-		min-height: 8rem;
+		min-height: 5rem;
 		background: var(--muted);
 	}
 
 	.proof-media img {
 		width: 100%;
 		height: 100%;
-		min-height: 8rem;
+		min-height: 5rem;
 		object-fit: cover;
 		display: block;
 	}
 
 	.proof-card-compact .proof-media {
-		min-height: 6rem;
+		min-height: 3.5rem;
 	}
 
 	.proof-card-wide .proof-media,
 	.proof-card-media .proof-media {
-		min-height: 11rem;
+		min-height: 6rem;
 	}
 
 	.proof-card-tall .proof-media {
-		min-height: 13.5rem;
+		min-height: 8rem;
 	}
 
 	.proof-card-feature .proof-media {
-		min-height: 18rem;
+		min-height: 9rem;
 	}
 
 	.proof-body {
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
-		padding: 1.25rem 1.25rem 0;
+		padding: 1rem 1rem 0;
 	}
 
 	.proof-metric {
@@ -345,17 +345,17 @@
 	}
 
 	.proof-body blockquote {
-		margin-top: 0.9rem;
+		margin-top: 0.6rem;
 		color: var(--muted-foreground);
-		font-size: 0.98rem;
-		line-height: 1.75;
+		font-size: 0.88rem;
+		line-height: 1.55;
 	}
 
 	.proof-caption {
 		display: grid;
-		gap: 0.25rem;
+		gap: 0.2rem;
 		margin-top: auto;
-		padding: 1.5rem 1.25rem 1.25rem;
+		padding: 1rem 1rem;
 	}
 
 	.proof-caption span {
@@ -364,7 +364,7 @@
 
 	.proof-caption small {
 		color: var(--muted-foreground);
-		font-size: 0.8rem;
+		font-size: 0.75rem;
 	}
 
 	.proof-card-featured-tone {
@@ -404,52 +404,61 @@
 
 	@media (min-width: 760px) {
 		.proof-mosaic {
-			grid-template-columns: repeat(8, minmax(0, 1fr));
+			grid-template-columns: repeat(6, minmax(0, 1fr));
 			grid-auto-flow: dense;
-			grid-auto-rows: minmax(7rem, auto);
+			grid-auto-rows: minmax(6rem, auto);
 		}
 
 		.proof-card {
-			grid-column: span 4;
+			grid-column: span 2;
 		}
 
-		.proof-card-feature,
+		.proof-card-feature {
+			grid-column: span 3;
+			grid-row: span 2;
+		}
+
 		.proof-card-wide,
 		.proof-card-media {
-			grid-column: span 8;
+			grid-column: span 3;
 		}
 
 		.proof-card-tall {
+			grid-column: span 2;
 			grid-row: span 2;
+		}
+
+		.proof-card-compact {
+			grid-column: span 2;
 		}
 	}
 
 	@media (min-width: 1120px) {
 		.proof-mosaic {
-			grid-template-columns: repeat(12, minmax(0, 1fr));
+			grid-template-columns: repeat(8, minmax(0, 1fr));
 		}
 
 		.proof-card {
-			grid-column: span 3;
+			grid-column: span 2;
 		}
 
 		.proof-card-feature {
-			grid-column: span 6;
+			grid-column: span 4;
 			grid-row: span 2;
 		}
 
 		.proof-card-wide,
 		.proof-card-media {
-			grid-column: span 6;
+			grid-column: span 4;
 		}
 
 		.proof-card-tall {
-			grid-column: span 3;
+			grid-column: span 2;
 			grid-row: span 2;
 		}
 
 		.proof-card-compact {
-			grid-column: span 3;
+			grid-column: span 2;
 		}
 	}
 </style>
