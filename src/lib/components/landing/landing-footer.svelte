@@ -19,10 +19,12 @@
 		{
 			title: 'Components',
 			links: [
-				{ label: 'Hero patterns', href: '/landing-components#patterns' },
-				{ label: 'Proof sections', href: '/landing-components#proof' },
-				{ label: 'Pricing', href: '/landing-components#pricing' },
-				{ label: 'Extras', href: '/landing-components#extras' }
+				{ label: 'All components', href: '/components' },
+				{ label: 'Hero', href: '/components/hero' },
+				{ label: 'Features', href: '/components/features' },
+				{ label: 'Proof', href: '/components/proof' },
+				{ label: 'Pricing', href: '/components/pricing' },
+				{ label: 'FAQ', href: '/components/faq' }
 			]
 		},
 		{

@@ -13,11 +13,11 @@
 	}
 
 	const items = [
-		{ label: 'Patterns', href: '/landing-components#patterns' },
-		{ label: 'Proof', href: '/landing-components#proof' },
-		{ label: 'Pricing', href: '/landing-components#pricing' },
-		{ label: 'Extras', href: '/landing-components#extras' },
-		{ label: 'FAQ', href: '/landing-components#faq' }
+		{ label: 'Hero', href: '/components/hero' },
+		{ label: 'Features', href: '/components/features' },
+		{ label: 'Proof', href: '/components/proof' },
+		{ label: 'Pricing', href: '/components/pricing' },
+		{ label: 'All components', href: '/components' }
 	] as const;
 
 	let {

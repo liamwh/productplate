@@ -101,9 +101,7 @@
 					<span class="size-2 rounded-full bg-muted-foreground/25"></span>
 					<span class="size-2 rounded-full bg-muted-foreground/25"></span>
 				</div>
-				<span class="mx-auto pr-9 text-xs text-muted-foreground"
-					>landing-components/+page.svelte</span
-				>
+				<span class="mx-auto pr-9 text-xs text-muted-foreground">components/+page.svelte</span>
 			</div>
 
 			<div class="grid gap-4 p-4 sm:p-5 lg:grid-cols-[0.86fr_1.14fr]">

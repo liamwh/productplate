@@ -28,7 +28,7 @@
 		signIn: resolve('/auth/sign-in'),
 		dashboard: resolve('/dashboard'),
 		demo: resolve('/auth/demo'),
-		components: resolve('/landing-components')
+		components: resolve('/components')
 	};
 
 	const navLinks = [

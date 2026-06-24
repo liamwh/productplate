@@ -1,5 +1,6 @@
 export { default as LandingAppleCardsCarousel } from './landing-apple-cards-carousel.svelte';
 export { default as LandingBentoFeatures } from './landing-bento-features.svelte';
+export { default as LandingCtaBand } from './landing-cta-band.svelte';
 export { default as LandingComparisonTable } from './landing-comparison-table.svelte';
 export { default as LandingFaqSection } from './landing-faq-section.svelte';
 export { default as LandingFeatureTabs } from './landing-feature-tabs.svelte';
@@ -14,8 +15,10 @@ export { default as LandingNav } from './landing-nav.svelte';
 export { default as LandingOrbitingCircles } from './landing-orbiting-circles.svelte';
 export { default as LandingPricingCards } from './landing-pricing-cards.svelte';
 export { default as LandingPricingComparison } from './landing-pricing-comparison.svelte';
+export { default as LandingPricingMatrix } from './landing-pricing-matrix.svelte';
 export { default as LandingProcessTimeline } from './landing-process-timeline.svelte';
 export { default as LandingStatsStrip } from './landing-stats-strip.svelte';
+export { default as LandingStatsGrid } from './landing-stats-grid.svelte';
 export { default as LandingStickyScrollReveal } from './landing-sticky-scroll-reveal.svelte';
 export { default as LandingTestimonialMarquee } from './landing-testimonial-marquee.svelte';
 export { default as LandingTestimonialWall } from './landing-testimonial-wall.svelte';

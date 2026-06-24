@@ -14,8 +14,8 @@
 	}
 
 	let {
-		title = 'Start with a page that already knows the usual objections.',
-		description = 'Use the sections as-is, trim them down, or move them into your own product route. They are source files, not a black box.',
+		title = 'Ship the product, not the setup.',
+		description = 'Use the sections as-is or move them into your product route. They are source files.',
 		primaryLabel = 'Start building',
 		primaryHref = resolve('/auth/sign-up'),
 		secondaryLabel = 'View source',
@@ -27,7 +27,7 @@
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="cta-shell">
 			<div>
-				<h2 class="max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
+				<h2 class="max-w-3xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
 					{title}
 				</h2>
 				<p class="mt-5 max-w-2xl text-base leading-7 text-primary-foreground/75">

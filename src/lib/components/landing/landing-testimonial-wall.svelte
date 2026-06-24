@@ -1,196 +1,205 @@
 <script lang="ts">
-	import QuoteIcon from '@lucide/svelte/icons/quote';
+	import BrandLogo from './brand-logo.svelte';
+	import * as Card from '$lib/components/ui/card';
+	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button';
 
 	interface Testimonial {
+		id?: string;
 		name: string;
-		role: string;
-		quote: string;
-		image: string;
-		imageAlt: string;
-		span?: 'feature' | 'wide' | 'tall';
-		metric?: string;
-		tone?: 'featured' | 'default';
+		role?: string;
+		avatar: string;
+		content: string;
+		source?: string;
+		link?: string;
 	}
 
 	interface Props {
 		testimonials?: readonly Testimonial[];
-		collapseByDefault?: boolean;
+		heading?: string;
+		description?: string;
+		visibleCount?: number;
 		collapsedHeight?: string;
 		showMoreLabel?: string;
 	}
 
 	let {
+		heading = 'Testimonials',
+		description = 'Hear from builders who shipped on top of this starter.',
 		testimonials = [
 			{
-				name: 'Mina Kim',
-				role: 'Founder, Northstar Notes',
-				quote:
-					'We replaced a hero, pricing table, and FAQ in one afternoon. The sections were already shaped around real SaaS routes.',
-				image:
-					'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80',
-				imageAlt: 'Portrait of a founder',
-				span: 'feature',
-				metric: '14 sections shipped',
-				tone: 'featured'
+				id: '1',
+				name: 'Sarah Chen',
+				role: 'CEO & Founder',
+				avatar:
+					'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'This starter completely transformed how we build. We shipped our entire customer-facing dashboard in half the time, and design consistency across every page was noticeably better.',
+				source: 'X',
+				link: '#'
 			},
 			{
-				name: 'Avery Reed',
-				role: 'Indie maker',
-				quote:
-					'The components are not hidden behind a package. I changed markup, copy, and spacing directly.',
-				image:
-					'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of an indie maker',
-				metric: '2.8x trial starts',
-				span: 'tall'
+				id: '2',
+				name: 'Marcus Rodriguez',
+				role: 'CTO',
+				avatar:
+					'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'The attention to accessibility and performance is outstanding. Our Lighthouse scores improved by 15 points across the board, and we passed our first external accessibility audit with zero critical issues.',
+				source: 'LinkedIn',
+				link: '#'
 			},
 			{
-				name: 'Jon Lane',
-				role: 'Product engineer',
-				quote:
-					'The tabs and bento sections feel like components I would actually copy into a starter.',
-				image:
-					'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of a product engineer'
+				id: '3',
+				name: 'Emily Watson',
+				role: 'Head of Product',
+				avatar:
+					'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'Finally, a foundation that developers actually want to use. The defaults are sensible and the components are flexible.',
+				source: 'X',
+				link: '#'
 			},
 			{
-				name: 'Iris Park',
-				role: 'Design partner',
-				quote:
-					'It gives founders a real launch page vocabulary: proof, comparison, pricing, and a final CTA.',
-				image:
-					'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80',
-				imageAlt: 'Portrait of a design partner',
-				metric: 'Copy passed first review',
-				span: 'wide'
+				id: '4',
+				name: 'David Kim',
+				role: 'Tech Lead',
+				avatar:
+					'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'We evaluated five starters over two quarters before settling on this one. Every piece felt production-ready out of the box.',
+				source: 'Reddit',
+				link: '#'
 			},
 			{
-				name: 'Sam Kaur',
-				role: 'Builder in residence',
-				quote:
-					'I used the comparison section to explain why our product was not another dashboard template.',
-				image:
-					'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of a builder'
+				id: '5',
+				name: 'Rachel Foster',
+				role: 'Senior Designer',
+				avatar:
+					'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'As a designer, I appreciate how closely the components match our Figma designs. The design-to-dev handoff has never been smoother, and the spacing system makes it easy to maintain visual consistency across dozens of screens.',
+				source: 'X',
+				link: '#'
 			},
 			{
-				name: 'Chris Noel',
-				role: 'Early customer',
-				quote:
-					'The default copy is dummy data, but the structure is right. That made it easier to write our real story.',
-				image:
-					'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of an early customer',
-				span: 'tall'
+				id: '6',
+				name: 'James Mitchell',
+				role: 'Full Stack Developer',
+				avatar:
+					'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'The TypeScript support is best-in-class. Autocomplete just works, prop types catch mistakes before they hit production, and the DX is genuinely enjoyable.',
+				source: 'LinkedIn',
+				link: '#'
 			},
 			{
-				name: 'Nora Vale',
-				role: 'Growth lead',
-				quote:
-					'Room for quotes, founder video stills, and specific outcomes without turning the page into a wall of identical cards.',
-				image:
-					'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80',
-				imageAlt: 'Portrait of a growth lead',
-				metric: '+31% activation',
-				span: 'wide'
+				id: '7',
+				name: 'Nina Patel',
+				role: 'UX Engineer',
+				avatar:
+					'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'These components handle edge cases I did not even think to test for. Dark mode, RTL support, keyboard navigation, and screen reader announcements are all built in from the start.',
+				source: 'PH',
+				link: '#'
 			},
 			{
-				name: 'Theo Bright',
-				role: 'Solo SaaS founder',
-				quote:
-					'The page felt assembled, not decorated. I kept the grid and replaced every quote with customer language.',
-				image:
-					'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80',
-				imageAlt: 'Portrait of a solo founder'
+				id: '8',
+				name: 'Alex Thompson',
+				role: 'Engineering Manager',
+				avatar:
+					'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'Our team velocity increased measurably after adopting this. Less time on UI boilerplate means more time on the features our customers actually care about.',
+				source: 'X',
+				link: '#'
 			},
 			{
-				name: 'Launch room',
-				role: 'Screenshot slot',
-				quote:
-					'Swap this slot with a founder video still, a customer Slack wall, or a real app screenshot.',
-				image:
-					'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
-				imageAlt: 'Workspace with product planning boards',
-				metric: 'Proof asset slot',
-				span: 'feature'
-			},
-			{
-				name: 'Camila Stone',
-				role: 'Agency founder',
-				quote:
-					'We used the wide slots for before-and-after screenshots and the compact ones for client notes.',
-				image:
-					'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80',
-				imageAlt: 'Portrait of an agency founder',
-				metric: '4 launches reused it',
-				span: 'wide'
+				id: '9',
+				name: 'Henry Garcia',
+				role: 'Product Lead',
+				avatar:
+					'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=160&h=160&q=80',
+				content:
+					'We rebuilt our entire onboarding flow using these blocks and launched it in under three weeks. Our activation rate is up 20% since the redesign.',
+				source: 'Reddit',
+				link: '#'
 			}
 		],
-		collapseByDefault = true,
+		visibleCount = 6,
 		collapsedHeight = '42rem',
-		showMoreLabel = 'Show more proof'
+		showMoreLabel = 'Show more testimonials'
 	}: Props = $props();
 
-	function isInitiallyExpanded() {
-		return !collapseByDefault;
-	}
+	let expanded = $state(false);
+	const hasMore = $derived(testimonials.length > visibleCount);
+	const clampClasses = [
+		'line-clamp-3',
+		'line-clamp-5',
+		'line-clamp-2',
+		'line-clamp-4',
+		'line-clamp-3',
+		'line-clamp-5',
+		'line-clamp-2',
+		'line-clamp-4',
+		'line-clamp-3'
+	];
 
-	let expanded = $state(isInitiallyExpanded());
-	const shouldCollapse = $derived(collapseByDefault && testimonials.length > 6);
-
-	function expand() {
+	function showAll() {
 		expanded = true;
 	}
 </script>
 
-<section id="proof" class="scroll-mt-24 py-16 sm:py-20">
+<section class="py-16 sm:py-20">
 	<div class="mx-auto max-w-7xl px-6">
-		<div
-			class={['proof-shell', shouldCollapse && !expanded ? 'proof-shell-collapsed' : '']
-				.filter(Boolean)
-				.join(' ')}
-			style={`--proof-collapsed-height: ${collapsedHeight};`}
-		>
-			<div class="proof-mosaic">
-				{#each testimonials as testimonial, index (testimonial.name)}
-					<figure
-						class={[
-							'proof-card',
-							testimonial.span ? `proof-card-${testimonial.span}` : '',
-							testimonial.tone === 'featured' ? 'proof-card-featured-tone' : ''
-						]
-							.filter(Boolean)
-							.join(' ')}
-					>
-						{#if testimonial.span === 'feature' || testimonial.span === 'wide' || testimonial.span === 'tall'}
-							<div class="proof-media">
-								<img
-									src={testimonial.image}
-									alt={testimonial.imageAlt}
-									loading={index < 4 ? 'eager' : 'lazy'}
-									decoding="async"
-								/>
+		<div class="flex flex-col items-center gap-3 text-center">
+			<h2 class="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">{heading}</h2>
+			<p class="max-w-2xl text-base leading-7 text-muted-foreground">{description}</p>
+		</div>
+
+		<div class="proof-wrap mt-10">
+			<div
+				class="proof-cols"
+				class:proof-collapsed={hasMore && !expanded}
+				style={`--collapsed-height: ${collapsedHeight};`}
+			>
+				{#each testimonials as testimonial, idx (testimonial.id ?? testimonial.name)}
+					{@const clamp = clampClasses[idx % clampClasses.length]}
+					<div class="proof-item">
+						<Card.Root class="break-inside-avoid p-5">
+							<div class="proof-head">
+								<div class="proof-who">
+									<Avatar.Root class="size-9 rounded-full ring-1 ring-input">
+										<Avatar.Image src={testimonial.avatar} alt={testimonial.name} />
+										<Avatar.Fallback>{testimonial.name.charAt(0)}</Avatar.Fallback>
+									</Avatar.Root>
+									<div class="proof-meta">
+										<p class="proof-name">{testimonial.name}</p>
+										{#if testimonial.role}
+											<p class="proof-role">{testimonial.role}</p>
+										{/if}
+									</div>
+								</div>
+								{#if testimonial.source}
+									<span
+										class="proof-source"
+										title={`Posted on ${testimonial.source}`}
+										aria-label={`Posted on ${testimonial.source}`}
+									>
+										<BrandLogo source={testimonial.source} class="size-4" />
+									</span>
+								{/if}
 							</div>
-						{/if}
-						<div class="proof-body">
-							<QuoteIcon class="size-5 opacity-70" />
-							{#if testimonial.metric}
-								<p class="proof-metric">{testimonial.metric}</p>
-							{/if}
-							<blockquote>{testimonial.quote}</blockquote>
-						</div>
-						<figcaption class="proof-caption">
-							<span>{testimonial.name}</span>
-							<small>{testimonial.role}</small>
-						</figcaption>
-					</figure>
+							<p class={`proof-quote ${expanded ? '' : clamp}`}>{testimonial.content}</p>
+						</Card.Root>
+					</div>
 				{/each}
 			</div>
 
-			{#if shouldCollapse && !expanded}
-				<div class="proof-expand">
-					<Button variant="secondary" onclick={expand}>{showMoreLabel}</Button>
+			{#if hasMore && !expanded}
+				<div class="proof-reveal">
+					<Button variant="secondary" onclick={showAll}>{showMoreLabel}</Button>
 				</div>
 			{/if}
 		</div>
@@ -198,170 +207,100 @@
 </section>
 
 <style>
-	.proof-shell {
+	.proof-wrap {
 		position: relative;
-		isolation: isolate;
 	}
 
-	.proof-shell-collapsed {
-		max-height: var(--proof-collapsed-height);
+	.proof-cols {
+		columns: 1;
+		column-gap: 1.25rem;
+	}
+
+	.proof-collapsed {
+		max-height: var(--collapsed-height);
 		overflow: hidden;
 	}
 
-	.proof-mosaic {
-		display: grid;
-		grid-template-columns: 1fr;
+	.proof-item {
+		break-inside: avoid;
+		margin-bottom: 1.25rem;
+	}
+
+	.proof-head {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
 		gap: 1rem;
 	}
 
-	.proof-card {
+	.proof-who {
 		display: flex;
-		min-height: 11rem;
-		flex-direction: column;
-		overflow: hidden;
-		border: 1px solid var(--border);
-		border-radius: 1rem;
-		background: var(--card);
-		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 5%, transparent);
+		align-items: center;
+		gap: 0.75rem;
 	}
 
-	.proof-media {
-		position: relative;
-		flex: 1 1 auto;
-		min-height: 6rem;
-		background: var(--muted);
+	.proof-meta {
+		line-height: 1.25;
 	}
 
-	.proof-media img {
-		width: 100%;
-		height: 100%;
-		min-height: 6rem;
-		object-fit: cover;
-		display: block;
+	.proof-name {
+		font-size: 0.875rem;
+		font-weight: 500;
 	}
 
-	.proof-body {
-		display: flex;
-		min-height: 0;
-		flex-direction: column;
-		padding: 1.1rem 1.1rem 0;
-	}
-
-	.proof-metric {
-		margin-top: 0.6rem;
-		width: fit-content;
-		border-radius: 999px;
-		background: color-mix(in oklch, var(--foreground) 8%, transparent);
-		padding: 0.22rem 0.55rem;
-		font-size: 0.7rem;
-		font-weight: 700;
-		text-transform: uppercase;
-	}
-
-	.proof-body blockquote {
-		margin-top: 0.55rem;
+	.proof-role {
 		color: var(--muted-foreground);
-		font-size: 0.9rem;
-		line-height: 1.55;
+		font-size: 0.875rem;
 	}
 
-	.proof-caption {
-		display: grid;
-		gap: 0.2rem;
-		margin-top: auto;
-		padding: 1rem 1.1rem;
-	}
-
-	.proof-caption span {
-		font-weight: 650;
-	}
-
-	.proof-caption small {
+	.proof-source {
+		display: inline-flex;
 		color: var(--muted-foreground);
-		font-size: 0.75rem;
+		transition: color 140ms ease;
 	}
 
-	.proof-card-featured-tone {
-		background: var(--primary);
-		color: var(--primary-foreground);
+	.proof-source:hover {
+		color: var(--foreground);
 	}
 
-	.proof-card-featured-tone .proof-body blockquote,
-	.proof-card-featured-tone .proof-caption small {
-		color: color-mix(in oklch, var(--primary-foreground) 78%, transparent);
+	.proof-quote {
+		margin-top: 0.75rem;
+		color: color-mix(in oklch, var(--foreground) 62%, transparent);
+		font-size: 0.95rem;
+		line-height: 1.75;
 	}
 
-	.proof-card-featured-tone .proof-metric {
-		background: color-mix(in oklch, var(--primary-foreground) 16%, transparent);
-	}
-
-	.proof-expand {
+	.proof-reveal {
 		position: absolute;
-		z-index: 2;
-		right: 0;
+		inset-inline: 0;
 		bottom: 0;
-		left: 0;
 		display: flex;
-		min-height: 11rem;
 		align-items: end;
 		justify-content: center;
 		padding-bottom: 1.5rem;
+		padding-top: 6rem;
 		background: linear-gradient(
-			to bottom,
-			transparent,
-			color-mix(in oklch, var(--background) 72%, transparent) 28%,
-			var(--background) 78%
+			to top,
+			var(--background),
+			color-mix(in oklch, var(--background) 72%, transparent) 60%,
+			transparent
 		);
 	}
 
-	@media (min-width: 640px) {
-		.proof-mosaic {
-			grid-template-columns: repeat(6, minmax(0, 1fr));
-			grid-auto-flow: dense;
-			grid-auto-rows: minmax(7rem, auto);
-		}
-
-		.proof-card {
-			grid-column: span 2;
-		}
-
-		.proof-card-wide {
-			grid-column: span 3;
-		}
-
-		.proof-card-tall {
-			grid-column: span 2;
-			grid-row: span 2;
-		}
-
-		.proof-card-feature {
-			grid-column: span 4;
-			grid-row: span 2;
+	@media (min-width: 768px) {
+		.proof-cols {
+			columns: 2;
 		}
 	}
 
 	@media (min-width: 1024px) {
-		.proof-card {
-			grid-column: span 2;
-		}
-
-		.proof-card-wide {
-			grid-column: span 3;
-		}
-
-		.proof-card-tall {
-			grid-column: span 2;
-			grid-row: span 2;
-		}
-
-		.proof-card-feature {
-			grid-column: span 3;
-			grid-row: span 2;
+		.proof-cols {
+			columns: 3;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.proof-shell-collapsed {
+		.proof-collapsed {
 			max-height: none;
 			overflow: visible;
 		}

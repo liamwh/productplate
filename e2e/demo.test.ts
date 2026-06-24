@@ -23,13 +23,17 @@ test('home page presents Product Plate and its starter capabilities', async ({ p
 });
 
 test('landing component gallery presents reusable marketing sections', async ({ page }) => {
-	await page.goto('/landing-components');
-	await expect(page).toHaveTitle(/Landing Components/);
-	await expect(page.getByRole('heading', { name: /Landing component library/i })).toBeVisible();
-	await expect(page.getByRole('heading', { name: /Hero patterns/i })).toBeVisible();
-	await expect(page.getByText('Conversion sections')).toBeVisible();
-	await expect(page.getByRole('heading', { name: /Pricing and FAQ/i })).toBeVisible();
-	await expect(page.getByRole('link', { name: /Back to home/i })).toHaveAttribute('href', '/');
+	await page.goto('/components');
+	await expect(page).toHaveTitle(/Components/);
+	await expect(page.getByRole('heading', { name: /Landing components/i })).toBeVisible();
+	await expect(page.getByRole('link', { name: /Hero/i }).first()).toHaveAttribute(
+		'href',
+		'/components/hero'
+	);
+	await expect(page.getByRole('link', { name: /Pricing/i }).first()).toHaveAttribute(
+		'href',
+		'/components/pricing'
+	);
 });
 
 test('demo entry opens the dashboard with sidebar navigation', async ({ page }) => {

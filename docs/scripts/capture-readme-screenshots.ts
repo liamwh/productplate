@@ -36,7 +36,7 @@ try {
 	await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' });
 	await screenshot(page, 'landing', 'h1');
 
-	await page.goto(`${baseUrl}/landing-components`, { waitUntil: 'domcontentloaded' });
+	await page.goto(`${baseUrl}/components`, { waitUntil: 'domcontentloaded' });
 	await screenshot(page, 'landing-components', 'h1', 900);
 
 	await page.goto(`${baseUrl}/auth/sign-up`, { waitUntil: 'domcontentloaded' });

@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://productplate.pages.dev/auth/demo">Live demo</a>
   ·
-  <a href="https://productplate.pages.dev/landing-components">Landing components</a>
+  <a href="https://productplate.pages.dev/components">Landing components</a>
   ·
   <a href="https://github.com/rodrgds/productplate">GitHub</a>
   ·
