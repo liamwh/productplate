@@ -179,19 +179,5 @@ src/lib/components/landing/ Reusable landing sections
 src/lib/components/mist/    Product Plate marketing sections
 src/convex/                 Convex schema, auth, billing, functions
 _template_options/          Inactive provider/database scaffolds
-docs/                       Integration docs and demo script
+docs/                       Integration docs
 ```
-
-## Demo Product Idea
-
-For a recorded demo, use **FeedbackDock**: a tiny feedback inbox for indie SaaS teams.
-
-Recommended choices:
-
-- Keep Convex for realtime feedback items.
-- Keep Better Auth.
-- Keep Autumn billing.
-- Keep the dashboard and settings routes.
-- Keep the AI assistant as a feedback summarizer.
-- Remove editor, 3D, graph/flow, and generic landing-component showcase from the public app.
-- Replace Product Plate copy with FeedbackDock copy.

@@ -15,8 +15,6 @@
 <p align="center">
   <a href="https://productplate.pages.dev/auth/demo">Live demo</a>
   ·
-  <a href="https://youtu.be/REPLACE_ME">Demo video</a>
-  ·
   <a href="./START_HERE.md">Kickstart prompt</a>
   ·
   <a href="https://productplate.pages.dev/components">Components</a>
@@ -46,8 +44,6 @@ The useful difference: it also ships with [`START_HERE.md`](./START_HERE.md), a 
 ## Try it
 
 - **Live demo:** [productplate.pages.dev/auth/demo](https://productplate.pages.dev/auth/demo)
-- **Demo video:** [YouTube placeholder](https://youtu.be/REPLACE_ME)
-- **Demo script:** [`docs/demo-script.md`](./docs/demo-script.md)
 
 The hosted demo creates a fresh disposable account and opens the app shell.
 
