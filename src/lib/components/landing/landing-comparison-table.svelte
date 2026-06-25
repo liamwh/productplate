@@ -1,21 +1,8 @@
 <script lang="ts">
-	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
-	import CheckIcon from '@lucide/svelte/icons/check';
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
-	import MinusIcon from '@lucide/svelte/icons/minus';
 	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
 
 	type SlideMode = 'hover' | 'drag';
-
-	interface Option {
-		name: string;
-		eyebrow: string;
-		summary: string;
-		outcome: string;
-		items: readonly { label: string; included: boolean }[];
-		highlight?: boolean;
-	}
 
 	interface Props {
 		kicker?: string;
@@ -28,61 +15,19 @@
 		initialSliderPercentage?: number;
 		slideMode?: SlideMode;
 		showHandlebar?: boolean;
-		options?: readonly Option[];
 	}
 
 	let {
-		kicker = 'Comparison',
+		kicker = 'Image comparison',
 		title = 'Let visitors scrub the before and after instead of reading a spreadsheet.',
-		description = 'Ported from Aceternity’s Compare component: a clipped image layer, pointer-driven slider, drag or hover modes, and compact option lanes for the actual buying decision.',
+		description = 'Ported from Aceternity’s Compare component: a clipped image layer with a pointer-driven slider, drag or hover modes, and a keyboard-friendly handle.',
 		firstImage = 'https://assets.aceternity.com/code-problem.png',
 		secondImage = 'https://assets.aceternity.com/code-solution.png',
 		firstImageAlt = 'Before screenshot with messy implementation details',
 		secondImageAlt = 'After screenshot with cleaner implementation details',
 		initialSliderPercentage = 54,
 		slideMode = 'drag',
-		showHandlebar = true,
-		options = [
-			{
-				name: 'Static template',
-				eyebrow: 'Fast start',
-				summary: 'Pretty sections, but the app work still waits behind the page.',
-				outcome: 'Best for experiments',
-				items: [
-					{ label: 'Reusable marketing blocks', included: true },
-					{ label: 'Authenticated app routes', included: false },
-					{ label: 'Backend and billing path', included: false },
-					{ label: 'Design system in repo', included: true }
-				]
-			},
-			{
-				name: 'Product Plate',
-				eyebrow: 'Starter',
-				summary:
-					'Landing sections, auth, app shell, data, billing, and docs stay in one editable codebase.',
-				outcome: 'Best for shipping',
-				highlight: true,
-				items: [
-					{ label: 'Reusable marketing blocks', included: true },
-					{ label: 'Authenticated app routes', included: true },
-					{ label: 'Backend and billing path', included: true },
-					{ label: 'Design system in repo', included: true }
-				]
-			},
-			{
-				name: 'Custom build',
-				eyebrow: 'Highest control',
-				summary:
-					'Everything can fit perfectly, but the useful first version takes longer to reach.',
-				outcome: 'Best after traction',
-				items: [
-					{ label: 'Reusable marketing blocks', included: true },
-					{ label: 'Authenticated app routes', included: true },
-					{ label: 'Backend and billing path', included: true },
-					{ label: 'Design system in repo', included: false }
-				]
-			}
-		]
+		showHandlebar = true
 	}: Props = $props();
 
 	let sliderRef: HTMLDivElement | undefined = $state();
@@ -159,99 +104,62 @@
 					{title}
 				</h2>
 				<p class="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">{description}</p>
-				<Button href="#pricing" variant="outline" class="mt-8">
-					Compare plans
-					<ArrowRightIcon data-icon="inline-end" />
-				</Button>
 			</div>
 
-			<div class="grid gap-5">
-				<div class="compare-shell">
-					<div class="compare-heading">
-						<span>Before</span>
-						<span>{scrubLabel}</span>
-						<span>After</span>
-					</div>
+			<div class="compare-shell">
+				<div class="compare-heading">
+					<span>Before</span>
+					<span>{scrubLabel}</span>
+					<span>After</span>
+				</div>
 
+				<div
+					bind:this={sliderRef}
+					class={['compare-frame', isDragging ? 'is-dragging' : ''].filter(Boolean).join(' ')}
+					role="slider"
+					tabindex="0"
+					aria-label="Before and after product comparison"
+					aria-valuemin="0"
+					aria-valuemax="100"
+					aria-valuenow={Math.round(sliderXPercent)}
+					onpointerdown={handlePointerDown}
+					onpointermove={handlePointerMove}
+					onpointerup={handlePointerUp}
+					onpointercancel={handlePointerUp}
+					onpointerleave={handlePointerLeave}
+					onkeydown={handleKeydown}
+				>
+					<img
+						class="compare-image compare-image-after"
+						src={secondImage}
+						alt={secondImageAlt}
+						draggable="false"
+						loading="lazy"
+						decoding="async"
+					/>
 					<div
-						bind:this={sliderRef}
-						class={['compare-frame', isDragging ? 'is-dragging' : ''].filter(Boolean).join(' ')}
-						role="slider"
-						tabindex="0"
-						aria-label="Before and after product comparison"
-						aria-valuemin="0"
-						aria-valuemax="100"
-						aria-valuenow={Math.round(sliderXPercent)}
-						onpointerdown={handlePointerDown}
-						onpointermove={handlePointerMove}
-						onpointerup={handlePointerUp}
-						onpointercancel={handlePointerUp}
-						onpointerleave={handlePointerLeave}
-						onkeydown={handleKeydown}
+						class="compare-image-before"
+						style={`clip-path: inset(0 ${100 - sliderXPercent}% 0 0);`}
 					>
 						<img
-							class="compare-image compare-image-after"
-							src={secondImage}
-							alt={secondImageAlt}
+							class="compare-image"
+							src={firstImage}
+							alt={firstImageAlt}
 							draggable="false"
 							loading="lazy"
 							decoding="async"
 						/>
-						<div
-							class="compare-image-before"
-							style={`clip-path: inset(0 ${100 - sliderXPercent}% 0 0);`}
-						>
-							<img
-								class="compare-image"
-								src={firstImage}
-								alt={firstImageAlt}
-								draggable="false"
-								loading="lazy"
-								decoding="async"
-							/>
-						</div>
-
-						<div class="compare-divider" style={`left: ${sliderXPercent}%;`} aria-hidden="true">
-							<span class="compare-glow compare-glow-wide"></span>
-							<span class="compare-glow compare-glow-tight"></span>
-							{#if showHandlebar}
-								<span class="compare-handle">
-									<GripVerticalIcon class="size-4" />
-								</span>
-							{/if}
-						</div>
 					</div>
-				</div>
 
-				<div class="option-lanes">
-					{#each options as option (option.name)}
-						<article
-							class={['option-lane', option.highlight ? 'option-lane-highlight' : '']
-								.filter(Boolean)
-								.join(' ')}
-						>
-							<div class="option-head">
-								<Badge variant={option.highlight ? 'default' : 'secondary'}>{option.eyebrow}</Badge>
-								<h3>{option.name}</h3>
-								<p>{option.summary}</p>
-							</div>
-							<ul>
-								{#each option.items as item (item.label)}
-									<li>
-										<span class={item.included ? 'included' : 'missing'}>
-											{#if item.included}
-												<CheckIcon class="size-4" />
-											{:else}
-												<MinusIcon class="size-4" />
-											{/if}
-										</span>
-										{item.label}
-									</li>
-								{/each}
-							</ul>
-							<p class="option-outcome">{option.outcome}</p>
-						</article>
-					{/each}
+					<div class="compare-divider" style={`left: ${sliderXPercent}%;`} aria-hidden="true">
+						<span class="compare-glow compare-glow-wide"></span>
+						<span class="compare-glow compare-glow-tight"></span>
+						{#if showHandlebar}
+							<span class="compare-handle">
+								<GripVerticalIcon class="size-4" />
+							</span>
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -398,96 +306,6 @@
 			0 0 0 1px color-mix(in oklch, var(--foreground) 5%, transparent),
 			0 12px 24px color-mix(in oklch, var(--foreground) 18%, transparent);
 		transform: translateY(-50%);
-	}
-
-	.option-lanes {
-		display: grid;
-		gap: 0.75rem;
-	}
-
-	.option-lane {
-		display: grid;
-		gap: 1rem;
-		border: 1px solid var(--border);
-		border-radius: 1rem;
-		background: var(--card);
-		padding: 1rem;
-		box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 4%, transparent);
-	}
-
-	.option-lane-highlight {
-		border-color: color-mix(in oklch, var(--primary) 38%, var(--border));
-		background: color-mix(in oklch, var(--primary) 6%, var(--card));
-	}
-
-	.option-head h3 {
-		margin-top: 0.75rem;
-		font-size: 1.15rem;
-		font-weight: 650;
-		letter-spacing: 0;
-	}
-
-	.option-head p {
-		margin-top: 0.45rem;
-		color: var(--muted-foreground);
-		line-height: 1.65;
-	}
-
-	.option-lane ul {
-		display: grid;
-		gap: 0.65rem;
-	}
-
-	.option-lane li {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.55rem;
-		color: var(--muted-foreground);
-		font-size: 0.9rem;
-	}
-
-	.included,
-	.missing {
-		display: inline-flex;
-		width: 1.35rem;
-		height: 1.35rem;
-		flex: 0 0 auto;
-		align-items: center;
-		justify-content: center;
-		border-radius: 999px;
-	}
-
-	.included {
-		background: color-mix(in oklch, var(--primary) 12%, transparent);
-		color: var(--foreground);
-	}
-
-	.missing {
-		background: color-mix(in oklch, var(--foreground) 7%, transparent);
-		color: var(--muted-foreground);
-	}
-
-	.option-outcome {
-		width: fit-content;
-		border-radius: 999px;
-		background: var(--muted);
-		padding: 0.32rem 0.65rem;
-		font-size: 0.76rem;
-		font-weight: 700;
-		letter-spacing: 0;
-		text-transform: uppercase;
-	}
-
-	@media (min-width: 760px) {
-		.option-lane {
-			grid-template-columns: 0.95fr 1.05fr auto;
-			align-items: center;
-		}
-
-		.option-outcome {
-			justify-self: end;
-			white-space: nowrap;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

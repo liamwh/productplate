@@ -8,7 +8,7 @@
 <section class="py-24 sm:py-32">
 	<div class="mx-auto max-w-6xl px-6">
 		<div
-			class="grid gap-8 rounded-2xl bg-primary px-7 py-12 text-primary-foreground sm:px-12 lg:grid-cols-[1fr_auto] lg:items-center"
+			class="grid gap-8 rounded-2xl bg-primary px-7 py-12 text-primary-foreground selection:bg-primary-foreground/25 selection:text-primary sm:px-12 lg:grid-cols-[1fr_auto] lg:items-center"
 		>
 			<div>
 				<h2 class="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">

@@ -133,7 +133,8 @@
 		text-rendering: optimizeLegibility;
 	}
 	::selection {
-		background: color-mix(in oklch, var(--foreground) 16%, transparent);
+		background: var(--primary-foreground);
+		color: var(--primary);
 	}
 	a[href],
 	button:not(:disabled),

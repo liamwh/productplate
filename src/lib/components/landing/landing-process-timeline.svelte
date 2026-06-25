@@ -55,7 +55,7 @@
 	}: Props = $props();
 </script>
 
-<section class="border-y bg-muted/30 py-20 sm:py-24">
+<section class="py-20 sm:py-24">
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="timeline-layout">
 			<div class="timeline-intro">

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
-	import XIcon from '@lucide/svelte/icons/x';
 	import { Badge } from '$lib/components/ui/badge';
 
 	interface CarouselCard {
@@ -9,8 +8,6 @@
 		title: string;
 		image: string;
 		imageAlt: string;
-		body: string;
-		points: readonly string[];
 	}
 
 	interface Props {
@@ -23,83 +20,54 @@
 	let {
 		kicker = 'Apple cards carousel',
 		title = 'A high-impact card carousel for stories, use cases, and launches.',
-		description = 'Based on Aceternity’s Apple Cards Carousel: large scroll-snap cards with image-led hierarchy and an expanded detail view.',
+		description = 'Large scroll-snap cards with image-led hierarchy, image zoom on hover, and a compact scroll rail for fast scanning.',
 		cards = [
 			{
 				category: 'Launch story',
 				title: 'From private beta to paid plan',
 				image:
 					'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80',
-				imageAlt: 'Team planning a software launch',
-				body: 'Use a card like this to turn customer stories, feature drops, or product updates into a visual carousel.',
-				points: [
-					'Hero-worthy image slot',
-					'Modal detail view',
-					'Works for changelogs and case studies'
-				]
+				imageAlt: 'Team planning a software launch'
 			},
 			{
 				category: 'Feature drop',
 				title: 'Show the workflow behind the feature',
 				image:
 					'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
-				imageAlt: 'Laptop with workflow notes',
-				body: 'The expanded view gives teams a place for screenshots, bullets, customer notes, or launch context.',
-				points: ['Scroll-snap rail', 'Keyboard-friendly modal', 'Strong image/copy split']
+				imageAlt: 'Laptop with workflow notes'
 			},
 			{
 				category: 'Customer proof',
 				title: 'Package a proof asset without a wall of text',
 				image:
 					'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
-				imageAlt: 'Customer meeting at a conference table',
-				body: 'The card format works well for testimonials that need a real image, a metric, and a little narrative.',
-				points: [
-					'Uneven proof alternative',
-					'Great for founder video stills',
-					'Compact enough for home pages'
-				]
+				imageAlt: 'Customer meeting at a conference table'
 			},
 			{
 				category: 'Product tour',
 				title: 'Give each app surface a cinematic tile',
 				image:
 					'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
-				imageAlt: 'Product team reviewing analytics',
-				body: 'Use the carousel to sequence dashboard, billing, onboarding, and settings surfaces without a long stacked page.',
-				points: ['Horizontal exploration', 'Large visual slots', 'Simple data shape']
+				imageAlt: 'Product team reviewing analytics'
+			},
+			{
+				category: 'Changelog',
+				title: 'Release notes that read like a story',
+				image:
+					'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
+				imageAlt: 'Notebook and laptop on a wooden desk'
 			}
 		]
 	}: Props = $props();
 
 	let railRef: HTMLDivElement | undefined = $state();
-	let activeIndex: number | undefined = $state();
-	const activeCard = $derived(activeIndex === undefined ? undefined : cards[activeIndex]);
 
 	function scrollRail(direction: -1 | 1) {
 		railRef?.scrollBy({ left: direction * 360, behavior: 'smooth' });
 	}
-
-	function closeCard() {
-		activeIndex = undefined;
-	}
-
-	function handleModalClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			closeCard();
-		}
-	}
-
-	function handleWindowKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape' && activeIndex !== undefined) {
-			closeCard();
-		}
-	}
 </script>
 
-<svelte:window onkeydown={handleWindowKeydown} />
-
-<section class="border-y bg-muted/30 py-20 sm:py-24">
+<section class="py-20 sm:py-24">
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
 			<div>
@@ -115,15 +83,15 @@
 
 		<div class="carousel-wrap mt-12">
 			<div bind:this={railRef} class="apple-rail" aria-label="Landing story carousel">
-				{#each cards as card, index (card.title)}
-					<button type="button" class="apple-card" onclick={() => (activeIndex = index)}>
+				{#each cards as card (card.title)}
+					<article class="apple-card">
 						<img src={card.image} alt={card.imageAlt} loading="lazy" decoding="async" />
 						<span class="apple-card-scrim" aria-hidden="true"></span>
 						<span class="apple-card-copy">
 							<small>{card.category}</small>
 							<strong>{card.title}</strong>
 						</span>
-					</button>
+					</article>
 				{/each}
 			</div>
 
@@ -138,27 +106,6 @@
 		</div>
 	</div>
 </section>
-
-{#if activeCard}
-	<div class="card-modal" role="presentation" onclick={handleModalClick}>
-		<div class="card-dialog" role="dialog" aria-modal="true" aria-labelledby="apple-card-title">
-			<button type="button" class="card-close" aria-label="Close story" onclick={closeCard}>
-				<XIcon class="size-5" />
-			</button>
-			<img src={activeCard.image} alt={activeCard.imageAlt} />
-			<div class="card-dialog-copy">
-				<Badge variant="secondary">{activeCard.category}</Badge>
-				<h3 id="apple-card-title">{activeCard.title}</h3>
-				<p>{activeCard.body}</p>
-				<ul>
-					{#each activeCard.points as point (point)}
-						<li>{point}</li>
-					{/each}
-				</ul>
-			</div>
-		</div>
-	</div>
-{/if}
 
 <style>
 	.carousel-wrap {
@@ -249,8 +196,7 @@
 		gap: 0.5rem;
 	}
 
-	.carousel-actions button,
-	.card-close {
+	.carousel-actions button {
 		display: grid;
 		width: 2.5rem;
 		height: 2.5rem;
@@ -259,76 +205,5 @@
 		border-radius: 999px;
 		background: var(--background);
 		color: var(--foreground);
-	}
-
-	.card-modal {
-		position: fixed;
-		z-index: 220;
-		inset: 0;
-		overflow-y: auto;
-		background: color-mix(in oklch, black 62%, transparent);
-		padding: 1rem;
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-	}
-
-	.card-dialog {
-		position: relative;
-		overflow: hidden;
-		width: min(62rem, 100%);
-		margin: 3rem auto;
-		border: 1px solid var(--border);
-		border-radius: 1.35rem;
-		background: var(--background);
-		box-shadow: 0 28px 90px color-mix(in oklch, black 34%, transparent);
-	}
-
-	.card-dialog > img {
-		width: 100%;
-		aspect-ratio: 16 / 7;
-		object-fit: cover;
-	}
-
-	.card-dialog-copy {
-		padding: clamp(1.5rem, 5vw, 3rem);
-	}
-
-	.card-dialog h3 {
-		margin-top: 1rem;
-		max-width: 42rem;
-		font-size: clamp(2rem, 5vw, 4rem);
-		font-weight: 720;
-		line-height: 1;
-		letter-spacing: 0;
-		text-wrap: balance;
-	}
-
-	.card-dialog p {
-		margin-top: 1rem;
-		max-width: 42rem;
-		color: var(--muted-foreground);
-		font-size: 1.05rem;
-		line-height: 1.8;
-	}
-
-	.card-dialog ul {
-		margin-top: 1.5rem;
-		display: grid;
-		gap: 0.75rem;
-	}
-
-	.card-dialog li {
-		border: 1px solid var(--border);
-		border-radius: 0.8rem;
-		background: var(--muted);
-		padding: 0.85rem 1rem;
-	}
-
-	.card-close {
-		position: sticky;
-		z-index: 2;
-		top: 1rem;
-		float: right;
-		margin: 1rem;
 	}
 </style>

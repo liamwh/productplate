@@ -2,6 +2,7 @@
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
 	import BellRingIcon from '@lucide/svelte/icons/bell-ring';
 	import BlocksIcon from '@lucide/svelte/icons/blocks';
+	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import ChartNoAxesCombinedIcon from '@lucide/svelte/icons/chart-no-axes-combined';
 	import FileCheck2Icon from '@lucide/svelte/icons/file-check-2';
 	import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
@@ -9,7 +10,14 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 
-	type FeatureVisual = 'analytics' | 'permissions' | 'blocks' | 'notes' | 'stack' | 'alerts';
+	type FeatureVisual =
+		| 'analytics'
+		| 'permissions'
+		| 'blocks'
+		| 'notes'
+		| 'stack'
+		| 'alerts'
+		| 'calendar';
 
 	interface FeatureItem {
 		title: string;
@@ -69,6 +77,13 @@
 				description: 'Status rows, badges, and calls-to-action are ready for backend data.',
 				icon: BellRingIcon,
 				visual: 'alerts'
+			},
+			{
+				title: 'Activity calendar',
+				description:
+					'A calendar surface that renders the same status vocabulary as the rest of the product.',
+				icon: CalendarIcon,
+				visual: 'calendar'
 			}
 		]
 	}: Props = $props();
@@ -79,17 +94,46 @@
 		{ label: 'Revenue', value: '91%', scale: 91 }
 	] as const;
 
+	type PermissionStatus = 'ready' | 'live' | 'review' | 'pending' | 'draft' | 'shipped';
+
 	const permissions = [
-		'Protected route',
-		'Checkout event',
-		'Profile update',
-		'Role change'
+		{ label: 'Protected route', status: 'ready' as PermissionStatus },
+		{ label: 'Checkout event', status: 'live' as PermissionStatus },
+		{ label: 'Profile update', status: 'ready' as PermissionStatus },
+		{ label: 'Role change', status: 'review' as PermissionStatus },
+		{ label: 'Audit log', status: 'pending' as PermissionStatus },
+		{ label: 'SSO connect', status: 'draft' as PermissionStatus },
+		{ label: 'Workspace invite', status: 'shipped' as PermissionStatus }
 	] as const;
+
+	const calendarMonth = 'June 2026';
+	const calendarWeekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] as const;
+	const calendarDays = Array.from({ length: 35 }, (_, i) => {
+		const day = i + 1;
+		return day <= 30 ? day : null;
+	});
+	const calendarToday = 25;
+	const calendarEvents = [
+		{ day: 4, status: 'live' as PermissionStatus, label: 'Webhook v2' },
+		{ day: 8, status: 'shipped' as PermissionStatus, label: 'Beta launch' },
+		{ day: 12, status: 'review' as PermissionStatus },
+		{ day: 15, status: 'ready' as PermissionStatus },
+		{ day: 18, status: 'live' as PermissionStatus, label: 'Onboarding rewrite' },
+		{ day: 22, status: 'pending' as PermissionStatus },
+		{ day: 26, status: 'review' as PermissionStatus },
+		{ day: 30, status: 'draft' as PermissionStatus }
+	] as const;
+
 	const stack = ['SvelteKit', 'Convex', 'Better Auth', 'Autumn', 'AI SDK'] as const;
 	const chartBars = [28, 48, 36, 64, 52, 78] as const;
+
+	function eventForDay(day: number | null) {
+		if (day === null) return undefined;
+		return calendarEvents.find((event) => event.day === day);
+	}
 </script>
 
-<section class="border-y bg-muted/30 py-20 sm:py-24">
+<section class="py-20 sm:py-24">
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
 			<div>
@@ -143,12 +187,20 @@
 							</div>
 						{:else if item.visual === 'permissions'}
 							<div class="permissions-panel">
-								{#each permissions as permission (permission)}
+								{#each permissions as permission (permission.label)}
 									<div
 										class="flex items-center justify-between rounded-lg border bg-background px-3 py-2"
 									>
-										<span class="text-sm">{permission}</span>
-										<Badge variant="secondary">Ready</Badge>
+										<span class="text-sm">{permission.label}</span>
+										<Badge
+											variant={permission.status === 'live' || permission.status === 'shipped'
+												? 'default'
+												: permission.status === 'pending' || permission.status === 'review'
+													? 'outline'
+													: 'secondary'}
+										>
+											{permission.status}
+										</Badge>
 									</div>
 								{/each}
 							</div>
@@ -177,7 +229,7 @@
 									<span style={`--stack-index: ${index}`}>{service}</span>
 								{/each}
 							</div>
-						{:else}
+						{:else if item.visual === 'alerts'}
 							<div class="alerts-panel">
 								{#each ['Trial started', 'Plan upgraded', 'Invite accepted'] as alert (alert)}
 									<div class="rounded-lg border bg-background px-3 py-2">
@@ -185,6 +237,53 @@
 										<p class="mt-1 text-xs text-muted-foreground">Synced to product state</p>
 									</div>
 								{/each}
+							</div>
+						{:else if item.visual === 'calendar'}
+							<div class="calendar-panel">
+								<div class="calendar-header">
+									<span class="calendar-month">{calendarMonth}</span>
+									<span class="calendar-today">Today</span>
+								</div>
+								<div class="calendar-weekdays">
+									{#each calendarWeekdays as weekday (weekday)}
+										<span>{weekday}</span>
+									{/each}
+								</div>
+								<div class="calendar-grid">
+									{#each calendarDays as day, index (index)}
+										{@const event = eventForDay(day)}
+										<div
+											class={[
+												'calendar-cell',
+												day === calendarToday ? 'calendar-today-cell' : '',
+												event ? `calendar-cell-active calendar-cell-${event.status}` : ''
+											]
+												.filter(Boolean)
+												.join(' ')}
+										>
+											{#if day !== null}
+												<span class="calendar-day-number">{day}</span>
+												{#if event}
+													<span class="calendar-dot" aria-hidden="true"></span>
+												{/if}
+											{/if}
+										</div>
+									{/each}
+								</div>
+								<div class="calendar-legend">
+									<span
+										><span class="calendar-dot calendar-dot-live" aria-hidden="true"
+										></span>Live</span
+									>
+									<span
+										><span class="calendar-dot calendar-dot-review" aria-hidden="true"
+										></span>Review</span
+									>
+									<span
+										><span class="calendar-dot calendar-dot-draft" aria-hidden="true"
+										></span>Draft</span
+									>
+								</div>
 							</div>
 						{/if}
 					</div>
@@ -380,7 +479,8 @@
 	.analytics-panel,
 	.permissions-panel,
 	.notes-panel,
-	.alerts-panel {
+	.alerts-panel,
+	.calendar-panel {
 		border: 1px solid var(--border);
 		border-radius: 0.875rem;
 		background: color-mix(in oklch, var(--background) 88%, transparent);
@@ -463,6 +563,153 @@
 
 	.stack-panel span:nth-child(5) {
 		transform: translate(-8%, 34%) rotate(-7deg);
+	}
+
+	.calendar-panel {
+		display: grid;
+		gap: 0.55rem;
+	}
+
+	.calendar-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.calendar-month {
+		font-size: 0.82rem;
+		font-weight: 650;
+		letter-spacing: 0;
+	}
+
+	.calendar-today {
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted-foreground);
+	}
+
+	.calendar-weekdays {
+		display: grid;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		gap: 0.15rem;
+		color: var(--muted-foreground);
+		font-size: 0.6rem;
+		font-weight: 650;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.calendar-weekdays span {
+		display: grid;
+		place-items: center;
+		padding: 0.1rem 0;
+	}
+
+	.calendar-grid {
+		display: grid;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		gap: 0.2rem;
+	}
+
+	.calendar-cell {
+		position: relative;
+		aspect-ratio: 1 / 1;
+		display: grid;
+		place-items: center;
+		border-radius: 0.4rem;
+		color: var(--muted-foreground);
+		font-size: 0.68rem;
+		font-weight: 600;
+	}
+
+	.calendar-cell-active {
+		color: var(--foreground);
+	}
+
+	.calendar-today-cell {
+		border: 1px solid color-mix(in oklch, var(--primary) 55%, transparent);
+		background: color-mix(in oklch, var(--primary) 10%, transparent);
+	}
+
+	.calendar-cell-live,
+	.calendar-cell-shipped {
+		background: color-mix(in oklch, var(--primary) 14%, transparent);
+	}
+
+	.calendar-cell-live .calendar-dot,
+	.calendar-cell-shipped .calendar-dot {
+		background: var(--primary);
+	}
+
+	.calendar-cell-review,
+	.calendar-cell-pending {
+		background: color-mix(in oklch, var(--muted-foreground) 10%, transparent);
+	}
+
+	.calendar-cell-review .calendar-dot,
+	.calendar-cell-pending .calendar-dot {
+		background: var(--muted-foreground);
+	}
+
+	.calendar-cell-ready,
+	.calendar-cell-draft {
+		background: color-mix(in oklch, var(--muted-foreground) 5%, transparent);
+	}
+
+	.calendar-cell-ready .calendar-dot,
+	.calendar-cell-draft .calendar-dot {
+		background: transparent;
+		border: 1px solid var(--muted-foreground);
+	}
+
+	.calendar-day-number {
+		line-height: 1;
+	}
+
+	.calendar-dot {
+		position: absolute;
+		bottom: 0.2rem;
+		left: 50%;
+		width: 0.3rem;
+		height: 0.3rem;
+		border-radius: 999px;
+		transform: translateX(-50%);
+	}
+
+	.calendar-legend {
+		display: flex;
+		gap: 0.85rem;
+		padding-top: 0.35rem;
+		color: var(--muted-foreground);
+		font-size: 0.62rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+	}
+
+	.calendar-legend span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+	}
+
+	.calendar-legend .calendar-dot {
+		position: static;
+		transform: none;
+	}
+
+	.calendar-dot-live {
+		background: var(--primary);
+	}
+
+	.calendar-dot-review {
+		background: var(--muted-foreground);
+	}
+
+	.calendar-dot-draft {
+		background: transparent;
+		border: 1px solid var(--muted-foreground);
 	}
 
 	@media (max-width: 1023px) {

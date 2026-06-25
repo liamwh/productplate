@@ -60,10 +60,6 @@
             export SITE_URL="''${SITE_URL:-https://fake-site-url.com}"
             export NODE_OPTIONS="''${NODE_OPTIONS:---max-old-space-size=4096}"
 
-            if command -v go >/dev/null 2>&1; then
-              export PATH="$(go env GOPATH)/bin:$PATH"
-            fi
-
             echo "Running formatting fixes..."
             bun prettier --write .
 
@@ -75,20 +71,6 @@
 
             echo "Running typecheck..."
             bun run check
-
-            if ! command -v misspell >/dev/null 2>&1; then
-              echo "misspell is required to match the GitHub Code Quality Checks workflow."
-              echo "Install it with: go install github.com/client9/misspell/cmd/misspell@latest"
-              exit 1
-            fi
-
-            echo "Running spelling fixes..."
-            find ./src -type f \( -name "*.js" -o -name "*.ts" -o -name "*.svelte" \) | xargs misspell -w
-            misspell -w README.md
-
-            echo "Checking spelling..."
-            find ./src -type f \( -name "*.js" -o -name "*.ts" -o -name "*.svelte" \) | xargs misspell -error
-            misspell -error README.md
 
             echo "Running tests and build before push..."
             bun run test:unit

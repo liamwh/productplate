@@ -15,6 +15,7 @@
 		title: string;
 		price: { monthly: string; annually: string };
 		href: string;
+		cta: string;
 		recommended?: boolean;
 	}
 
@@ -43,10 +44,26 @@
 
 	let {
 		plans = [
-			{ title: 'Free', price: { monthly: '$9', annually: '$9' }, href: '#' },
-			{ title: 'Basic', price: { monthly: '$50', annually: '$45' }, href: '#' },
-			{ title: 'Team', price: { monthly: '$100', annually: '$90' }, href: '#', recommended: true },
-			{ title: 'Enterprise', price: { monthly: '$200', annually: '$160' }, href: '#' }
+			{ title: 'Free', price: { monthly: '$0', annually: '$0' }, href: '#', cta: 'Start free' },
+			{
+				title: 'Basic',
+				price: { monthly: '$50', annually: '$45' },
+				href: '#',
+				cta: 'Choose Basic'
+			},
+			{
+				title: 'Team',
+				price: { monthly: '$100', annually: '$90' },
+				href: '#',
+				cta: 'Choose Team',
+				recommended: true
+			},
+			{
+				title: 'Enterprise',
+				price: { monthly: '$200', annually: '$160' },
+				href: '#',
+				cta: 'Contact sales'
+			}
 		],
 		featureMatrix = [
 			{
@@ -80,6 +97,36 @@
 							{ plan: 'Team', content: 'Unlimited' },
 							{ plan: 'Enterprise', content: 'Unlimited' }
 						]
+					},
+					{
+						title: 'Team seats',
+						info: 'How many people can be invited to a workspace.',
+						inclusions: [
+							{ plan: 'Free', content: '2' },
+							{ plan: 'Basic', content: '5' },
+							{ plan: 'Team', content: '20' },
+							{ plan: 'Enterprise', content: 'Unlimited' }
+						]
+					},
+					{
+						title: 'File storage',
+						info: 'Storage cap for uploads and profile images.',
+						inclusions: [
+							{ plan: 'Free', content: '500 MB' },
+							{ plan: 'Basic', content: '10 GB' },
+							{ plan: 'Team', content: '100 GB' },
+							{ plan: 'Enterprise', content: '1 TB' }
+						]
+					},
+					{
+						title: 'API rate limit',
+						info: 'Requests per minute against public endpoints.',
+						inclusions: [
+							{ plan: 'Free', content: '60' },
+							{ plan: 'Basic', content: '500' },
+							{ plan: 'Team', content: '2,000' },
+							{ plan: 'Enterprise', content: '10,000' }
+						]
 					}
 				]
 			},
@@ -91,6 +138,36 @@
 						inclusions: [
 							{ plan: 'Free', content: 'check' },
 							{ plan: 'Basic', content: 'check' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Custom domain',
+						info: 'Bring your own hostname for the dashboard and emails.',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'check' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'White-label branding',
+						info: 'Replace Product Plate logos with your own brand.',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Advanced analytics',
+						info: 'Cohort, funnel, and retention dashboards.',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
 							{ plan: 'Team', content: 'check' },
 							{ plan: 'Enterprise', content: 'check' }
 						]
@@ -113,6 +190,91 @@
 							{ plan: 'Basic', content: 'cross' },
 							{ plan: 'Team', content: 'addon' },
 							{ plan: 'Enterprise', content: 'addon' }
+						]
+					}
+				]
+			},
+			{
+				title: 'Support',
+				features: [
+					{
+						title: 'Community forum',
+						inclusions: [
+							{ plan: 'Free', content: 'check' },
+							{ plan: 'Basic', content: 'check' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Email support',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'check' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Live chat support',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Dedicated success manager',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
+							{ plan: 'Team', content: 'cross' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					}
+				]
+			},
+			{
+				title: 'Security',
+				features: [
+					{
+						title: 'Two-factor authentication',
+						inclusions: [
+							{ plan: 'Free', content: 'check' },
+							{ plan: 'Basic', content: 'check' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'SSO authentication',
+						info: 'Single sign-on through OIDC and SAML providers.',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
+							{ plan: 'Team', content: 'addon' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Audit log',
+						info: 'Workspace events with export and retention controls.',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
+							{ plan: 'Team', content: 'check' },
+							{ plan: 'Enterprise', content: 'check' }
+						]
+					},
+					{
+						title: 'Compliance reports',
+						info: 'SOC 2 and ISO 27001 reports available on request.',
+						inclusions: [
+							{ plan: 'Free', content: 'cross' },
+							{ plan: 'Basic', content: 'cross' },
+							{ plan: 'Team', content: 'cross' },
+							{ plan: 'Enterprise', content: 'check' }
 						]
 					}
 				]
@@ -139,7 +301,7 @@
 			</p>
 		</div>
 
-		<div class="lg:sticky lg:top-16">
+		<div class="bg-background lg:sticky lg:top-16 lg:z-10">
 			<div class="pt-6">
 				<div class="grid items-end gap-6 border-b pb-8 lg:grid-cols-6">
 					<div class="lg:col-span-2">
@@ -165,8 +327,7 @@
 								variant={plan.recommended ? 'default' : 'outline'}
 								class="w-full"
 							>
-								<span class="2xl:hidden">Register</span>
-								<span class="hidden 2xl:inline">Get started for free</span>
+								{plan.cta}
 							</Button>
 						</div>
 					{/each}

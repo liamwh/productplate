@@ -43,7 +43,7 @@
 	}: Props = $props();
 </script>
 
-<section id="faq" class="scroll-mt-24 border-y bg-muted/30 py-20 sm:py-24">
+<section id="faq" class="scroll-mt-24 py-20 sm:py-24">
 	<div class="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[0.75fr_1.25fr]">
 		<div>
 			<Badge variant="outline">{kicker}</Badge>

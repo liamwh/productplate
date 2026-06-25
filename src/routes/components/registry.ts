@@ -4,6 +4,7 @@ import {
 	LandingComparisonTable,
 	LandingCtaBand,
 	LandingFaqSection,
+	LandingFeatureComparison,
 	LandingFeatureTabs,
 	LandingFinalCta,
 	LandingHero,
@@ -19,8 +20,7 @@ import {
 	LandingStatsGrid,
 	LandingStatsStrip,
 	LandingTestimonialMarquee,
-	LandingTestimonialWall,
-	LandingThreeDMarquee
+	LandingTestimonialWall
 } from '$lib/components/landing';
 import type { Component } from 'svelte';
 
@@ -54,7 +54,8 @@ export const categories: readonly Category[] = [
 		components: [
 			{ key: 'bento', label: 'Bento features', Component: LandingBentoFeatures },
 			{ key: 'tabs', label: 'Feature tabs', Component: LandingFeatureTabs },
-			{ key: 'comparison', label: 'Comparison table', Component: LandingComparisonTable },
+			{ key: 'feature-comparison', label: 'Comparison table', Component: LandingFeatureComparison },
+			{ key: 'image-comparison', label: 'Image comparison', Component: LandingComparisonTable },
 			{ key: 'timeline', label: 'Process timeline', Component: LandingProcessTimeline },
 			{ key: 'orbiting', label: 'Orbiting circles', Component: LandingOrbitingCircles }
 		]
@@ -65,8 +66,7 @@ export const categories: readonly Category[] = [
 		blurb: 'Testimonial mosaics, marquees, and dimensional image walls.',
 		components: [
 			{ key: 'wall', label: 'Testimonial mosaic', Component: LandingTestimonialWall },
-			{ key: 'marquee', label: 'Testimonial marquee', Component: LandingTestimonialMarquee },
-			{ key: '3d-marquee', label: '3D image marquee', Component: LandingThreeDMarquee }
+			{ key: 'marquee', label: 'Testimonial marquee', Component: LandingTestimonialMarquee }
 		]
 	},
 	{

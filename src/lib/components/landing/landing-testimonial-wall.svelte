@@ -167,7 +167,7 @@
 				{#each testimonials as testimonial, idx (testimonial.id ?? testimonial.name)}
 					{@const clamp = clampClasses[idx % clampClasses.length]}
 					<div class="proof-item">
-						<Card.Root class="break-inside-avoid p-5">
+						<Card.Root class="break-inside-avoid gap-3.5 p-5">
 							<div class="proof-head">
 								<div class="proof-who">
 									<Avatar.Root class="size-9 rounded-full ring-1 ring-input">
@@ -264,7 +264,6 @@
 	}
 
 	.proof-quote {
-		margin-top: 0.75rem;
 		color: color-mix(in oklch, var(--foreground) 62%, transparent);
 		font-size: 0.95rem;
 		line-height: 1.75;

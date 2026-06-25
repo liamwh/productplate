@@ -106,7 +106,8 @@
 		border-color: color-mix(in oklch, var(--foreground) 22%, transparent);
 	}
 
-	.category-tab-active {
+	.category-tab-active,
+	.category-tab-active:hover {
 		color: var(--primary-foreground);
 		background: var(--primary);
 		border-color: var(--primary);

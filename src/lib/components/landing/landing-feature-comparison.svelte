@@ -3,9 +3,9 @@
 	import MinusIcon from '@lucide/svelte/icons/minus';
 	import { Badge } from '$lib/components/ui/badge';
 
-	interface Tier {
+	interface Option {
 		name: string;
-		price: string;
+		eyebrow: string;
 		note: string;
 		featured?: boolean;
 	}
@@ -22,18 +22,31 @@
 		kicker?: string;
 		title?: string;
 		description?: string;
-		tiers?: readonly Tier[];
+		options?: readonly Option[];
 		groups?: readonly FeatureGroup[];
 	}
 
 	let {
-		kicker = 'Pricing comparison',
-		title = 'A compact matrix for the details people check before checkout.',
-		description = 'Use this under card pricing when your plans differ by usage, integrations, support, or launch services.',
-		tiers = [
-			{ name: 'Starter', price: '$19', note: 'One product launch' },
-			{ name: 'Launch', price: '$49', note: 'Best for paid beta', featured: true },
-			{ name: 'Scale', price: '$129', note: 'Team launch system' }
+		kicker = 'Comparison table',
+		title = 'See how the starter stacks up against the alternatives.',
+		description = 'A compact matrix for the details people check before they pick a path.',
+		options = [
+			{
+				name: 'Static template',
+				eyebrow: 'Fast start',
+				note: 'Pretty sections, no product routes'
+			},
+			{
+				name: 'Product Plate',
+				eyebrow: 'Starter',
+				note: 'Landing, auth, data, and billing in one codebase',
+				featured: true
+			},
+			{
+				name: 'Custom build',
+				eyebrow: 'Highest control',
+				note: 'Tailored fit, slower first version'
+			}
 		],
 		groups = [
 			{
@@ -41,26 +54,25 @@
 				rows: [
 					{ label: 'Hero and CTA variants', values: ['4', '8', 'Custom'] },
 					{ label: 'Feature bento blocks', values: [true, true, true] },
-					{
-						label: 'Proof wall variants',
-						values: ['Basic', 'Mosaic + marquee', 'Custom proof library']
-					}
+					{ label: 'Proof wall variants', values: ['Basic', 'Mosaic + marquee', 'Custom'] },
+					{ label: 'Comparison page', values: [false, true, true] }
 				]
 			},
 			{
 				name: 'Product plumbing',
 				rows: [
-					{ label: 'Auth-ready app shell', values: [true, true, true] },
-					{ label: 'Billing copy patterns', values: [false, true, true] },
-					{ label: 'Team onboarding flows', values: [false, false, true] }
+					{ label: 'Auth-ready app shell', values: [false, true, true] },
+					{ label: 'Realtime data layer', values: [false, true, true] },
+					{ label: 'Billing and checkout', values: [false, true, true] },
+					{ label: 'File uploads and storage', values: [false, true, true] }
 				]
 			},
 			{
 				name: 'Launch support',
 				rows: [
 					{ label: 'Founder checklist', values: [true, true, true] },
-					{ label: 'Review-ready comparison page', values: [false, true, true] },
-					{ label: 'Priority implementation notes', values: [false, false, true] }
+					{ label: 'Deployment workflow', values: ['Vercel', 'Cloudflare', 'Your choice'] },
+					{ label: 'Onboarding copy patterns', values: [false, true, true] }
 				]
 			}
 		]
@@ -87,14 +99,14 @@
 			</p>
 		</div>
 
-		<div class="pricing-matrix mt-12">
+		<div class="comparison-matrix mt-12">
 			<div class="matrix-head">
 				<div></div>
-				{#each tiers as tier (tier.name)}
-					<div class={tier.featured ? 'tier-featured' : ''}>
-						<span>{tier.name}</span>
-						<strong>{tier.price}</strong>
-						<small>{tier.note}</small>
+				{#each options as option (option.name)}
+					<div class={option.featured ? 'option-featured' : ''}>
+						<span>{option.name}</span>
+						<small>{option.eyebrow}</small>
+						<em>{option.note}</em>
 					</div>
 				{/each}
 			</div>
@@ -106,7 +118,7 @@
 						<div class="matrix-row">
 							<p>{row.label}</p>
 							{#each row.values as value, index (`${row.label}-${index}`)}
-								<div class={tiers[index]?.featured ? 'tier-featured' : ''}>
+								<div class={options[index]?.featured ? 'option-featured' : ''}>
 									{#if value === true}
 										<CheckIcon class="size-4" aria-label={valueLabel(value)} />
 									{:else if value === false}
@@ -128,7 +140,7 @@
 </section>
 
 <style>
-	.pricing-matrix {
+	.comparison-matrix {
 		overflow: hidden;
 		border: 1px solid var(--border);
 		border-radius: 1rem;
@@ -160,19 +172,23 @@
 	}
 
 	.matrix-head span {
-		font-size: 0.9rem;
+		font-size: 0.95rem;
 		font-weight: 700;
-	}
-
-	.matrix-head strong {
-		font-size: 1.8rem;
-		font-weight: 700;
-		letter-spacing: 0;
 	}
 
 	.matrix-head small {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: uppercase;
 		color: var(--muted-foreground);
-		font-size: 0.78rem;
+	}
+
+	.matrix-head em {
+		font-size: 0.82rem;
+		font-style: normal;
+		color: var(--muted-foreground);
+		line-height: 1.45;
 	}
 
 	.matrix-group {
@@ -210,12 +226,12 @@
 		color: var(--foreground);
 	}
 
-	.tier-featured {
+	.option-featured {
 		background: color-mix(in oklch, var(--primary) 6%, transparent);
 	}
 
 	@media (max-width: 760px) {
-		.pricing-matrix {
+		.comparison-matrix {
 			overflow-x: auto;
 			-webkit-overflow-scrolling: touch;
 		}

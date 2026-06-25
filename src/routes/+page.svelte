@@ -33,7 +33,6 @@
 
 	const navLinks = [
 		{ label: 'Features', href: '#features' },
-		{ label: 'Demo routes', href: '#routes' },
 		{ label: 'Components', href: to.components },
 		{ label: 'Open source', href: '#open-source' },
 		{ label: 'FAQ', href: '#faq' }

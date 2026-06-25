@@ -105,7 +105,7 @@
 	}
 </script>
 
-<section class="border-y bg-muted/30 py-16 sm:py-20">
+<section class="py-16 sm:py-20">
 	<div class="mx-auto max-w-7xl px-6">
 		<div class="marquee-stack mt-8">
 			{#each rows as row, rowIndex (rowIndex)}
@@ -173,7 +173,7 @@
 	.marquee-card {
 		display: grid;
 		width: min(22rem, calc(100vw - 3rem));
-		gap: 0.9rem;
+		gap: 0.5rem;
 		flex: 0 0 auto;
 		border: 1px solid var(--border);
 		border-radius: 1rem;

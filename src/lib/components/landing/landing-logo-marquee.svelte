@@ -19,7 +19,7 @@
 	}: Props = $props();
 </script>
 
-<section aria-label={label} class="border-y bg-muted/30">
+<section aria-label={label}>
 	<div class="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[18rem_1fr] lg:items-center">
 		<p class="text-sm font-medium text-muted-foreground">{label}</p>
 		<div class="marquee" aria-hidden="true">
