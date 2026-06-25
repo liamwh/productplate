@@ -1,38 +1,30 @@
 <script lang="ts">
-	const stack = [
-		{ name: 'SvelteKit', logo: 'https://cdn.simpleicons.org/svelte/FF3E00', initials: null },
-		{ name: 'TypeScript', logo: 'https://cdn.simpleicons.org/typescript/3178C6', initials: null },
-		{
-			name: 'Tailwind CSS',
-			logo: 'https://cdn.simpleicons.org/tailwindcss/06B6D4',
-			initials: null
-		},
-		{ name: 'Bun', logo: 'https://cdn.simpleicons.org/bun/000000', initials: null },
-		{ name: 'Cloudflare', logo: 'https://cdn.simpleicons.org/cloudflare/F38020', initials: null },
-		{ name: 'Convex', logo: null, initials: 'CX' },
-		{ name: 'Better Auth', logo: null, initials: 'BA' },
-		{ name: 'Autumn', logo: null, initials: 'AU' },
-		{ name: 'AI SDK', logo: null, initials: 'AI' }
+	type StackItem = {
+		name: string;
+		logo: string;
+	};
+
+	const stack: readonly StackItem[] = [
+		{ name: 'SvelteKit', logo: '/stack/svelte.svg' },
+		{ name: 'TypeScript', logo: '/stack/typescript.svg' },
+		{ name: 'Tailwind CSS', logo: '/stack/tailwindcss.svg' },
+		{ name: 'Bun', logo: '/stack/bun.svg' },
+		{ name: 'Cloudflare', logo: '/stack/cloudflare.svg' },
+		{ name: 'Convex', logo: '/stack/convex.svg' },
+		{ name: 'Better Auth', logo: '/stack/better-auth.svg' },
+		{ name: 'Autumn', logo: '/stack/autumn.svg' },
+		{ name: 'AI SDK', logo: '/stack/aisdk.svg' }
 	] as const;
 </script>
 
 <section aria-label="Technology stack" class="border-y bg-muted/25">
 	<div class="mx-auto max-w-6xl px-6 py-8">
-		<div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
 			<p class="shrink-0 text-sm font-medium text-muted-foreground">Default stack</p>
-			<ul class="flex flex-wrap items-center gap-2.5">
+			<ul class="flex flex-wrap items-baseline gap-x-5 gap-y-2.5 sm:justify-end">
 				{#each stack as item (item.name)}
-					<li
-						class="flex items-center gap-2 rounded-full border bg-background px-3 py-2 text-sm font-medium shadow-sm"
-					>
-						{#if item.logo}
-							<img src={item.logo} alt="" class="size-4" loading="lazy" />
-						{:else}
-							<span
-								class="flex size-4 items-center justify-center rounded-sm bg-primary text-[0.52rem] font-bold text-primary-foreground"
-								>{item.initials}</span
-							>
-						{/if}
+					<li class="flex items-center gap-1.5 text-sm font-medium text-foreground/80">
+						<img src={item.logo} alt="" class="size-3.5 shrink-0" loading="lazy" />
 						<span>{item.name}</span>
 					</li>
 				{/each}
@@ -40,3 +32,10 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	:global(html.dark) img[src$='/better-auth.svg'],
+	:global(html.dark) img[src$='/aisdk.svg'] {
+		filter: invert(1);
+	}
+</style>
