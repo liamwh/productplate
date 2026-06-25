@@ -72,11 +72,10 @@
             echo "Running typecheck..."
             bun run check
 
-            echo "Running tests and build before push..."
+            echo "Running tests before push..."
             bun run test:unit
-            bun run build
 
-            echo "Build successful. Proceeding with push..."
+            echo "All pre-push checks passed. Run \`bun run verify\` to include a full build."
           '
         '';
       };
