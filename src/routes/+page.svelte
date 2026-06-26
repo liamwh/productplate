@@ -43,15 +43,8 @@
 		{ label: 'Kickstart', href: '#kickstart' },
 		{ label: 'Stack', href: '#stack' },
 		{ label: 'Routes', href: '#routes' },
+		{ label: 'Components', href: resolve('/components/hero') },
 		{ label: 'FAQ', href: '#faq' }
-	] as const;
-
-	const heroStack = [
-		{ name: 'SvelteKit', color: '#ff3e00', dot: '#ff3e00' },
-		{ name: 'Convex', color: '#ee342f', dot: '#ee342f' },
-		{ name: 'Better Auth', color: '#0ea5e9', dot: '#0ea5e9' },
-		{ name: 'Autumn', color: '#9564ff', dot: '#9564ff' },
-		{ name: 'AI SDK', color: '#6366f1', dot: '#6366f1' }
 	] as const;
 
 	const kickstartSteps = [
@@ -241,20 +234,6 @@
 							GitHub
 						</Button>
 						<Button href="#kickstart" variant="outline" size="lg">How Kickstart works</Button>
-					</div>
-					<div class="mt-8 flex flex-wrap items-center gap-2">
-						{#each heroStack as item (item.name)}
-							<span
-								class="inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1.5 text-sm font-medium text-foreground/85 shadow-sm"
-								style={`border-color: color-mix(in oklab, ${item.color} 35%, transparent)`}
-							>
-								<span
-									class="inline-block size-2 rounded-full"
-									style={`background-color: ${item.dot}`}
-								></span>
-								{item.name}
-							</span>
-						{/each}
 					</div>
 				</div>
 

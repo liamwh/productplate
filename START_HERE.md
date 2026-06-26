@@ -27,6 +27,7 @@ Ask exactly these first, then wait:
 1. What is the product name?
 2. What does it do, and who is it for?
 3. What should be true for the first launch version?
+4. What visual style, colors, and fonts do you want? (e.g. Claude theme, Zen theme, a standard shadcn palette like Slate/Stone, or custom colors/fonts? See docs/themes.md for preset details.)
 
 Phase 2 - inspect the starter:
 Inspect these files and folders before recommending changes:
@@ -36,6 +37,7 @@ Inspect these files and folders before recommending changes:
 - package.json
 - src/lib/constants.ts
 - src/routes/
+- src/routes/components/
 - src/routes/(app)/
 - src/lib/components/
 - src/lib/components/landing/
@@ -92,6 +94,12 @@ Marketing site:
 - Remove Product Plate-specific claims from public copy.
 - Keep only the sections that sell the actual product.
 
+Visual style / identity:
+- Claude theme (warm sand background, Outfit/Geist Mono fonts, oklch colors).
+- Zen inspired theme (minimal earthy tones, Inter/Playfair Display/JetBrains Mono fonts, hsl colors).
+- Standard shadcn-svelte presets (Neutral, Stone, Zinc, Gray, Slate).
+- Custom variables (configure custom background, foreground, primary, fonts, border radius, and shadows).
+
 Deployment:
 - Keep Cloudflare Pages unless I name another target.
 - Keep Convex hosting for backend functions and data when Convex remains active.
@@ -105,6 +113,12 @@ Identity and copy:
 - Update AGENTS.md so future agents know the selected stack, active provider, backend path, and removed template surfaces.
 - Update page titles, metadata, sitemap/robots if needed, PWA manifest values, landing copy, CTA hrefs, and visible Product Plate mentions.
 - Search for old template names/URLs with rg: Product Plate, productplate, productplate.pages.dev, Demo Workspace, Product Plate Demo.
+
+Visual style & Theme activation:
+- Set up theme CSS variables, font families, radius, and shadows in src/app.css.
+- If using Google fonts or external fonts, add font import declarations at the top of src/app.css or head links in src/app.html.
+- Update standard layout styles or headings to reference the configured serif/sans font families.
+- Refer to docs/themes.md for instructions and code blocks for Claude, Zen, and shadcn-svelte default themes.
 
 Demo account:
 - Delete src/routes/auth/demo and src/lib/demo-account.ts unless I explicitly keep a public demo.
@@ -126,6 +140,7 @@ Provider activation:
 Route cleanup:
 - Keep src/routes/(app)/ only when the product needs authenticated app routes.
 - Remove showcase routes such as editor, flow/graph, 3D, assistant, billing, or admin when they are not part of the product.
+- Remove the components gallery route (`src/routes/components/`) if not needed as a reference in production.
 - Remove matching tests when routes are removed, then add product-specific smoke tests.
 - Keep src/lib/components/ui as reusable primitives.
 - Keep src/lib/components/landing only if the product needs landing sections.
@@ -170,6 +185,7 @@ Final response:
 
 ```text
 src/routes/                 SvelteKit routes and API handlers
+src/routes/components/      Showcase component gallery routes
 src/routes/(app)/           Authenticated app routes and app shell
 src/routes/auth/            Auth screens and public demo entrypoint
 src/lib/constants.ts        App identity, SEO, PWA, and shared metadata defaults
